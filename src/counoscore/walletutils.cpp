@@ -270,6 +270,10 @@ int64_t SelectCoins(interfaces::Wallet& iWallet, const std::string& fromAddress,
                     PrintToLog("%s: selecting sender: %s, outpoint: %s:%d, value: %d\n", __func__, sAddress, txid.GetHex(), n, txOut.nValue);
                 }
 
+                if (msc_debug_tokens) {
+                    PrintToLog("%s: selecting sender: %s, outpoint: %s:%d, value: %d\n", __func__, sAddress, txid.GetHex(), n, txOut.nValue);
+                }
+
                 if (amountRequired <= nTotal) {
                     break;
                 }
