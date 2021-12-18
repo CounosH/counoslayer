@@ -162,6 +162,33 @@ $ counoscore-cli "counos_send" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKponF7z
 
 ### counos_senddexsell
 
+Transfers all available tokens in the given ecosystem to the recipient.
+
+**Arguments:**
+
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `fromaddress`       | string  | required | the address to send from                                                                     |
+| `toaddress  `       | string  | required | the address of the receiver                                                                  |
+| `ecosystem`         | number  | required | the ecosystem of the tokens to send (`1` for main ecosystem, `2` for test ecosystem)         |
+| `redeemaddress`     | string  | optional | an address that can spend the transaction dust (sender by default)                           |
+| `referenceamount`   | string  | optional | a bitcoin amount that is sent to the receiver (minimal by default)                           |
+
+**Result:**
+```js
+"hash"  // (string) the hex-encoded transaction hash
+```
+
+**Example:**
+
+```bash
+$ counoscore-cli "counos_sendall" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa" 2
+```
+
+---
+
+### counos_senddexsell
+
 Place, update or cancel a sell offer on the distributed token/CCH exchange.
 
 **Please note: this RPC is replaced by:**
@@ -666,33 +693,6 @@ Change the issuer on record of the given tokens.
 ```bash
 $ counoscore-cli "counos_sendchangeissuer" \
     "1ARjWDkZ7kT9fwjPrjcQyvbXDkEySzKHwu" "3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs" 3
-```
-
----
-
-### counos_sendall
-
-Transfers all available tokens in the given ecosystem to the recipient.
-
-**Arguments:**
-
-| Name                | Type    | Presence | Description                                                                                  |
-|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
-| `fromaddress`       | string  | required | the address to send from                                                                     |
-| `toaddress  `       | string  | required | the address of the receiver                                                                  |
-| `ecosystem`         | number  | required | the ecosystem of the tokens to send (`1` for main ecosystem, `2` for test ecosystem)         |
-| `redeemaddress`     | string  | optional | an address that can spend the transaction dust (sender by default)                           |
-| `referenceamount`   | string  | optional | a counosh amount that is sent to the receiver (minimal by default)                           |
-
-**Result:**
-```js
-"hash"  // (string) the hex-encoded transaction hash
-```
-
-**Example:**
-
-```bash
-$ counoscore-cli "counos_sendall" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa" 2
 ```
 
 ---
