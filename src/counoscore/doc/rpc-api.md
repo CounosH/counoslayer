@@ -13,6 +13,7 @@ All available commands can be listed with `"help"`, and information about a spec
 ## Table of contents
 
 - [Transaction creation](#transaction-creation)
+<<<<<<< .mine
   - [counos_send](#counos_send)
   - [counos_sendnewdexorder](#counos_sendnewdexorder)
   - [counos_sendupdatedexorder](#counos_sendupdatedexorder)
@@ -44,6 +45,41 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_funded_sendall](#counos_funded_sendall)
   - [counos_sendnonfungible](#counos_sendnonfungible)
   - [counos_setnonfungibledata](#counos_setnonfungibledata)
+
+=======
+  - [omni_send](#omni_send)
+  - [omni_sendall](#omni_sendall)
+  - [omni_sendtomany](#omni_sendtomany)
+  - [omni_sendnewdexorder](#omni_sendnewdexorder)
+  - [omni_sendupdatedexorder](#omni_sendupdatedexorder)
+  - [omni_sendcanceldexorder](#omni_sendcanceldexorder)
+  - [omni_senddexaccept](#omni_senddexaccept)
+  - [omni_senddexpay](#omni_senddexpay)
+  - [omni_sendissuancecrowdsale](#omni_sendissuancecrowdsale)
+  - [omni_sendissuancefixed](#omni_sendissuancefixed)
+  - [omni_sendissuancemanaged](#omni_sendissuancemanaged)
+  - [omni_sendsto](#omni_sendsto)
+  - [omni_sendgrant](#omni_sendgrant)
+  - [omni_sendrevoke](#omni_sendrevoke)
+  - [omni_sendclosecrowdsale](#omni_sendclosecrowdsale)
+  - [omni_sendtrade](#omni_sendtrade)
+  - [omni_sendcanceltradesbyprice](#omni_sendcanceltradesbyprice)
+  - [omni_sendcanceltradesbypair](#omni_sendcanceltradesbypair)
+  - [omni_sendcancelalltrades](#omni_sendcancelalltrades)
+  - [omni_sendchangeissuer](#omni_sendchangeissuer)
+  - [omni_sendenablefreezing](#omni_sendenablefreezing)
+  - [omni_senddisablefreezing](#omni_senddisablefreezing)
+  - [omni_sendfreeze](#omni_sendfreeze)
+  - [omni_sendunfreeze](#omni_sendunfreeze)
+  - [omni_sendadddelegate](#omni_sendadddelegate)
+  - [omni_sendremovedelegate](#omni_sendremovedelegate)
+  - [omni_sendanydata](#omni_sendanydata)
+  - [omni_sendrawtx](#omni_sendrawtx)
+  - [omni_funded_send](#omni_funded_send)
+  - [omni_funded_sendall](#omni_funded_sendall)
+  - [omni_sendnonfungible](#omni_sendnonfungible)
+  - [omni_setnonfungibledata](#omni_setnonfungibledata)
+>>>>>>> .theirs
 - [Data retrieval](#data-retrieval)
   - [counos_getinfo](#counos_getinfo)
   - [counos_getbalance](#counos_getbalance)
@@ -83,6 +119,7 @@ All available commands can be listed with `"help"`, and information about a spec
   - [getblockhashes](#getblockhashes)
   - [getspentinfo](#getspentinfo)
 - [Raw transactions](#raw-transactions)
+<<<<<<< .mine
   - [counos_decodetransaction](#counos_decodetransaction)
   - [counos_createrawtx_opreturn](#counos_createrawtx_opreturn)
   - [counos_createrawtx_multisig](#counos_createrawtx_multisig)
@@ -114,6 +151,41 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_createpayload_anydata](#counos_createpayload_anydata)
   - [counos_createpayload_sendnonfungible](#counos_createpayload_sendnonfungible)
   - [counos_createpayload_setnonfungibledata](#counos_createpayload_setnonfungibledata)
+
+=======
+  - [omni_decodetransaction](#omni_decodetransaction)
+  - [omni_createrawtx_opreturn](#omni_createrawtx_opreturn)
+  - [omni_createrawtx_multisig](#omni_createrawtx_multisig)
+  - [omni_createrawtx_input](#omni_createrawtx_input)
+  - [omni_createrawtx_reference](#omni_createrawtx_reference)
+  - [omni_createrawtx_change](#omni_createrawtx_change)
+  - [omni_createpayload_simplesend](#omni_createpayload_simplesend)
+  - [omni_createpayload_sendall](#omni_createpayload_sendall)
+  - [omni_createpayload_sendtomany](#omni_createpayload_sendtomany)
+  - [omni_createpayload_dexsell](#omni_createpayload_dexsell)
+  - [omni_createpayload_dexaccept](#omni_createpayload_dexaccept)
+  - [omni_createpayload_sto](#omni_createpayload_sto)
+  - [omni_createpayload_issuancefixed](#omni_createpayload_issuancefixed)
+  - [omni_createpayload_issuancecrowdsale](#omni_createpayload_issuancecrowdsale)
+  - [omni_createpayload_issuancemanaged](#omni_createpayload_issuancemanaged)
+  - [omni_createpayload_closecrowdsale](#omni_createpayload_closecrowdsale)
+  - [omni_createpayload_grant](#omni_createpayload_grant)
+  - [omni_createpayload_revoke](#omni_createpayload_revoke)
+  - [omni_createpayload_changeissuer](#omni_createpayload_changeissuer)
+  - [omni_createpayload_trade](#omni_createpayload_trade)
+  - [omni_createpayload_canceltradesbyprice](#omni_createpayload_canceltradesbyprice)
+  - [omni_createpayload_canceltradesbypair](#omni_createpayload_canceltradesbypair)
+  - [omni_createpayload_cancelalltrades](#omni_createpayload_cancelalltrades)
+  - [omni_createpayload_enablefreezing](#omni_createpayload_enablefreezing)
+  - [omni_createpayload_disablefreezing](#omni_createpayload_disablefreezing)
+  - [omni_createpayload_freeze](#omni_createpayload_freeze)
+  - [omni_createpayload_unfreeze](#omni_createpayload_unfreeze)
+  - [omni_createpayload_adddelegate](#omni_createpayload_adddelegate)
+  - [omni_createpayload_removedelegate](#omni_createpayload_removedelegate)
+  - [omni_createpayload_anydata](#omni_createpayload_anydata)
+  - [omni_createpayload_sendnonfungible](#omni_createpayload_sendnonfungible)
+  - [omni_createpayload_setnonfungibledata](#omni_createpayload_setnonfungibledata)
+>>>>>>> .theirs
 - [Fee system](#fee-system)
   - [counos_getfeecache](#counos_getfeecache)
   - [counos_getfeetrigger](#counos_getfeetrigger)
@@ -187,7 +259,61 @@ $ counoscore-cli "counos_sendall" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKpon
 
 ---
 
+<<<<<<< .mine
 ### counos_senddexsell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+### omni_sendtomany
+
+Create and broadcast a send-to-many transaction, which allows to transfer tokens from one source to multiple receivers.
+
+**Arguments:**
+
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `fromaddress`       | string  | required | the address to send from                                                                     |
+| `propertyid`        | number  | required | the identifier of the tokens to send                                                         |
+| `mapping`           | array   | required | an array with the receiving address "address" and the "amount" to send                       |
+
+**Result:**
+```js
+"hash"  // (string) the hex-encoded transaction hash
+```
+
+**Example:**
+
+```bash
+$ omnicore-cli "omni_sendtomany" 1 '[{"address": "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa", "amount": "10.5"}, {"address": "3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH", "amount": "0.5"}]'
+```
+
+---
+
+### omni_senddexsell
+>>>>>>> .theirs
 
 Place, update or cancel a sell offer on the distributed token/CCH exchange.
 
@@ -2650,7 +2776,63 @@ $ counoscore-cli "counos_createpayload_sendall" 2
 
 ---
 
+<<<<<<< .mine
 ### counos_createpayload_dexsell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+### omni_createpayload_sendtomany
+
+Create the payload for a send-to-many transaction.
+
+Note: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!
+
+**Arguments:**
+
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `propertyid`        | number  | required | the identifier of the tokens to send                                                         |
+| `mapping`           | array   | required | an array with output index "output" starting at 0 and the "amount" to send                   |
+
+**Result:**
+```js
+"payload"  // (string) the hex-encoded payload
+```
+
+**Example:**
+
+```bash
+$ omnicore-cli "omni_createpayload_sendtomany" 1 '[{"output": 2, "amount": "10.5"}, {"output": 3, "amount": "0.5"}, {"output": 5, "amount": "15.0"}]'
+```
+
+---
+
+### omni_createpayload_dexsell
+>>>>>>> .theirs
 
 Create a payload to place, update or cancel a sell offer on the traditional distributed COUNOS/CCH exchange.
 
