@@ -218,6 +218,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "counos_getwalletaddressbalances", 0, "includewatchonly" },
     { "counos_getnonfungibletokens", 1, "propertyid"},
     { "counos_getnonfungibletokendata", 0, "propertyid"},
+    { "counos_getnonfungibletokendata", 1, "tokenidstart"},
     { "counos_getnonfungibletokendata", 2, "tokenidend"},
     { "counos_getnonfungibletokenranges", 0, "propertyid"},
     { "counos_getnonfungibletokenranges", 0, "propertyid"},
@@ -335,8 +336,9 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "counos_createpayload_sendnonfungible", 1, "tokenstart"},
     { "counos_createpayload_sendnonfungible", 2, "tokenend"},
     { "counos_createpayload_setnonfungibledata", 0, "propertyid"},
-    { "counos_createpayload_setnonfungibledata", 1, "tokenid"},
-    { "counos_createpayload_setnonfungibledata", 2, "issuer"},
+    { "counos_createpayload_setnonfungibledata", 1, "tokenstart"},
+    { "counos_createpayload_setnonfungibledata", 2, "tokenend"},
+    { "counos_createpayload_setnonfungibledata", 3, "issuer"},
 
     /* Counos Core - backwards compatibility */
     { "getcrowdsale_MP", 0, "propertyid" },

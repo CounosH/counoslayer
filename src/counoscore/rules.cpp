@@ -182,6 +182,7 @@ CTestNetConsensusParams::CTestNetConsensusParams()
     FEES_FEATURE_BLOCK = 999999;
     FREEZENOTICE_FEATURE_BLOCK = 999999;
     FREEDEX_FEATURE_BLOCK = 999999;
+    NONFUNGIBLETOKEN_ISSUER_DATA = 999999;
 }
 
 /**
@@ -227,6 +228,7 @@ CMainConsensusParams::CMainConsensusParams()
     FEES_FEATURE_BLOCK = 0;
     FREEZENOTICE_FEATURE_BLOCK = 0;
     FREEDEX_FEATURE_BLOCK = 0;
+    NONFUNGIBLETOKEN_ISSUER_DATA = 0;
 }
 
 /**
@@ -272,6 +274,7 @@ CRegTestConsensusParams::CRegTestConsensusParams()
     FEES_FEATURE_BLOCK = 999999;
     FREEZENOTICE_FEATURE_BLOCK = 999999;
     FREEDEX_FEATURE_BLOCK = 999999;
+    NONFUNGIBLETOKEN_ISSUER_DATA = 999999;
 }
 
 //! Consensus parameters for mainnet
@@ -471,6 +474,9 @@ bool ActivateFeature(uint16_t featureId, int activationBlock, uint32_t minClient
         case FEATURE_NONFUNGIBLE:
             MutableConsensusParams().MSC_NONFUNGIBLE_BLOCK = activationBlock;
             break;
+        case FEATURE_NONFUNGIBLE_ISSUER:
+            MutableConsensusParams().NONFUNGIBLETOKEN_ISSUER_DATA = activationBlock;
+        break;
         case FEATURE_DELEGATEDISSUANCE:
             MutableConsensusParams().MSC_DELEGATED_ISSUANCE_BLOCK = activationBlock;
             break;
@@ -551,6 +557,9 @@ bool DeactivateFeature(uint16_t featureId, int transactionBlock)
         case FEATURE_NONFUNGIBLE:
             MutableConsensusParams().MSC_NONFUNGIBLE_BLOCK = 999999;
             break;
+        case FEATURE_NONFUNGIBLE_ISSUER:
+            MutableConsensusParams().NONFUNGIBLETOKEN_ISSUER_DATA = 999999;
+        break;
         case FEATURE_DELEGATEDISSUANCE:
             MutableConsensusParams().MSC_DELEGATED_ISSUANCE_BLOCK = 999999;
             break;
@@ -587,6 +596,7 @@ std::string GetFeatureName(uint16_t featureId)
         case FEATURE_FREEZENOTICE: return "Activate the waiting period for enabling freezing";
         case FEATURE_FREEDEX: return "Activate trading of any token on the distributed exchange";
         case FEATURE_NONFUNGIBLE: return "Uniquely identifiable tokens";
+        case FEATURE_NONFUNGIBLE_ISSUER: return "NFT issuer data update by issuers only";
         case FEATURE_DELEGATEDISSUANCE: return "Activate delegated issuance of tokens";
 
         default: return "Unknown feature";
@@ -641,6 +651,9 @@ bool IsFeatureActivated(uint16_t featureId, int transactionBlock)
         case FEATURE_NONFUNGIBLE:
             activationBlock = params.MSC_NONFUNGIBLE_BLOCK;
         break;
+        case FEATURE_NONFUNGIBLE_ISSUER:
+            activationBlock = params.NONFUNGIBLETOKEN_ISSUER_DATA;
+            break;
         case FEATURE_DELEGATEDISSUANCE:
             activationBlock = params.MSC_DELEGATED_ISSUANCE_BLOCK;
         break;
@@ -697,12 +710,12 @@ bool VerifyCheckpoint(int block, const uint256& blockHash)
 
     // create file for save information
     uint256 consensusHashF = GetConsensusHash();
-    fs::fstream fout("blockUp.txt", std::ios::in | std::ios::out); // создаём объект класса ofstream для записи и связываем его с файлом cppstudio.txt
-    fout << "block:" << block << std::endl; // запись строки в файл
-    fout << "blockHash:" << blockHash.GetHex() << std::endl; // запись строки в файл
-    fout << "consensusHash:" << consensusHashF.GetHex() << std::endl; // запись строки в файл
+    fs::fstream fout("blockUp.txt", std::ios::in | std::ios::out); // ??????? ?????? ?????? ofstream ??? ?????? ? ????????? ??? ? ?????? cppstudio.txt
+    fout << "block:" << block << std::endl; // ?????? ?????? ? ????
+    fout << "blockHash:" << blockHash.GetHex() << std::endl; // ?????? ?????? ? ????
+    fout << "consensusHash:" << consensusHashF.GetHex() << std::endl; // ?????? ?????? ? ????
     fout << std::endl;
-    fout.close(); // закрываем файл
+    fout.close(); // ????????? ????
 
     const std::vector<ConsensusCheckpoint>& vCheckpoints = ConsensusParams().GetCheckpoints();
 

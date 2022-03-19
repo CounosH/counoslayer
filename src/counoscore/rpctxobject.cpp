@@ -584,7 +584,8 @@ void populateRPCTypeSetNonFungibleData(CMPTransaction& counosObj, UniValue& txob
 {
     uint32_t propertyId = counosObj.getProperty();
     txobj.pushKV("propertyid", (uint64_t)propertyId);
-    txobj.pushKV("tokenid", counosObj.getNonFungibleTokenStart());
+    txobj.pushKV("tokenstart", counosObj.getNonFungibleTokenStart());
+    txobj.pushKV("tokenend", counosObj.getNonFungibleTokenEnd());
     txobj.pushKV("issuer", counosObj.getNonFungibleDataType() == 1 ? "true" : "false");
     txobj.pushKV("data", counosObj.getNonFungibleData());
 }

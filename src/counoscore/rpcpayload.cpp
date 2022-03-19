@@ -769,8 +769,7 @@ static const CRPCCommand commands[] =
     { "counos layer (payload creation)", "counos_createpayload_removedelegate",      &counos_createpayload_removedelegate,      {"propertyid"} },
     { "counos layer (payload creation)", "counos_createpayload_anydata",             &counos_createpayload_anydata,             {"data"} },
     { "counos layer (payload creation)", "counos_createpayload_sendnonfungible",     &counos_createpayload_sendnonfungible,     {"propertyid", "tokenstart", "tokenend"} },
-    { "counos layer (payload creation)", "counos_createpayload_setnonfungibledata",  &counos_createpayload_setnonfungibledata,  {"propertyid", "tokenid", "issuer", "data"} },
-
+    { "counos layer (payload creation)", "omni_createpayload_setnonfungibledata",  &omni_createpayload_setnonfungibledata,  {"propertyid", "tokenstart", "tokenend", "issuer", "data"} },
 };
 
 void RegisterCounosPayloadCreationRPCCommands(CRPCTable &tableRPC)
