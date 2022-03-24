@@ -1,9 +1,9 @@
 JSON-RPC API
 ============
 
-Counos Core is a fork of CounosH Core, with Counos Protocol feature support added as a new layer of functionality on top. As such interacting with the API is done in the same manner (JSON-RPC) as CounosH Core, simply with additional RPCs available for utilizing Counos Protocol features.
+Counos Core is a fork of Bitcoin Core, with Counos Protocol feature support added as a new layer of functionality on top. As such interacting with the API is done in the same manner (JSON-RPC) as Bitcoin Core, simply with additional RPCs available for utilizing Counos Protocol features.
 
-As all existing CounosH Core functionality is inherent to Counos Core, the RPC port by default remains as `8332` as per CounosH Core.  If you wish to run Counos Core in tandem with CounosH Core (eg. via a separate datadir) you may utilize the `-rpcport<port>` option to nominate an alternative port number.
+As all existing Bitcoin Core functionality is inherent to Counos Core, the RPC port by default remains as `8332` as per Bitcoin Core.  If you wish to run Counos Core in tandem with Bitcoin Core (eg. via a separate datadir) you may utilize the `-rpcport<port>` option to nominate an alternative port number.
 
 All available commands can be listed with `"help"`, and information about a specific command can be retrieved with `"help <command>"`.
 
@@ -13,8 +13,9 @@ All available commands can be listed with `"help"`, and information about a spec
 ## Table of contents
 
 - [Transaction creation](#transaction-creation)
-<<<<<<< .mine
   - [counos_send](#counos_send)
+  - [counos_sendall](#counos_sendall)
+  - [counos_sendtomany](#counos_sendtomany)
   - [counos_sendnewdexorder](#counos_sendnewdexorder)
   - [counos_sendupdatedexorder](#counos_sendupdatedexorder)
   - [counos_sendcanceldexorder](#counos_sendcanceldexorder)
@@ -32,8 +33,7 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_sendcanceltradesbypair](#counos_sendcanceltradesbypair)
   - [counos_sendcancelalltrades](#counos_sendcancelalltrades)
   - [counos_sendchangeissuer](#counos_sendchangeissuer)
-  - [counos_sendall](#counos_sendall)
-  - [counos_sendenablefreezing](#counos_sendenablefreezing)
+  - [counos_sendall](#counos_sendall)  - [counos_sendenablefreezing](#counos_sendenablefreezing)
   - [counos_senddisablefreezing](#counos_senddisablefreezing)
   - [counos_sendfreeze](#counos_sendfreeze)
   - [counos_sendunfreeze](#counos_sendunfreeze)
@@ -45,41 +45,6 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_funded_sendall](#counos_funded_sendall)
   - [counos_sendnonfungible](#counos_sendnonfungible)
   - [counos_setnonfungibledata](#counos_setnonfungibledata)
-
-=======
-  - [omni_send](#omni_send)
-  - [omni_sendall](#omni_sendall)
-  - [omni_sendtomany](#omni_sendtomany)
-  - [omni_sendnewdexorder](#omni_sendnewdexorder)
-  - [omni_sendupdatedexorder](#omni_sendupdatedexorder)
-  - [omni_sendcanceldexorder](#omni_sendcanceldexorder)
-  - [omni_senddexaccept](#omni_senddexaccept)
-  - [omni_senddexpay](#omni_senddexpay)
-  - [omni_sendissuancecrowdsale](#omni_sendissuancecrowdsale)
-  - [omni_sendissuancefixed](#omni_sendissuancefixed)
-  - [omni_sendissuancemanaged](#omni_sendissuancemanaged)
-  - [omni_sendsto](#omni_sendsto)
-  - [omni_sendgrant](#omni_sendgrant)
-  - [omni_sendrevoke](#omni_sendrevoke)
-  - [omni_sendclosecrowdsale](#omni_sendclosecrowdsale)
-  - [omni_sendtrade](#omni_sendtrade)
-  - [omni_sendcanceltradesbyprice](#omni_sendcanceltradesbyprice)
-  - [omni_sendcanceltradesbypair](#omni_sendcanceltradesbypair)
-  - [omni_sendcancelalltrades](#omni_sendcancelalltrades)
-  - [omni_sendchangeissuer](#omni_sendchangeissuer)
-  - [omni_sendenablefreezing](#omni_sendenablefreezing)
-  - [omni_senddisablefreezing](#omni_senddisablefreezing)
-  - [omni_sendfreeze](#omni_sendfreeze)
-  - [omni_sendunfreeze](#omni_sendunfreeze)
-  - [omni_sendadddelegate](#omni_sendadddelegate)
-  - [omni_sendremovedelegate](#omni_sendremovedelegate)
-  - [omni_sendanydata](#omni_sendanydata)
-  - [omni_sendrawtx](#omni_sendrawtx)
-  - [omni_funded_send](#omni_funded_send)
-  - [omni_funded_sendall](#omni_funded_sendall)
-  - [omni_sendnonfungible](#omni_sendnonfungible)
-  - [omni_setnonfungibledata](#omni_setnonfungibledata)
->>>>>>> .theirs
 - [Data retrieval](#data-retrieval)
   - [counos_getinfo](#counos_getinfo)
   - [counos_getbalance](#counos_getbalance)
@@ -119,7 +84,6 @@ All available commands can be listed with `"help"`, and information about a spec
   - [getblockhashes](#getblockhashes)
   - [getspentinfo](#getspentinfo)
 - [Raw transactions](#raw-transactions)
-<<<<<<< .mine
   - [counos_decodetransaction](#counos_decodetransaction)
   - [counos_createrawtx_opreturn](#counos_createrawtx_opreturn)
   - [counos_createrawtx_multisig](#counos_createrawtx_multisig)
@@ -128,6 +92,7 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_createrawtx_change](#counos_createrawtx_change)
   - [counos_createpayload_simplesend](#counos_createpayload_simplesend)
   - [counos_createpayload_sendall](#counos_createpayload_sendall)
+  - [counos_createpayload_sendtomany](#counos_createpayload_sendtomany)
   - [counos_createpayload_dexsell](#counos_createpayload_dexsell)
   - [counos_createpayload_dexaccept](#counos_createpayload_dexaccept)
   - [counos_createpayload_sto](#counos_createpayload_sto)
@@ -151,41 +116,6 @@ All available commands can be listed with `"help"`, and information about a spec
   - [counos_createpayload_anydata](#counos_createpayload_anydata)
   - [counos_createpayload_sendnonfungible](#counos_createpayload_sendnonfungible)
   - [counos_createpayload_setnonfungibledata](#counos_createpayload_setnonfungibledata)
-
-=======
-  - [omni_decodetransaction](#omni_decodetransaction)
-  - [omni_createrawtx_opreturn](#omni_createrawtx_opreturn)
-  - [omni_createrawtx_multisig](#omni_createrawtx_multisig)
-  - [omni_createrawtx_input](#omni_createrawtx_input)
-  - [omni_createrawtx_reference](#omni_createrawtx_reference)
-  - [omni_createrawtx_change](#omni_createrawtx_change)
-  - [omni_createpayload_simplesend](#omni_createpayload_simplesend)
-  - [omni_createpayload_sendall](#omni_createpayload_sendall)
-  - [omni_createpayload_sendtomany](#omni_createpayload_sendtomany)
-  - [omni_createpayload_dexsell](#omni_createpayload_dexsell)
-  - [omni_createpayload_dexaccept](#omni_createpayload_dexaccept)
-  - [omni_createpayload_sto](#omni_createpayload_sto)
-  - [omni_createpayload_issuancefixed](#omni_createpayload_issuancefixed)
-  - [omni_createpayload_issuancecrowdsale](#omni_createpayload_issuancecrowdsale)
-  - [omni_createpayload_issuancemanaged](#omni_createpayload_issuancemanaged)
-  - [omni_createpayload_closecrowdsale](#omni_createpayload_closecrowdsale)
-  - [omni_createpayload_grant](#omni_createpayload_grant)
-  - [omni_createpayload_revoke](#omni_createpayload_revoke)
-  - [omni_createpayload_changeissuer](#omni_createpayload_changeissuer)
-  - [omni_createpayload_trade](#omni_createpayload_trade)
-  - [omni_createpayload_canceltradesbyprice](#omni_createpayload_canceltradesbyprice)
-  - [omni_createpayload_canceltradesbypair](#omni_createpayload_canceltradesbypair)
-  - [omni_createpayload_cancelalltrades](#omni_createpayload_cancelalltrades)
-  - [omni_createpayload_enablefreezing](#omni_createpayload_enablefreezing)
-  - [omni_createpayload_disablefreezing](#omni_createpayload_disablefreezing)
-  - [omni_createpayload_freeze](#omni_createpayload_freeze)
-  - [omni_createpayload_unfreeze](#omni_createpayload_unfreeze)
-  - [omni_createpayload_adddelegate](#omni_createpayload_adddelegate)
-  - [omni_createpayload_removedelegate](#omni_createpayload_removedelegate)
-  - [omni_createpayload_anydata](#omni_createpayload_anydata)
-  - [omni_createpayload_sendnonfungible](#omni_createpayload_sendnonfungible)
-  - [omni_createpayload_setnonfungibledata](#omni_createpayload_setnonfungibledata)
->>>>>>> .theirs
 - [Fee system](#fee-system)
   - [counos_getfeecache](#counos_getfeecache)
   - [counos_getfeetrigger](#counos_getfeetrigger)
@@ -217,7 +147,7 @@ Create and broadcast a simple send transaction.
 | `propertyid`        | number  | required | the identifier of the tokens to send                                                         |
 | `amount`            | string  | required | the amount to send                                                                           |
 | `redeemaddress`     | string  | optional | an address that can spend the transaction dust (sender by default)                           |
-| `referenceamount`   | string  | optional | a counosh amount that is sent to the receiver (minimal by default)                           |
+| `referenceamount`   | string  | optional | a bitcoin amount that is sent to the receiver (minimal by default)                           |
 
 **Result:**
 ```js
@@ -232,7 +162,7 @@ $ counoscore-cli "counos_send" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKponF7z
 
 ---
 
-### counos_senddexsell
+### counos_sendall
 
 Transfers all available tokens in the given ecosystem to the recipient.
 
@@ -259,35 +189,7 @@ $ counoscore-cli "counos_sendall" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKpon
 
 ---
 
-<<<<<<< .mine
-### counos_senddexsell
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-### omni_sendtomany
+### counos_sendtomany
 
 Create and broadcast a send-to-many transaction, which allows to transfer tokens from one source to multiple receivers.
 
@@ -307,15 +209,14 @@ Create and broadcast a send-to-many transaction, which allows to transfer tokens
 **Example:**
 
 ```bash
-$ omnicore-cli "omni_sendtomany" 1 '[{"address": "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa", "amount": "10.5"}, {"address": "3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH", "amount": "0.5"}]'
+$ counoscore-cli "counos_sendtomany" 1 '[{"address": "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa", "amount": "10.5"}, {"address": "3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH", "amount": "0.5"}]'
 ```
 
 ---
 
-### omni_senddexsell
->>>>>>> .theirs
+### counos_senddexsell
 
-Place, update or cancel a sell offer on the distributed token/CCH exchange.
+Place, update or cancel a sell offer on the distributed token/BTC exchange.
 
 **Please note: this RPC is replaced by:**
 
@@ -330,7 +231,7 @@ Place, update or cancel a sell offer on the distributed token/CCH exchange.
 | `fromaddress`       | string  | required | the address to send from                                                                     |
 | `propertyidforsale` | number  | required | the identifier of the tokens to list for sale                                                |
 | `amountforsale`     | string  | required | the amount of tokens to list for sale                                                        |
-| `amountdesired`     | string  | required | the amount of counoshs desired                                                               |
+| `amountdesired`     | string  | required | the amount of bitcoins desired                                                               |
 | `paymentwindow`     | number  | required | a time limit in blocks a buyer has to pay following a successful accepting order             |
 | `minacceptfee`      | string  | required | a minimum mining fee a buyer has to pay to accept the offer                                  |
 | `action`            | number  | required | the action to take (`1` for new offers, `2` to update, `3` to cancel)                        |
@@ -350,7 +251,7 @@ $ counoscore-cli "counos_senddexsell" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa" 1 "1.
 
 ### counos_sendnewdexorder
 
-Creates a new sell offer on the distributed token/CCH exchange.
+Creates a new sell offer on the distributed token/BTC exchange.
 
 **Arguments:**
 
@@ -359,7 +260,7 @@ Creates a new sell offer on the distributed token/CCH exchange.
 | `fromaddress`       | string  | required | the address to send from                                                                     |
 | `propertyidforsale` | number  | required | the identifier of the tokens to list for sale                                                |
 | `amountforsale`     | string  | required | the amount of tokens to list for sale                                                        |
-| `amountdesired`     | string  | required | the amount of counoshs desired                                                               |
+| `amountdesired`     | string  | required | the amount of bitcoins desired                                                               |
 | `paymentwindow`     | number  | required | a time limit in blocks a buyer has to pay following a successful accepting order             |
 | `minacceptfee`      | string  | required | a minimum mining fee a buyer has to pay to accept the offer                                  |
 
@@ -378,7 +279,7 @@ $ counoscore-cli "counos_sendnewdexorder" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa" 1
 
 ### counos_sendupdatedexorder
 
-Updates an existing sell offer on the distributed token/CCH exchange.
+Updates an existing sell offer on the distributed token/BTC exchange.
 
 **Arguments:**
 
@@ -387,7 +288,7 @@ Updates an existing sell offer on the distributed token/CCH exchange.
 | `fromaddress`       | string  | required | the address to send from                                                                     |
 | `propertyidforsale` | number  | required | the identifier of the tokens to update                                                       |
 | `amountforsale`     | string  | required | the new amount of tokens to list for sale                                                    |
-| `amountdesired`     | string  | required | the new amount of counoshs desired                                                           |
+| `amountdesired`     | string  | required | the new amount of bitcoins desired                                                           |
 | `paymentwindow`     | number  | required | a new time limit in blocks a buyer has to pay following a successful accepting order         |
 | `minacceptfee`      | string  | required | a new minimum mining fee a buyer has to pay to accept the offer                              |
 
@@ -406,7 +307,7 @@ $ counoscore-cli "counos_sendupdatedexorder" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa
 
 ### counos_sendcanceldexorder
 
-Cancels existing sell offer on the distributed token/CCH exchange.
+Cancels existing sell offer on the distributed token/BTC exchange.
 
 **Arguments:**
 
@@ -469,7 +370,7 @@ Partial purchases are not possible and the whole accepted amount must be paid.
 | `fromaddress`       | string  | required | the address to send from                                                                     |
 | `toaddress`         | string  | required | the address of the seller                                                                    |
 | `propertyid`        | number  | required | the identifier of the token to purchase                                                      |
-| `amount`            | string  | required | the CounosH amount to send                                                                   |
+| `amount`            | string  | required | the Bitcoin amount to send                                                                   |
 
 **Result:**
 ```js
@@ -517,7 +418,7 @@ Create new tokens as crowdsale.
 
 ```bash
 $ counoscore-cli "counos_sendissuancecrowdsale" \
-    "3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo" 2 1 0 "Companies" "CounosH Mining" \
+    "3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo" 2 1 0 "Companies" "Bitcoin Mining" \
     "Quantum Miner" "" "" 2 "100" 1483228800 30 2
 ```
 
@@ -551,7 +452,7 @@ Create new tokens with fixed supply.
 
 ```bash
 $ counoscore-cli "counos_sendissuancefixed" \
-    "3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3" 2 1 0 "Companies" "CounosH Mining" \
+    "3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3" 2 1 0 "Companies" "Bitcoin Mining" \
     "Quantum Miner" "" "" "1000000"
 ```
 
@@ -563,17 +464,17 @@ Create new tokens with manageable supply.
 
 **Arguments:**
 
-| Name                | Type    | Presence | Description                                                                                            |
-|---------------------|---------|----------|--------------------------------------------------------------------------------------------------------|
-| `fromaddress`       | string  | required | the address to send from                                                                               |
-| `ecosystem`         | number  | required | the ecosystem to create the tokens in (`1` for main ecosystem, `2` for test ecosystem)                 |
-| `type`              | number  | required | the type of the tokens to create: (`1` for indivisible tokens, `2` for divisible tokens, `5` for NFTs) |
-| `previousid`        | number  | required | an identifier of a predecessor token (`0` for new tokens)                                              |
-| `category`          | string  | required | a category for the new tokens (can be `""`)                                                            |
-| `subcategory`       | string  | required | a subcategory for the new tokens (can be `""`)                                                         |
-| `name`              | string  | required | the name of the new tokens to create                                                                   |
-| `url`               | string  | required | an URL for further information about the new tokens (can be `""`)                                      |
-| `data`              | string  | required | a description for the new tokens (can be `""`)                                                         |
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `fromaddress`       | string  | required | the address to send from                                                                     |
+| `ecosystem`         | number  | required | the ecosystem to create the tokens in (`1` for main ecosystem, `2` for test ecosystem)       |
+| `type`              | number  | required | the type of the tokens to create: (`1` for indivisible tokens, `2` for divisible tokens, `5` for NFTs)     |
+| `previousid`        | number  | required | an identifier of a predecessor token (`0` for new tokens)                                    |
+| `category`          | string  | required | a category for the new tokens (can be `""`)                                                  |
+| `subcategory`       | string  | required | a subcategory for the new tokens (can be `""`)                                               |
+| `name`              | string  | required | the name of the new tokens to create                                                         |
+| `url`               | string  | required | an URL for further information about the new tokens (can be `""`)                            |
+| `data`              | string  | required | a description for the new tokens (can be `""`)                                               |
 
 **Result:**
 ```js
@@ -584,7 +485,7 @@ Create new tokens with manageable supply.
 
 ```bash
 $ counoscore-cli "counos_sendissuancemanaged" \
-    "3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH" 2 1 0 "Companies" "CounosH Mining" "Quantum Miner" "" ""
+    "3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH" 2 1 0 "Companies" "Bitcoin Mining" "Quantum Miner" "" ""
 ```
 
 ---
@@ -623,13 +524,13 @@ Issue or grant new units of managed tokens.
 
 **Arguments:**
 
-| Name          | Type    | Presence | Description                                                                                  |
-|---------------|---------|----------|----------------------------------------------------------------------------------------------|
-| `fromaddress` | string  | required | the address to send from                                                                     |
-| `toaddress`   | string  | required | the receiver of the tokens (sender by default, can be `""`)                                  |
-| `propertyid`  | number  | required | the identifier of the tokens to grant                                                        |
-| `amount`      | string  | required | the amount of tokens to create                                                               |
-| `grantdata`   | string  | optional | NFT only: data set in all NFTs created in this grant (default: empty)                                   |
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `fromaddress`       | string  | required | the address to send from                                                                     |
+| `toaddress`         | string  | required | the receiver of the tokens (sender by default, can be `""`)                                  |
+| `propertyid`        | number  | required | the identifier of the tokens to grant                                                        |
+| `amount`            | string  | required | the amount of tokens to create                                                               |
+| `grantdata`         | string  | optional | NFT only: data set in all NFTs created in this grant (default: empty)                        |
 
 **Result:**
 ```js
@@ -823,6 +724,9 @@ $ counoscore-cli "counos_sendchangeissuer" \
 
 ---
 
+### counos_sendall
+$ counoscore-cli "counos_sendall" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "37FaKponF7zqoMLUjEiko25pDiuVH5YLEa" 2
+### counos_sendenablefreezing
 ### counos_sendenablefreezing
 
 Enables address freezing for a centrally managed property.
@@ -881,12 +785,12 @@ Note: Only the issuer may freeze tokens, and only if the token is of the managed
 
 **Arguments:**
 
-| Name                | Type    | Presence | Description                                                                                      |
-|---------------------|---------|----------|--------------------------------------------------------------------------------------------------|
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
 | `fromaddress`       | string  | required | the address to send from (must be delegate or issuer of a managed property with freezing enabled |
-| `toaddress`         | string  | required | the address to freeze                                                                            |
-| `propertyid`        | number  | required | the identifier of the tokens to freeze                                                           |
-| `amount`            | string  | required | the amount to freeze (note: currently unused, frozen addresses cannot transact the property)     |
+| `toaddress`         | string  | required | the address to freeze                                                                        |
+| `propertyid`        | number  | required | the identifier of the tokens to freeze                                                       |
+| `amount`            | string  | required | the amount to freeze (note: currently unused, frozen addresses cannot transact the property) |
 
 **Result:**
 ```js
@@ -909,12 +813,12 @@ Note: Only the issuer may unfreeze tokens
 
 **Arguments:**
 
-| Name                | Type    | Presence | Description                                                                                      |
-|---------------------|---------|----------|--------------------------------------------------------------------------------------------------|
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
 | `fromaddress`       | string  | required | the address to send from (must be delegate or issuer of a managed property with freezing enabled |
-| `toaddress`         | string  | required | the address to unfreeze                                                                          |
-| `propertyid`        | number  | required | the identifier of the tokens to unfreeze                                                         |
-| `amount`            | string  | required | the amount to unfreeze (note: currently unused                                                   |
+| `toaddress`         | string  | required | the address to unfreeze                                                                      |
+| `propertyid`        | number  | required | the identifier of the tokens to unfreeze                                                     |
+| `amount`            | string  | required | the amount to unfreeze (note: currently unused                                               |
 
 **Result:**
 ```js
@@ -928,7 +832,8 @@ $ counoscore-cli "counos_sendunfreeze" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "3HT
 ```
 
 ---
-### omni_sendadddelegate
+
+### counos_sendadddelegate
 
 Adds a delegate for the issuance of tokens of a managed property.
 
@@ -1021,7 +926,7 @@ Broadcasts a raw Counos Layer transaction.
 | `rawtransaction`    | string  | required | the hex-encoded raw transaction                                                              |
 | `referenceaddress`  | string  | optional | a reference address (none by default)                                                        |
 | `redeemaddress`     | string  | optional | an address that can spend the transaction dust (sender by default)                           |
-| `referenceamount`   | string  | optional | a counosh amount that is sent to the receiver (minimal by default)                           |
+| `referenceamount`   | string  | optional | a bitcoin amount that is sent to the receiver (minimal by default)                           |
 
 **Result:**
 ```js
@@ -1042,7 +947,7 @@ $ counoscore-cli "counos_sendrawtx" \
 
 Creates and sends a funded simple send transaction.
 
-All counoshs from the sender are consumed and if there are counoshs missing, they are taken from the specified fee source. Change is sent to the fee source!
+All bitcoins from the sender are consumed and if there are bitcoins missing, they are taken from the specified fee source. Change is sent to the fee source!
 
 **Arguments:**
 
@@ -1065,6 +970,35 @@ All counoshs from the sender are consumed and if there are counoshs missing, the
 $ counoscore-cli "counos_funded_send" "1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH" \
     "15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH" 1 "100.0" \
     "15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1"
+```
+
+---
+
+### counos_funded_sendall
+
+Creates and sends a transaction that transfers all available tokens in the given ecosystem to the recipient.
+
+All bitcoins from the sender are consumed and if there are bitcoins missing, they are taken from the specified fee source. Change is sent to the fee source!
+
+**Arguments:**
+
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `fromaddress`       | string  | required | the address to send the tokens from                                                          |
+| `toaddress`         | string  | required | the address of the receiver                                                                  |
+| `ecosystem`         | number  | required | the ecosystem of the tokens to send (1 for main ecosystem, 2 for test ecosystem)             |
+| `feeaddress`        | string  | required | the address that is used for change and to pay for fees, if needed                           |
+
+**Result:**
+```js
+"hash"  // (string) the hex-encoded transaction hash
+```
+
+**Example:**
+
+```bash
+$ counoscore-cli "counos_funded_sendall" "1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH" \
+    "15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH" 1 "15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1"
 ```
 
 ---
@@ -1100,7 +1034,7 @@ $ counoscore-cli "counos_sendnonfungible" "3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY" "
 
 ### counos_setnonfungibledata
 
-Sets either the issuer or holder data field in a non-fungible token. Holder data can only be
+Sets either the issuer or holder data field in a non-fungible tokem. Holder data can only be
 updated by the token owner and issuer data can only be updated by address that created the tokens.
 
 **Arguments:**
@@ -1127,36 +1061,6 @@ $ counoscore-cli "counos_setnonfungibledata" 70 50 60 true "string data"
 ---
 
 
-### counos_funded_sendall
-
-Creates and sends a transaction that transfers all available tokens in the given ecosystem to the recipient.
-
-All counoshs from the sender are consumed and if there are counoshs missing, they are taken from the specified fee source. Change is sent to the fee source!
-
-**Arguments:**
-
-| Name                | Type    | Presence | Description                                                                                  |
-|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
-| `fromaddress`       | string  | required | the address to send the tokens from                                                          |
-| `toaddress`         | string  | required | the address of the receiver                                                                  |
-| `ecosystem`         | number  | required | the ecosystem of the tokens to send (1 for main ecosystem, 2 for test ecosystem)             |
-| `feeaddress`        | string  | required | the address that is used for change and to pay for fees, if needed                           |
-
-**Result:**
-```js
-"hash"  // (string) the hex-encoded transaction hash
-```
-
-**Example:**
-
-```bash
-$ counoscore-cli "counos_funded_sendall" "1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH" \
-    "15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH" 1 "15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1"
-```
-
----
-
-
 ## Data retrieval
 
 The RPCs for data retrieval can be used to get information about the state of the Counos ecosystem.
@@ -1176,7 +1080,7 @@ Result:
   "counoscoreversion_int" : xxxxxxx,      // (number) client version as integer
   "counoscoreversion" : "x.x.x.x-xxx",    // (string) client version
   "mastercoreversion" : "x.x.x.x-xxx",  // (string) client version (DEPRECATED)
-  "counoshcoreversion" : "x.x.x",       // (string) CounosH Core version
+  "bitcoincoreversion" : "x.x.x",       // (string) Bitcoin Core version
   "commitinfo" : "xxxxxxx",             // (string) build commit identifier
   "block" : nnnnnn,                     // (number) index of the last processed block
   "blocktime" : nnnnnnnnnn,             // (number) timestamp of the last processed block
@@ -1225,7 +1129,7 @@ Returns the token balance for a given address and property.
 **Example:**
 
 ```bash
-$ counoscore-cli "counos_getbalance", "cch1q6gj3g8v4zekfq9eygwynj5fjr9mukjvaclzgam" 1
+$ counoscore-cli "counos_getbalance", "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P" 1
 ```
 
 ---
@@ -1288,7 +1192,7 @@ Returns a list of all token balances for a given address.
 **Example:**
 
 ```bash
-$ counoscore-cli "counos_getallbalancesforaddress" "cch1q6gj3g8v4zekfq9eygwynj5fjr9mukjvaclzgam"
+$ counoscore-cli "counos_getallbalancesforaddress" "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P"
 ```
 
 ---
@@ -1378,11 +1282,11 @@ Get detailed information about an Counos transaction.
 ```js
 {
   "txid" : "hash",                 // (string) the hex-encoded hash of the transaction
-  "sendingaddress" : "address",    // (string) the CounosH address of the sender
-  "referenceaddress" : "address",  // (string) a CounosH address used as reference (if any)
+  "sendingaddress" : "address",    // (string) the Bitcoin address of the sender
+  "referenceaddress" : "address",  // (string) a Bitcoin address used as reference (if any)
   "ismine" : true|false,           // (boolean) whether the transaction involes an address in the wallet
   "confirmations" : nnnnnnnnnn,    // (number) the number of transaction confirmations
-  "fee" : "n.nnnnnnnn",            // (string) the transaction fee in counoshs
+  "fee" : "n.nnnnnnnn",            // (string) the transaction fee in bitcoins
   "blocktime" : nnnnnnnnnn,        // (number) the timestamp of the block that contains the transaction
   "valid" : true|false,            // (boolean) whether the transaction is valid
   "positioninblock" : n,           // (number) the position (index) of the transaction within the block
@@ -1420,11 +1324,11 @@ List wallet transactions, optionally filtered by an address and block boundaries
 [                                // (array of JSON objects)
   {
     "txid" : "hash",                 // (string) the hex-encoded hash of the transaction
-    "sendingaddress" : "address",    // (string) the CounosH address of the sender
-    "referenceaddress" : "address",  // (string) a CounosH address used as reference (if any)
+    "sendingaddress" : "address",    // (string) the Bitcoin address of the sender
+    "referenceaddress" : "address",  // (string) a Bitcoin address used as reference (if any)
     "ismine" : true|false,           // (boolean) whether the transaction involves an address in the wallet
     "confirmations" : nnnnnnnnnn,    // (number) the number of transaction confirmations
-    "fee" : "n.nnnnnnnn",            // (string) the transaction fee in counoshs
+    "fee" : "n.nnnnnnnn",            // (string) the transaction fee in bitcoins
     "blocktime" : nnnnnnnnnn,        // (number) the timestamp of the block that contains the transaction
     "valid" : true|false,            // (boolean) whether the transaction is valid
     "positioninblock" : n,           // (number) the position (index) of the transaction within the block
@@ -1517,10 +1421,10 @@ Note: the validity of pending transactions is uncertain, and the state of the me
 [                                // (array of JSON objects)
   {
     "txid" : "hash",                 // (string) the hex-encoded hash of the transaction
-    "sendingaddress" : "address",    // (string) the CounosH address of the sender
-    "referenceaddress" : "address",  // (string) a CounosH address used as reference (if any)
+    "sendingaddress" : "address",    // (string) the Bitcoin address of the sender
+    "referenceaddress" : "address",  // (string) a Bitcoin address used as reference (if any)
     "ismine" : true|false,           // (boolean) whether the transaction involes an address in the wallet
-    "fee" : "n.nnnnnnnn",            // (string) the transaction fee in counoshs
+    "fee" : "n.nnnnnnnn",            // (string) the transaction fee in bitcoins
     "version" : n,                   // (number) the transaction version
     "type_int" : n,                  // (number) the transaction type as number
     "type" : "type",                 // (string) the transaction type as string
@@ -1554,20 +1458,20 @@ Returns currently active offers on the distributed exchange.
   {
     "txid" : "hash",                   // (string) the hash of the transaction of this offer
     "propertyid" : n,                  // (number) the identifier of the tokens for sale
-    "seller" : "address",              // (string) the CounosH address of the seller
+    "seller" : "address",              // (string) the Bitcoin address of the seller
     "amountavailable" : "n.nnnnnnnn",  // (string) the number of tokens still listed for sale and currently available
-    "counoshdesired" : "n.nnnnnnnn",   // (string) the number of counoshs desired in exchange
-    "unitprice" : "n.nnnnnnnn" ,       // (string) the unit price (CCH/token)
+    "bitcoindesired" : "n.nnnnnnnn",   // (string) the number of bitcoins desired in exchange
+    "unitprice" : "n.nnnnnnnn" ,       // (string) the unit price (BTC/token)
     "timelimit" : nn,                  // (number) the time limit in blocks a buyer has to pay following a successful accept
     "minimumfee" : "n.nnnnnnnn",       // (string) the minimum mining fee a buyer has to pay to accept this offer
     "amountaccepted" : "n.nnnnnnnn",   // (string) the number of tokens currently reserved for pending "accept" orders
     "accepts": [                       // (array of JSON objects) a list of pending "accept" orders
       {
-        "buyer" : "address",               // (string) the CounosH address of the buyer
+        "buyer" : "address",               // (string) the Bitcoin address of the buyer
         "block" : nnnnnn,                  // (number) the index of the block that contains the "accept" order
         "blocksleft" : nn,                 // (number) the number of blocks left to pay
         "amount" : "n.nnnnnnnn"            // (string) the amount of tokens accepted and reserved
-        "amounttopay" : "n.nnnnnnnn"       // (string) the amount in counoshs needed finalize the trade
+        "amounttopay" : "n.nnnnnnnn"       // (string) the amount in bitcoins needed finalize the trade
       },
       ...
     ]
@@ -1605,7 +1509,7 @@ To get the total number of tokens, please use counos_getproperty.
     "data" : "information",         // (string) additional information or a description
     "url" : "uri",                  // (string) an URI, for example pointing to a website
     "divisible" : true|false        // (boolean) whether the tokens are divisible
-    "issuer" : "address",           // (string) the CounosH address of the issuer on record
+    "issuer" : "address",           // (string) the Bitcoin address of the issuer on record
     "creationtxid" : "hash",        // (string) the hex-encoded creation transaction hash
     "fixedissuance" : true|false,   // (boolean) whether the token supply is fixed
     "managedissuance" : true|false, // (boolean) whether the token supply is managed by the issuer
@@ -1642,8 +1546,8 @@ Returns details for about the tokens or smart property to lookup.
   "data" : "information",         // (string) additional information or a description
   "url" : "uri",                  // (string) an URI, for example pointing to a website
   "divisible" : true|false,       // (boolean) whether the tokens are divisible
-  "issuer" : "address",           // (string) the CounosH address of the issuer on record
-  "delegate": "address",          // (string) the CounosH address of the issuance delegate, if there is one        
+  "issuer" : "address",           // (string) the Bitcoin address of the issuer on record
+  "delegate" : "address",         // (string) the Bitcoin address of the issuance delegate, if there is one
   "creationtxid" : "hash",        // (string) the hex-encoded creation transaction hash
   "fixedissuance" : true|false,   // (boolean) whether the token supply is fixed
   "managedissuance" : true|false, // (boolean) whether the token supply is managed by the issuer
@@ -1674,7 +1578,7 @@ Lists currently active crowdsales.
   {
     "propertyid" : n,                // (number) the identifier of the crowdsale
     "name" : "name",                 // (string) the name of the tokens issued via the crowdsale
-    "issuer" : "address",            // (string) the CounosH address of the issuer on record
+    "issuer" : "address",            // (string) the Bitcoin address of the issuer on record
     "propertyiddesired" : n,         // (number) the identifier of the tokens eligible to participate in the crowdsale
     "tokensperunit" : "n.nnnnnnnn",  // (string) the amount of tokens granted per unit invested in the crowdsale
     "earlybonus" : n,                // (number) an early bird bonus for participants in percent per week
@@ -1711,7 +1615,7 @@ Returns information about a crowdsale.
   "propertyid" : n,                    // (number) the identifier of the crowdsale
   "name" : "name",                     // (string) the name of the tokens issued via the crowdsale
   "active" : true|false,               // (boolean) whether the crowdsale is still active
-  "issuer" : "address",                // (string) the CounosH address of the issuer on record
+  "issuer" : "address",                // (string) the Bitcoin address of the issuer on record
   "propertyiddesired" : n,             // (number) the identifier of the tokens eligible to participate in the crowdsale
   "tokensperunit" : "n.nnnnnnnn",      // (string) the amount of tokens granted per unit invested in the crowdsale
   "earlybonus" : n,                    // (number) an early bird bonus for participants in percent per week
@@ -1759,7 +1663,7 @@ Returns information about granted and revoked units of managed tokens.
 {
   "propertyid" : n,              // (number) the identifier of the managed tokens
   "name" : "name",               // (string) the name of the tokens
-  "issuer" : "address",          // (string) the CounosH address of the issuer on record
+  "issuer" : "address",          // (string) the Bitcoin address of the issuer on record
   "creationtxid" : "hash",       // (string) the hex-encoded creation transaction hash
   "totaltokens" : "n.nnnnnnnn",  // (string) the total number of tokens in existence
   "issuances": [                 // (array of JSON objects) a list of the granted and revoked tokens
@@ -1805,10 +1709,10 @@ Get information and recipients of a send-to-owners transaction.
 ```js
 {
   "txid" : "hash",               // (string) the hex-encoded hash of the transaction
-  "sendingaddress" : "address",  // (string) the CounosH address of the sender
+  "sendingaddress" : "address",  // (string) the Bitcoin address of the sender
   "ismine" : true|false,         // (boolean) whether the transaction involes an address in the wallet
   "confirmations" : nnnnnnnnnn,  // (number) the number of transaction confirmations
-  "fee" : "n.nnnnnnnn",          // (string) the transaction fee in counoshs
+  "fee" : "n.nnnnnnnn",          // (string) the transaction fee in bitcoins
   "blocktime" : nnnnnnnnnn,      // (number) the timestamp of the block that contains the transaction
   "valid" : true|false,          // (boolean) whether the transaction is valid
   "positioninblock" : n,         // (number) the position (index) of the transaction within the block
@@ -1818,10 +1722,10 @@ Get information and recipients of a send-to-owners transaction.
   "propertyid" : n,              // (number) the identifier of sent tokens
   "divisible" : true|false,      // (boolean) whether the sent tokens are divisible
   "amount" : "n.nnnnnnnn",       // (string) the number of tokens sent to owners
-  "totalstofee" : "n.nnnnnnnn",  // (string) the fee paid by the sender, nominated in COUN or TCOUN
+  "totalstofee" : "n.nnnnnnnn",  // (string) the fee paid by the sender, nominated in OMN or TOMN
   "recipients": [                // (array of JSON objects) a list of recipients
     {
-      "address" : "address",         // (string) the CounosH address of the recipient
+      "address" : "address",         // (string) the Bitcoin address of the recipient
       "amount" : "n.nnnnnnnn"        // (string) the number of tokens sent to this recipient
     },
     ...
@@ -1851,10 +1755,10 @@ Get detailed information and trade matches for orders on the distributed token e
 ```js
 {
   "txid" : "hash",                              // (string) the hex-encoded hash of the transaction of the order
-  "sendingaddress" : "address",                 // (string) the CounosH address of the trader
+  "sendingaddress" : "address",                 // (string) the Bitcoin address of the trader
   "ismine" : true|false,                        // (boolean) whether the order involes an address in the wallet
   "confirmations" : nnnnnnnnnn,                 // (number) the number of transaction confirmations
-  "fee" : "n.nnnnnnnn",                         // (string) the transaction fee in counoshs
+  "fee" : "n.nnnnnnnn",                         // (string) the transaction fee in bitcoins
   "blocktime" : nnnnnnnnnn,                     // (number) the timestamp of the block that contains the transaction
   "valid" : true|false,                         // (boolean) whether the transaction is valid
   "positioninblock" : n,                        // (number) the position (index) of the transaction within the block
@@ -1874,7 +1778,7 @@ Get detailed information and trade matches for orders on the distributed token e
     {
       "txid" : "hash",                              // (string) the hash of the transaction that was matched against
       "block" : nnnnnn,                             // (number) the index of the block that contains this transaction
-      "address" : "address",                        // (string) the CounosH address of the other trader
+      "address" : "address",                        // (string) the Bitcoin address of the other trader
       "amountsold" : "n.nnnnnnnn",                  // (string) the number of tokens sold in this trade
       "amountreceived" : "n.nnnnnnnn"               // (string) the number of tokens traded in exchange
     },
@@ -1906,7 +1810,7 @@ List active offers on the distributed token exchange.
 ```js
 [                                             // (array of JSON objects)
   {
-    "address" : "address",                        // (string) the CounosH address of the trader
+    "address" : "address",                        // (string) the Bitcoin address of the trader
     "txid" : "hash",                              // (string) the hex-encoded hash of the transaction of the order
     "ecosystem" : "main"|"test",                  // (string) the ecosytem in which the order was made (if "cancel-ecosystem")
     "propertyidforsale" : n,                      // (number) the identifier of the tokens put up for sale
@@ -1953,11 +1857,11 @@ Retrieves the history of trades on the distributed token exchange for the specif
     "unitprice" : "n.nnnnnnnnnnn..." ,    // (string) the unit price used to execute this trade (received/sold)
     "inverseprice" : "n.nnnnnnnnnnn...",  // (string) the inverse unit price (sold/received)
     "sellertxid" : "hash",                // (string) the hash of the transaction of the seller
-    "address" : "address",                // (string) the CounosH address of the seller
+    "address" : "address",                // (string) the Bitcoin address of the seller
     "amountsold" : "n.nnnnnnnn",          // (string) the number of tokens sold in this trade
     "amountreceived" : "n.nnnnnnnn",      // (string) the number of tokens traded in exchange
     "matchingtxid" : "hash",              // (string) the hash of the transaction that was matched against
-    "matchingaddress" : "address"         // (string) the CounosH address of the other party of this trade
+    "matchingaddress" : "address"         // (string) the Bitcoin address of the other party of this trade
   },
   ...
 ]
@@ -1988,10 +1892,10 @@ Retrieves the history of orders on the distributed exchange for the supplied add
 [                                             // (array of JSON objects)
   {
     "txid" : "hash",                              // (string) the hex-encoded hash of the transaction of the order
-    "sendingaddress" : "address",                 // (string) the CounosH address of the trader
+    "sendingaddress" : "address",                 // (string) the Bitcoin address of the trader
     "ismine" : true|false,                        // (boolean) whether the order involes an address in the wallet
     "confirmations" : nnnnnnnnnn,                 // (number) the number of transaction confirmations
-    "fee" : "n.nnnnnnnn",                         // (string) the transaction fee in counoshs
+    "fee" : "n.nnnnnnnn",                         // (string) the transaction fee in bitcoins
     "blocktime" : nnnnnnnnnn,                     // (number) the timestamp of the block that contains the transaction
     "valid" : true|false,                         // (boolean) whether the transaction is valid
     "positioninblock" : n,                        // (number) the position (index) of the transaction within the block
@@ -2011,7 +1915,7 @@ Retrieves the history of orders on the distributed exchange for the supplied add
       {
         "txid" : "hash",                              // (string) the hash of the transaction that was matched against
         "block" : nnnnnn,                             // (number) the index of the block that contains this transaction
-        "address" : "address",                        // (string) the CounosH address of the other trader
+        "address" : "address",                        // (string) the Bitcoin address of the other trader
         "amountsold" : "n.nnnnnnnn",                  // (string) the number of tokens sold in this trade
         "amountreceived" : "n.nnnnnnnn"               // (string) the number of tokens traded in exchange
       },
@@ -2146,7 +2050,7 @@ $ counoscore-cli "counos_getcurrentconsensushash"
 
 ---
 
-### omni_getnonfungibletokens
+### counos_getnonfungibletokens
 
 Returns the non-fungible tokens for a given address. Optional property ID filter.
 
@@ -2523,9 +2427,9 @@ The format of `prevtxs` is as following:
 ```js
 {
   "txid" : "hash",                 // (string) the hex-encoded hash of the transaction
-  "fee" : "n.nnnnnnnn",            // (string) the transaction fee in counoshs
-  "sendingaddress" : "address",    // (string) the CounosH address of the sender
-  "referenceaddress" : "address",  // (string) a CounosH address used as reference (if any)
+  "fee" : "n.nnnnnnnn",            // (string) the transaction fee in bitcoins
+  "sendingaddress" : "address",    // (string) the Bitcoin address of the sender
+  "referenceaddress" : "address",  // (string) a Bitcoin address used as reference (if any)
   "ismine" : true|false,           // (boolean) whether the transaction involes an address in the wallet
   "version" : n,                   // (number) the transaction version
   "type_int" : n,                  // (number) the transaction type as number
@@ -2666,7 +2570,7 @@ $ counoscore-cli "counos_createrawtx_reference" \
     "0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff03aa0a00000
     00000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac5c0d0000000000004751210252ce4bdd3ce38b4ebbc5a
     6e1343608230da508ff12d23d85b58c964204c4cef3210294cc195fc096f87d0f813a337ae7e5f961b1c8a18f1f8604a909b3a51
-    21f065b52aeaa0a000000000000190014d225141d95166c90172443893951321977cb499d00000000" \
+    21f065b52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000" \
     "1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB" \
     0.005
 ```
@@ -2776,36 +2680,7 @@ $ counoscore-cli "counos_createpayload_sendall" 2
 
 ---
 
-<<<<<<< .mine
-### counos_createpayload_dexsell
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-### omni_createpayload_sendtomany
+### counos_createpayload_sendtomany
 
 Create the payload for a send-to-many transaction.
 
@@ -2826,23 +2701,22 @@ Note: if the server is not synchronized, amounts are considered as divisible, ev
 **Example:**
 
 ```bash
-$ omnicore-cli "omni_createpayload_sendtomany" 1 '[{"output": 2, "amount": "10.5"}, {"output": 3, "amount": "0.5"}, {"output": 5, "amount": "15.0"}]'
+$ counoscore-cli "counos_createpayload_sendtomany" 1 '[{"output": 2, "amount": "10.5"}, {"output": 3, "amount": "0.5"}, {"output": 5, "amount": "15.0"}]'
 ```
 
 ---
 
-### omni_createpayload_dexsell
->>>>>>> .theirs
+### counos_createpayload_dexsell
 
-Create a payload to place, update or cancel a sell offer on the traditional distributed COUNOS/CCH exchange.
+Create a payload to place, update or cancel a sell offer on the traditional distributed OMNI/BTC exchange.
 
 **Arguments:**
 
 | Name                | Type    | Presence | Description                                                                                  |
 |---------------------|---------|----------|----------------------------------------------------------------------------------------------|
-| `propertyidforsale` | number  | required | the identifier of the tokens to list for sale (must be 1 for COUN or 2 for TCOUN)              |
+| `propertyidforsale` | number  | required | the identifier of the tokens to list for sale (must be 1 for OMN or 2 for TOMN)              |
 | `amountforsale`     | string  | required | the amount of tokens to list for sale                                                        |
-| `amountdesired`     | string  | required | the amount of counoshs desired                                                               |
+| `amountdesired`     | string  | required | the amount of bitcoins desired                                                               |
 | `paymentwindow`     | number  | required | a time limit in blocks a buyer has to pay following a successful accepting order             |
 | `minacceptfee`      | string  | required | a minimum mining fee a buyer has to pay to accept the offer                                  |
 | `action`            | number  | required | the action to take (1 for new offers, 2 to update\", 3 to cancel)                            |
@@ -2939,7 +2813,7 @@ Creates the payload for a new tokens issuance with fixed supply.
 **Example:**
 
 ```bash
-$ counoscore-cli "counos_createpayload_issuancefixed" 2 1 0 "Companies" "CounosH Mining" "Quantum Miner" "" "" "1000000"
+$ counoscore-cli "counos_createpayload_issuancefixed" 2 1 0 "Companies" "Bitcoin Mining" "Quantum Miner" "" "" "1000000"
 ```
 
 ---
@@ -2974,7 +2848,7 @@ Creates the payload for a new tokens issuance with crowdsale.
 **Example:**
 
 ```bash
-$ counoscore-cli "counos_createpayload_issuancecrowdsale" 2 1 0 "Companies" "CounosH Mining" "Quantum Miner" "" "" 2 "100" 1483228800 30 2
+$ counoscore-cli "counos_createpayload_issuancecrowdsale" 2 1 0 "Companies" "Bitcoin Mining" "Quantum Miner" "" "" 2 "100" 1483228800 30 2
 ```
 
 ---
@@ -3004,7 +2878,7 @@ Creates the payload for a new tokens issuance with manageable supply.
 **Example:**
 
 ```bash
-$ counoscore-cli "counos_createpayload_issuancemanaged" 2 1 0 "Companies" "CounosH Mining" "Quantum Miner" "" ""
+$ counoscore-cli "counos_createpayload_issuancemanaged" 2 1 0 "Companies" "Bitcoin Mining" "Quantum Miner" "" ""
 ```
 
 ---
@@ -3040,11 +2914,11 @@ Note: if the server is not synchronized, amounts are considered as divisible, ev
 
 **Arguments:**
 
-| Name         | Type    | Presence | Description                                                           |
-|--------------|---------|----------|-----------------------------------------------------------------------|
-| `propertyid` | number  | required | the identifier of the tokens to grant                                 |
-| `amount`     | string  | required | the amount of tokens to create                                        |
-| `grantdata`  | string  | optional | NFT only: data set in all NFTs created in this grant (default: empty) |
+| Name                | Type    | Presence | Description                                                                                  |
+|---------------------|---------|----------|----------------------------------------------------------------------------------------------|
+| `propertyid`        | number  | required | the identifier of the tokens to grant                                                        |
+| `amount`            | string  | required | the amount of tokens to create                                                               |
+| `grantdata`         | string  | optional | NFT only: data set in all NFTs created in this grant (default: empty)                        |
 
 **Result:**
 ```js
@@ -3312,9 +3186,16 @@ Note: if the server is not synchronized, amounts are considered as divisible, ev
 $ counoscore-cli "counos_createpayload_unfreeze" "3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs" 31 "100"
 ```
 
+
+
+
+
+
+
+
 ---
 
-### omni_createpayload_adddelegate
+### counos_createpayload_adddelegate
 
 Creates the payload to add a delegate for the issuance of tokens of a managed property.
 
@@ -3332,12 +3213,12 @@ Creates the payload to add a delegate for the issuance of tokens of a managed pr
 **Example:**
 
 ```bash
-$ omnicore-cli "omni_createpayload_adddelegate" 21
+$ counoscore-cli "counos_createpayload_adddelegate" 21
 ```
 
 ---
 
-### omni_createpayload_removedelegate
+### counos_createpayload_removedelegate
 
 Creates the payload to remove a delegate for the issuance of tokens of a managed property.
 
@@ -3357,7 +3238,6 @@ Creates the payload to remove a delegate for the issuance of tokens of a managed
 ```bash
 $ counoscore-cli "counos_createpayload_removedelegate" 21
 
-
 ---
 
 ### counos_createpayload_anydata
@@ -3366,7 +3246,7 @@ Creates the payload to embed arbitrary data.
 
 **Arguments:**
 
-| Name                | Type    | Presence | Description                                                                                                 |
+| Name                | Type    | Presence | Description                                                                                  |
 |---------------------|---------|----------|----------------------------------------------------------------------------------------------|
 | `data`              | string  | required | the hex-encoded data                                                                         |
 
@@ -3384,6 +3264,7 @@ $ counoscore-cli "counos_createpayload_anydata" "646578782032303230"
 ---
 
 ### counos_createpayload_sendnonfungible
+
 Create the payload for a non-fungible send transaction.
 
 **Arguments:**
@@ -3393,17 +3274,24 @@ Create the payload for a non-fungible send transaction.
 | `propertyid`        | number  | required | the identifier of the tokens to send                                                         |
 | `tokenstart`        | number  | required | the first token in the range to send                                                         |
 | `tokenend`          | number  | required | the last token in the range to send                                                          |
+
 **Result:**
 ```js
 "payload"  // (string) the hex-encoded payload
 ```
+
 **Example:**
+
 ```bash
 $ counoscore-cli "counos_createpayload_sendnonfungible" 70 1 1000
 ```
+
 ---
+
 ### counos_createpayload_setnonfungibledata
+
 Create the payload for a non-fungible token set data transaction.
+
 **Arguments:**
 
 | Name                | Type    | Presence | Description                                                                                  |
@@ -3413,14 +3301,18 @@ Create the payload for a non-fungible token set data transaction.
 | `tokenend`          | number  | required | the last token in the range to set data on                                                   |
 | `issuer`            | boolean | required | if true issuer data set, otherwise holder data set                                           |
 | `data`              | string  | required | data set as in either issuer or holder fields                                                |
+
 **Result:**
 ```js
 "payload"  // (string) the hex-encoded payload
 ```
+
 **Example:**
+
 ```bash
 $ counoscore-cli "counos_createpayload_setnonfungibledata" 70 50 60 true "string data"
 ```
+
 ---
 
 ## Fee system
