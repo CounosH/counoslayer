@@ -228,6 +228,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "counos_sendsto", 1, "propertyid" },
     { "counos_sendsto", 4, "distributionproperty" },
     { "counos_sendall", 2, "ecosystem" },
+    { "counos_sendtomany", 1, "propertyid" },
+    { "counos_sendtomany", 2, "mapping" },
     { "counos_sendtrade", 1, "propertyidforsale" },
     { "counos_sendtrade", 3, "propertiddesired" },
     { "counos_sendcanceltradesbyprice", 1, "propertyidforsale" },
@@ -296,6 +298,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     /* Counos Core - payload creation */
     { "counos_createpayload_simplesend", 0, "propertyid" },
     { "counos_createpayload_sendall", 0, "ecosystem" },
+    { "counos_createpayload_sendtomany", 0, "propertyid" },
+    { "counos_createpayload_sendtomany", 1, "mapping" },
     { "counos_createpayload_dexsell", 0, "propertyidforsale" },
     { "counos_createpayload_dexsell", 3, "paymentwindow" },
     { "counos_createpayload_dexsell", 5, "action" },
