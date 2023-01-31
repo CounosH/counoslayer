@@ -582,22 +582,23 @@ void SetupServerArgs()
 
     // TODO: append help messages somewhere else
     // TODO: translation
-    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Counos transactions (default: 0)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counostxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosseedblockfilter", "Set skipping of blocks without Counos transactions during initial scan (default: 1)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counoslogfile", "The path of the log file (default: counoscore.log)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosdebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-autocommit", "Enable or disable broadcasting of transactions, when creating transactions (default: 1)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-overrideforcedshutdown", "Overwrite shutdown, triggered by an alert (default: 0)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosalertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosalertignoresender", "Ignore senders of alerts", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosactivationignoresender", "Ignore senders of activations", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-disclaimer", "Explicitly show QT disclaimer on startup (default: 0)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosuiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosshowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::COUNOS);
-    gArgs.AddArg("-counosuseragent", "Show Counos and Counos version in user agent string (default: 1)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Counos transactions (default: 0)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counostxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosseedblockfilter", "Set skipping of blocks without Counos transactions during initial scan (default: 1)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosskipstoringstate", "Don't store state during initial synchronization until block n (faster, but may have to restart syncing after a shutdown)(default: 770000)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counoslogfile", "The path of the log file (default: counoscore.log)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosdebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-autocommit", "Enable or disable broadcasting of transactions, when creating transactions (default: 1)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-overrideforcedshutdown", "Overwrite shutdown, triggered by an alert (default: 0)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosalertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosalertignoresender", "Ignore senders of alerts", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosactivationignoresender", "Ignore senders of activations", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-disclaimer", "Explicitly show QT disclaimer on startup (default: 0)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosuiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosshowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-counosuseragent", "Show Counos and Counos version in user agent string (default: 1)", false, OptionsCategory::OMNI);
 
 
 #if HAVE_DECL_DAEMON
