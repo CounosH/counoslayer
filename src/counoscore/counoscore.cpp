@@ -1,6 +1,6 @@
 /**
  * @file counoscore.cpp
- *
+ * cv0.1
  * This file contains the core of Counos Core.
  */
 
