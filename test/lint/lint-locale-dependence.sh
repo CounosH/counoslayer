@@ -1,32 +1,17 @@
 #!/usr/bin/env bash
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 export LC_ALL=C
 KNOWN_VIOLATIONS=(
-    "src/bitcoin-tx.cpp.*stoul"
-    "src/bitcoin-tx.cpp.*trim_right"
+    "src/counosh-tx.cpp.*stoul"
+    "src/counosh-tx.cpp.*trim_right"
     "src/dbwrapper.cpp.*stoul"
     "src/dbwrapper.cpp:.*vsnprintf"
     "src/httprpc.cpp.*trim"
     "src/init.cpp:.*atoi"
-    "src/init.cpp:.*fprintf"
-    "src/omnicore/dbstolist.cpp:.*atoi"
-    "src/omnicore/dbtradelist.cpp:.*atoi"
-    "src/omnicore/dbtxlist.cpp:.*atoi"
-    "src/omnicore/dbtxlist.cpp:.*to_string"
-    "src/omnicore/dex.cpp:.*atoi"
-    "src/omnicore/log.cpp:.*fprintf"
-    "src/omnicore/parsing.cpp:.*to_upper"
-    "src/omnicore/persistence.cpp:.*atoi"
-    "src/omnicore/rpc.cpp:.*atoi"
-    "src/omnicore/sp.cpp:.*fprintf"
-    "src/omnicore/walletfetchtxs.cpp:.*atoi"
-    "src/qt/lookupspdialog.cpp:.*tolower"
     "src/qt/rpcconsole.cpp:.*atoi"
-    "src/qt/tradehistorydialog.cpp:.*atoi"
-    "src/qt/txhistorydialog.cpp:.*atoi"
     "src/rest.cpp:.*strtol"
     "src/test/dbwrapper_tests.cpp:.*snprintf"
     "src/test/fuzz/locale.cpp"

@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 The Bitcoin Core developers
+// Copyright (c) 2018-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -32,7 +32,7 @@
 #include <warnings.h>
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/counosh-config.h>
 #endif
 
 #include <univalue.h>
@@ -319,21 +319,21 @@ public:
                     /* verification progress is unused when a header was received */ 0);
             }));
     }
-    std::unique_ptr<Handler> handleOmniStateChanged(OmniStateChangedFn fn) override
+    std::unique_ptr<Handler> handleCounosStateChanged(CounosStateChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniStateChanged_connect(fn));
+        return MakeHandler(::uiInterface.CounosStateChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniPendingChanged(OmniPendingChangedFn fn) override
+    std::unique_ptr<Handler> handleCounosPendingChanged(CounosPendingChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniPendingChanged_connect(fn));
+        return MakeHandler(::uiInterface.CounosPendingChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniBalanceChanged(OmniBalanceChangedFn fn) override
+    std::unique_ptr<Handler> handleCounosBalanceChanged(CounosBalanceChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniBalanceChanged_connect(fn));
+        return MakeHandler(::uiInterface.CounosBalanceChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniStateInvalidated(OmniStateInvalidatedFn fn) override
+    std::unique_ptr<Handler> handleCounosStateInvalidated(CounosStateInvalidatedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniStateInvalidated_connect(fn));
+        return MakeHandler(::uiInterface.CounosStateInvalidated_connect(fn));
     }
     NodeContext* context() override { return &m_context; }
     NodeContext m_context;

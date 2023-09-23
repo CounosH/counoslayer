@@ -1,11 +1,11 @@
-# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-bin_PROGRAMS += qt/omnicore-qt
-EXTRA_LIBRARIES += qt/libbitcoinqt.a
+bin_PROGRAMS += qt/counosh-qt
+EXTRA_LIBRARIES += qt/libcounoshqt.a
 
-# bitcoin qt core #
+# counosh qt core #
 include Makefile.qt_locale.include
 
 QT_FORMS_UI = \
@@ -43,11 +43,11 @@ QT_MOC_CPP = \
   qt/moc_askpassphrasedialog.cpp \
   qt/moc_createwalletdialog.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_bitcoinaddressvalidator.cpp \
-  qt/moc_bitcoinamountfield.cpp \
-  qt/moc_bitcoin.cpp \
-  qt/moc_bitcoingui.cpp \
-  qt/moc_bitcoinunits.cpp \
+  qt/moc_counoshaddressvalidator.cpp \
+  qt/moc_counoshamountfield.cpp \
+  qt/moc_counosh.cpp \
+  qt/moc_counoshgui.cpp \
+  qt/moc_counoshunits.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
   qt/moc_coincontroltreewidget.cpp \
@@ -97,32 +97,32 @@ QT_MOC_CPP = \
   qt/moc_metadexcanceldialog.cpp \
   qt/moc_tradehistorydialog.cpp
 
-BITCOIN_MM = \
+COUNOSH_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm \
   qt/macos_appnap.mm
 
 QT_MOC = \
-  qt/bitcoinamountfield.moc \
+  qt/counoshamountfield.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_bitcoin.cpp
-QT_QRC = qt/bitcoin.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_bitcoin_locale.cpp
-QT_QRC_LOCALE = qt/bitcoin_locale.qrc
+QT_QRC_CPP = qt/qrc_counosh.cpp
+QT_QRC = qt/counosh.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_counosh_locale.cpp
+QT_QRC_LOCALE = qt/counosh_locale.qrc
 
-BITCOIN_QT_H = \
+COUNOSH_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
   qt/bantablemodel.h \
-  qt/bitcoinaddressvalidator.h \
-  qt/bitcoinamountfield.h \
-  qt/bitcoin.h \
-  qt/bitcoingui.h \
-  qt/bitcoinunits.h \
+  qt/counoshaddressvalidator.h \
+  qt/counoshamountfield.h \
+  qt/counosh.h \
+  qt/counoshgui.h \
+  qt/counoshunits.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
   qt/coincontroltreewidget.h \
@@ -176,20 +176,19 @@ BITCOIN_QT_H = \
   qt/lookuptxdialog.h \
   qt/txhistorydialog.h \
   qt/balancesdialog.h \
-  qt/omnicore_init.h \
+  qt/counoscore_init.h \
   qt/metadexdialog.h \
   qt/metadexcanceldialog.h \
   qt/tradehistorydialog.h \
   qt/sendmpdialog.h \
-  qt/omnicore_qtutils.h
+  qt/counoscore_qtutils.h
 
 RES_ICONS = \
   qt/res/icons/add.png \
   qt/res/icons/address-book.png \
-  qt/res/icons/balances.png \
-  qt/res/icons/bitcoin.ico \
-  qt/res/icons/bitcoin_testnet.ico \
-  qt/res/icons/bitcoin.png \
+  qt/res/icons/counosh.ico \
+  qt/res/icons/counosh_testnet.ico \
+  qt/res/icons/counosh.png \
   qt/res/icons/chevron.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
@@ -222,11 +221,11 @@ RES_ICONS = \
   qt/res/icons/meta_partcancelled.png \
   qt/res/icons/meta_partfilled.png \
   qt/res/icons/meta_pending.png \
-  qt/res/icons/omni_in.png \
-  qt/res/icons/omni_inout.png \
-  qt/res/icons/omni_invalid.png \
-  qt/res/icons/omni_out.png \
-  qt/res/icons/omni_hourglass.png \
+  qt/res/icons/counos_in.png \
+  qt/res/icons/counos_inout.png \
+  qt/res/icons/counos_invalid.png \
+  qt/res/icons/counos_out.png \
+  qt/res/icons/counos_hourglass.png \
   qt/res/icons/network_disabled.png \
   qt/res/icons/overview.png \
   qt/res/icons/proxy.png \
@@ -245,13 +244,13 @@ RES_ICONS = \
   qt/res/icons/tx_mined.png \
   qt/res/icons/warning.png
 
-BITCOIN_QT_BASE_CPP = \
+COUNOSH_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/bitcoin.cpp \
-  qt/bitcoinaddressvalidator.cpp \
-  qt/bitcoinamountfield.cpp \
-  qt/bitcoingui.cpp \
-  qt/bitcoinunits.cpp \
+  qt/counosh.cpp \
+  qt/counoshaddressvalidator.cpp \
+  qt/counoshamountfield.cpp \
+  qt/counoshgui.cpp \
+  qt/counoshunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
@@ -269,12 +268,12 @@ BITCOIN_QT_BASE_CPP = \
   qt/splashscreen.cpp \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp \
-  qt/omnicore_init.cpp \
-  qt/omnicore_qtutils.cpp
+  qt/counoscore_init.cpp \
+  qt/counoscore_qtutils.cpp
 
-BITCOIN_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
+COUNOSH_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-BITCOIN_QT_WALLET_CPP = \
+COUNOSH_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
@@ -313,32 +312,34 @@ BITCOIN_QT_WALLET_CPP = \
   qt/metadexcanceldialog.cpp \
   qt/tradehistorydialog.cpp
 
-BITCOIN_QT_CPP = $(BITCOIN_QT_BASE_CPP)
+COUNOSH_QT_CPP = $(COUNOSH_QT_BASE_CPP)
 if TARGET_WINDOWS
-BITCOIN_QT_CPP += $(BITCOIN_QT_WINDOWS_CPP)
+COUNOSH_QT_CPP += $(COUNOSH_QT_WINDOWS_CPP)
 endif
 if ENABLE_WALLET
-BITCOIN_QT_CPP += $(BITCOIN_QT_WALLET_CPP)
+COUNOSH_QT_CPP += $(COUNOSH_QT_WALLET_CPP)
 endif # ENABLE_WALLET
+
+RES_IMAGES =
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-BITCOIN_RC = omnicore/res/omnicore-qt-res.rc
+COUNOSH_RC = qt/res/counosh-qt-res.rc
 
-BITCOIN_QT_INCLUDES = -DQT_NO_KEYWORDS
+COUNOSH_QT_INCLUDES = -DQT_NO_KEYWORDS
 
-qt_libbitcoinqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+qt_libcounoshqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(COUNOSH_INCLUDES) $(COUNOSH_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(QR_CFLAGS)
-qt_libbitcoinqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
-qt_libbitcoinqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
+qt_libcounoshqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_libcounoshqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libbitcoinqt_a_SOURCES = $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(QT_FORMS_UI) \
-  $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(RES_ICONS) $(RES_MOVIES)
+qt_libcounoshqt_a_SOURCES = $(COUNOSH_QT_CPP) $(COUNOSH_QT_H) $(QT_FORMS_UI) \
+  $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 if TARGET_DARWIN
-  qt_libbitcoinqt_a_SOURCES += $(BITCOIN_MM)
+  qt_libcounoshqt_a_SOURCES += $(COUNOSH_MM)
 endif
 
-nodist_qt_libbitcoinqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
+nodist_qt_libcounoshqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
 
 # forms/foo.h -> forms/ui_foo.h
 QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:.ui=.h))))
@@ -346,63 +347,63 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libbitcoinqt_a_OBJECTS) $(qt_omnicore_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libcounoshqt_a_OBJECTS) $(qt_counosh_qt_OBJECTS) : | $(QT_MOC)
 
-# bitcoin-qt binary #
-qt_omnicore_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+# counosh-qt binary #
+qt_counosh_qt_CPPFLAGS = $(AM_CPPFLAGS) $(COUNOSH_INCLUDES) $(COUNOSH_QT_INCLUDES) \
   $(QT_INCLUDES) $(QR_CFLAGS)
-qt_omnicore_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_counosh_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_omnicore_qt_SOURCES = qt/main.cpp
+qt_counosh_qt_SOURCES = qt/main.cpp
 if TARGET_WINDOWS
-  qt_omnicore_qt_SOURCES += $(BITCOIN_RC)
+  qt_counosh_qt_SOURCES += $(COUNOSH_RC)
 endif
-qt_omnicore_qt_LDADD = qt/libbitcoinqt.a $(LIBBITCOIN_SERVER)
+qt_counosh_qt_LDADD = qt/libcounoshqt.a $(LIBCOUNOSH_SERVER)
 if ENABLE_WALLET
-qt_omnicore_qt_LDADD += $(LIBBITCOIN_UTIL) $(LIBBITCOIN_WALLET)
+qt_counosh_qt_LDADD += $(LIBCOUNOSH_UTIL) $(LIBCOUNOSH_WALLET)
 endif
 if ENABLE_ZMQ
-qt_omnicore_qt_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+qt_counosh_qt_LDADD += $(LIBCOUNOSH_ZMQ) $(ZMQ_LIBS)
 endif
-qt_omnicore_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+qt_counosh_qt_LDADD += $(LIBCOUNOSH_CLI) $(LIBCOUNOSH_COMMON) $(LIBCOUNOSH_UTIL) $(LIBCOUNOSH_CONSENSUS) $(LIBCOUNOSH_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-qt_omnicore_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_omnicore_qt_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS) --tag CXX
+qt_counosh_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_counosh_qt_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS) --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/bitcoinstrings.cpp: FORCE
+$(srcdir)/qt/counoshstrings.cpp: FORCE
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
-	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py $(libbitcoin_server_a_SOURCES) $(libbitcoin_wallet_a_SOURCES) $(libbitcoin_common_a_SOURCES) $(libbitcoin_zmq_a_SOURCES) $(libbitcoin_consensus_a_SOURCES) $(libbitcoin_util_a_SOURCES)
+	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py $(libcounosh_server_a_SOURCES) $(libcounosh_wallet_a_SOURCES) $(libcounosh_common_a_SOURCES) $(libcounosh_zmq_a_SOURCES) $(libcounosh_consensus_a_SOURCES) $(libcounosh_util_a_SOURCES)
 
-translate: $(srcdir)/qt/bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_BASE_CPP) qt/bitcoin.cpp $(BITCOIN_QT_WINDOWS_CPP) $(BITCOIN_QT_WALLET_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: $(srcdir)/qt/counoshstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(COUNOSH_QT_BASE_CPP) qt/counosh.cpp $(COUNOSH_QT_WINDOWS_CPP) $(COUNOSH_QT_WALLET_CPP) $(COUNOSH_QT_H) $(COUNOSH_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/bitcoin_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/counosh_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name counosh_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
-$(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_MOVIES)
+$(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name counosh $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
-CLEAN_QT = $(nodist_qt_libbitcoinqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno qt/temp_bitcoin_locale.qrc
+CLEAN_QT = $(nodist_qt_libcounoshqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno qt/temp_counosh_locale.qrc
 
 CLEANFILES += $(CLEAN_QT)
 
-omnicore_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libbitcoinqt_a_OBJECTS) $(qt_omnicore_qt_OBJECTS) qt/omnicore-qt$(EXEEXT) $(LIBBITCOINQT)
+counosh_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libcounoshqt_a_OBJECTS) $(qt_counosh_qt_OBJECTS) qt/counosh-qt$(EXEEXT) $(LIBCOUNOSHQT)
 
-omnicore_qt : qt/omnicore-qt$(EXEEXT)
+counosh_qt : qt/counosh-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)

@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/counosh-config.h>
 #endif
 
 #include <qt/splashscreen.h>
@@ -18,7 +18,7 @@
 #include <util/system.h>
 #include <util/translation.h>
 
-#include <omnicore/version.h>
+#include <counoscore/version.h>
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -42,9 +42,9 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
 
     // define text to place
     QString titleText       = PACKAGE_NAME;
-    QString versionText     = QString("%1").arg(QString::fromStdString(OmniCoreVersion()));
+    QString versionText     = QString("%1").arg(QString::fromStdString(CounosCoreVersion()));
     QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2009, COPYRIGHT_YEAR)).c_str());
-            copyrightText  += QString::fromUtf8("\n\xc2\xA9 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Omni Core developers"));
+            copyrightText  += QString::fromUtf8("\n\xc2\xA9 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Counos Core developers"));
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();
@@ -66,7 +66,7 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     QRect rGradient(QPoint(0,0), splashSize);
     pixPaint.fillRect(rGradient, gradient);
 
-    // draw the bitcoin icon, expected size of PNG: 1024x1024
+    // draw the counosh icon, expected size of PNG: 1024x1024
     QRect rectIcon(QPoint(-150,-122), QSize(430,430));
 
     const QSize requiredSize(1024,1024);

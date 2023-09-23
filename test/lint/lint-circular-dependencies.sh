@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
@@ -13,7 +13,7 @@ EXPECTED_CIRCULAR_DEPENDENCIES=(
     "index/txindex -> validation -> index/txindex"
     "policy/fees -> txmempool -> policy/fees"
     "qt/addresstablemodel -> qt/walletmodel -> qt/addresstablemodel"
-    "qt/bitcoingui -> qt/walletframe -> qt/bitcoingui"
+    "qt/counoshgui -> qt/walletframe -> qt/counoshgui"
     "qt/recentrequeststablemodel -> qt/walletmodel -> qt/recentrequeststablemodel"
     "qt/sendcoinsdialog -> qt/walletmodel -> qt/sendcoinsdialog"
     "qt/transactiontablemodel -> qt/walletmodel -> qt/transactiontablemodel"
@@ -21,34 +21,6 @@ EXPECTED_CIRCULAR_DEPENDENCIES=(
     "wallet/fees -> wallet/wallet -> wallet/fees"
     "wallet/wallet -> wallet/walletdb -> wallet/wallet"
     "policy/fees -> txmempool -> validation -> policy/fees"
-    "omnicore/dbspinfo -> omnicore/omnicore -> omnicore/dbspinfo"
-    "omnicore/dbtradelist -> omnicore/mdex -> omnicore/dbtradelist"
-    "omnicore/dbtxlist -> omnicore/dex -> omnicore/dbtxlist"
-    "omnicore/dbtxlist -> omnicore/omnicore -> omnicore/dbtxlist"
-    "omnicore/dbtxlist -> omnicore/tx -> omnicore/dbtxlist"
-    "omnicore/dex -> omnicore/omnicore -> omnicore/dex"
-    "omnicore/dex -> omnicore/tx -> omnicore/dex"
-    "omnicore/mdex -> omnicore/tx -> omnicore/mdex"
-    "omnicore/omnicore -> omnicore/rules -> omnicore/omnicore"
-    "omnicore/omnicore -> omnicore/sp -> omnicore/omnicore"
-    "omnicore/omnicore -> omnicore/tally -> omnicore/omnicore"
-    "omnicore/omnicore -> omnicore/tx -> omnicore/omnicore"
-    "omnicore/omnicore -> omnicore/walletcache -> omnicore/omnicore"
-    "omnicore/omnicore -> omnicore/walletutils -> omnicore/omnicore"
-    "omnicore/consensushash -> omnicore/dbspinfo -> omnicore/omnicore -> omnicore/consensushash"
-    "omnicore/consensushash -> omnicore/dex -> omnicore/rules -> omnicore/consensushash"
-    "omnicore/dbfees -> omnicore/sto -> omnicore/omnicore -> omnicore/dbfees"
-    "omnicore/dbspinfo -> omnicore/omnicore -> omnicore/sp -> omnicore/dbspinfo"
-    "omnicore/dbspinfo -> omnicore/omnicore -> omnicore/tx -> omnicore/dbspinfo"
-    "omnicore/dbtradelist -> omnicore/mdex -> omnicore/tx -> omnicore/dbtradelist"
-    "omnicore/dbtransaction -> omnicore/errors -> omnicore/omnicore -> omnicore/dbtransaction"
-    "omnicore/dbtxlist -> omnicore/omnicore -> omnicore/mdex -> omnicore/dbtxlist"
-    "omnicore/dbtxlist -> omnicore/dex -> omnicore/rules -> omnicore/dbtxlist"
-    "omnicore/dex -> omnicore/omnicore -> omnicore/persistence -> omnicore/dex"
-    "omnicore/omnicore -> omnicore/tx -> omnicore/sto -> omnicore/omnicore"
-    "init -> txmempool -> omnicore/omnicore -> init"
-    "omnicore/omnicore -> omnicore/pending -> txmempool -> omnicore/omnicore"
-    "txdb -> validation -> txdb"
 )
 
 EXIT_CODE=0

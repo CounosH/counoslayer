@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,6 +29,7 @@
 #endif // __linux__
 
 #include <algorithm>
+#include <cassert>
 #include <fcntl.h>
 #include <sched.h>
 #include <sys/resource.h>
@@ -71,7 +72,7 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const BITCOIN_CONF_FILENAME = "bitcoin.conf";
+const char * const COUNOSH_CONF_FILENAME = "counosh.conf";
 
 ArgsManager gArgs;
 
@@ -215,7 +216,7 @@ static util::SettingsValue InterpretOption(std::string& section, std::string& ke
  *
  * TODO: Add more meaningful error checks here in the future
  * See "here's how the flags are meant to behave" in
- * https://github.com/bitcoin/bitcoin/pull/16097#issuecomment-514627823
+ * https://github.com/counosh/counosh/pull/16097#issuecomment-514627823
  */
 static bool CheckValid(const std::string& key, const util::SettingsValue& val, unsigned int flags, std::string& error)
 {
@@ -288,7 +289,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         if (key.substr(0, 5) == "-psn_") continue;
 #endif
 
-        if (key == "-") break; //bitcoin-tx using stdin
+        if (key == "-") break; //counosh-tx using stdin
         std::string val;
         size_t is_index = key.find('=');
         if (is_index != std::string::npos) {
@@ -482,8 +483,8 @@ std::string ArgsManager::GetHelpMessage() const
             case OptionsCategory::REGISTER_COMMANDS:
                 usage += HelpMessageGroup("Register Commands:");
                 break;
-            case OptionsCategory::OMNI:
-                usage += HelpMessageGroup("Omni options:");
+            case OptionsCategory::COUNOS:
+                usage += HelpMessageGroup("Counos options:");
                 break;
             default:
                 break;
@@ -539,7 +540,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(nullptr, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "bitcoin";
+    const char* pszModule = "counosh";
 #endif
     if (pex)
         return strprintf(
@@ -558,13 +559,12 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Bitcoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Bitcoin
-    // Mac: ~/Library/Application Support/Bitcoin
-    // Unix: ~/.bitcoin
+    // Windows: C:\Users\Username\AppData\Roaming\CounosH
+    // macOS: ~/Library/Application Support/CounosH
+    // Unix-like: ~/.counosh
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Bitcoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "CounosH";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -573,14 +573,27 @@ fs::path GetDefaultDataDir()
     else
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
-    // Mac
-    return pathRet / "Library/Application Support/Bitcoin";
+    // macOS
+    return pathRet / "Library/Application Support/CounosH";
 #else
-    // Unix
-    return pathRet / ".bitcoin";
+    // Unix-like
+    return pathRet / ".counos";
 #endif
 #endif
 }
+
+namespace {
+fs::path StripRedundantLastElementsOfPath(const fs::path& path)
+{
+    auto result = path;
+    while (result.filename().string() == ".") {
+        result = result.parent_path();
+    }
+
+    assert(fs::equivalent(result, path));
+    return result;
+}
+} // namespace
 
 static fs::path g_blocks_path_cache_net_specific;
 static fs::path pathCached;
@@ -609,6 +622,7 @@ const fs::path &GetBlocksDir()
     path /= BaseParams().DataDir();
     path /= "blocks";
     fs::create_directories(path);
+    path = StripRedundantLastElementsOfPath(path);
     return path;
 }
 
@@ -639,6 +653,7 @@ const fs::path &GetDataDir(bool fNetSpecific)
         fs::create_directories(path / "wallets");
     }
 
+    path = StripRedundantLastElementsOfPath(path);
     return path;
 }
 
@@ -744,7 +759,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
         m_config_sections.clear();
     }
 
-    const std::string confPath = GetArg("-conf", BITCOIN_CONF_FILENAME);
+    const std::string confPath = GetArg("-conf", COUNOSH_CONF_FILENAME);
     fsbridge::ifstream stream(GetConfigFile(confPath));
 
     // ok to not have a config file
@@ -1133,9 +1148,9 @@ std::string CopyrightHolders(const std::string& strPrefix)
     const auto copyright_devs = strprintf(_(COPYRIGHT_HOLDERS).translated, COPYRIGHT_HOLDERS_SUBSTITUTION);
     std::string strCopyrightHolders = strPrefix + copyright_devs;
 
-    // Make sure Bitcoin Core copyright is not removed by accident
-    if (copyright_devs.find("Bitcoin Core") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Core developers";
+    // Make sure CounosH Core copyright is not removed by accident
+    if (copyright_devs.find("CounosH Core") == std::string::npos) {
+        strCopyrightHolders += "\n" + strPrefix + "The CounosH Core developers";
     }
     return strCopyrightHolders;
 }

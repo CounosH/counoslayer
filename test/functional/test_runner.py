@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Run regression test suite.
@@ -8,7 +8,7 @@ This module calls down into individual test cases via subprocess. It will
 forward all unrecognized arguments onto the individual test scripts.
 
 For a description of arguments recognized by test scripts, see
-`test/functional/test_framework/test_framework.py:BitcoinTestFramework.main`.
+`test/functional/test_framework/test_framework.py:CounosHTestFramework.main`.
 
 """
 
@@ -68,7 +68,7 @@ TEST_EXIT_SKIPPED = 77
 EXTENDED_SCRIPTS = [
     # These tests are not run by default.
     # Longest test should go first, to favor running tests in parallel
-    # 'feature_pruning.py', # pruning not compatible with Omni due to txindex requirement
+    'feature_pruning.py',
     'feature_dbcrash.py',
 ]
 
@@ -111,7 +111,7 @@ BASE_SCRIPTS = [
     'wallet_keypool_topup.py',
     'feature_fee_estimation.py',
     'interface_zmq.py',
-    'interface_bitcoin_cli.py',
+    'interface_counosh_cli.py',
     'mempool_resurrect.py',
     'wallet_txn_doublespend.py --mineblock',
     'tool_wallet.py',
@@ -224,17 +224,6 @@ BASE_SCRIPTS = [
     'feature_help.py',
     'feature_shutdown.py',
     'framework_test_script.py',
-    'omni_calculate_fee.py',
-    'omni_reorg.py',
-    'omni_clientexpiry.py',
-    'omni_metadexprices.py',
-    'omni_metadexphase3.py',
-    'omni_stov1.py',
-    'omni_deactivation.py',
-    'omni_freeze.py',
-    'omni_freedexspec.py',
-    'omni_dexversionsspec.py',
-    'omni_feecache.py',
     # Don't append tests at the end to avoid merge conflicts
     # Put them in a random line within the section that fits their approximate run-time
 ]
@@ -301,9 +290,9 @@ def main():
 
     logging.debug("Temporary test directory at %s" % tmpdir)
 
-    enable_bitcoind = config["components"].getboolean("ENABLE_BITCOIND")
+    enable_counoshd = config["components"].getboolean("ENABLE_COUNOSHD")
 
-    if not enable_bitcoind:
+    if not enable_counoshd:
         print("No functional tests to run.")
         print("Rerun ./configure with --with-daemon and then make")
         sys.exit(0)
@@ -384,11 +373,11 @@ def main():
 def run_tests(*, test_list, src_dir, build_dir, tmpdir, jobs=1, enable_coverage=False, args=None, combined_logs_len=0, failfast=False, use_term_control):
     args = args or []
 
-    # Warn if bitcoind is already running
-    # pidof might fail or return an empty string if bitcoind is not running
+    # Warn if counoshd is already running
+    # pidof might fail or return an empty string if counoshd is not running
     try:
-        if subprocess.check_output(["pidof", "omnicored"]) not in [b'']:
-            print("%sWARNING!%s There is already a omnicored process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
+        if subprocess.check_output(["pidof", "counoshd"]) not in [b'']:
+            print("%sWARNING!%s There is already a counoshd process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
     except (OSError, subprocess.SubprocessError):
         pass
 
@@ -620,7 +609,7 @@ class TestResult():
 def check_script_prefixes():
     """Check that test scripts start with one of the allowed name prefixes."""
 
-    good_prefixes_re = re.compile("^(example|feature|interface|mempool|mining|omni|p2p|rpc|wallet|tool|framework_test)_")
+    good_prefixes_re = re.compile("^(example|feature|interface|mempool|mining|p2p|rpc|wallet|tool|framework_test)_")
     bad_script_names = [script for script in ALL_SCRIPTS if good_prefixes_re.match(script) is None]
 
     if bad_script_names:
@@ -651,7 +640,7 @@ class RPCCoverage():
     Coverage calculation works by having each test script subprocess write
     coverage files into a particular directory. These files contain the RPC
     commands invoked during testing, as well as a complete listing of RPC
-    commands per `bitcoin-cli help` (`rpc_interface.txt`).
+    commands per `counosh-cli help` (`rpc_interface.txt`).
 
     After all tests complete, the commands run are combined and diff'd against
     the complete list to calculate uncovered RPC commands.

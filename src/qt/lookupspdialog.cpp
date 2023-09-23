@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,9 +7,9 @@
 
 #include <qt/guiutil.h>
 
-#include <omnicore/dbspinfo.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/sp.h>
+#include <counoscore/dbspinfo.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/sp.h>
 
 #include <base58.h>
 #include <key_io.h>
@@ -87,7 +87,7 @@ void LookupSPDialog::searchSP()
     catch(const boost::bad_lexical_cast &e) { }
     if (searchParamType == 1 && 0 >= searchPropertyId) searchParamType = 0; // we got a number but it's <=0
 
-    // next if not positive numerical, lets see if the string is a valid bitcoin address for issuer search
+    // next if not positive numerical, lets see if the string is a valid counosh address for issuer search
     if (searchParamType == 0)
     {
         CTxDestination address = DecodeDestination(searchText); // no null check on searchText required we've already checked it's not empty above

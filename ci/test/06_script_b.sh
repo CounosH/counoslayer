@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -31,7 +31,7 @@ fi
 
 if [ "$RUN_UNIT_TESTS_SEQUENTIAL" = "true" ]; then
   BEGIN_FOLD unit-tests-seq
-  DOCKER_EXEC LD_LIBRARY_PATH=$DEPENDS_DIR/$HOST/lib "${BASE_ROOT_DIR}/build/omnicore-*/src/test/test_omnicore" --catch_system_errors=no -l test_suite
+  DOCKER_EXEC LD_LIBRARY_PATH=$DEPENDS_DIR/$HOST/lib "${BASE_ROOT_DIR}/build/counosh-*/src/test/test_counosh" --catch_system_errors=no -l test_suite
   END_FOLD
 fi
 
@@ -46,10 +46,3 @@ if [ "$RUN_FUZZ_TESTS" = "true" ]; then
   DOCKER_EXEC test/fuzz/test_runner.py ${FUZZ_TESTS_CONFIG} -l DEBUG ${DIR_FUZZ_IN}
   END_FOLD
 fi
-
-if [ "$RUN_OMNIJ_TESTS" = "true" ]; then
-  BEGIN_FOLD omnij-tests
-  DOCKER_EXEC source $TRAVIS_BUILD_DIR/test/pull-tester/omnicore-rpc-tests.sh
-  END_FOLD
-fi
-

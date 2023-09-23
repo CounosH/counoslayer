@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,13 +26,13 @@ def setup():
         programs += ['apt-cacher-ng', 'lxc', 'debootstrap']
     subprocess.check_call(['sudo', 'apt-get', 'install', '-qq'] + programs)
     if not os.path.isdir('gitian.sigs'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/OmniLayer/gitian.sigs.git'])
-    if not os.path.isdir('bitcoin-detached-sigs'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/bitcoin-core/bitcoin-detached-sigs.git'])
+        subprocess.check_call(['git', 'clone', 'https://github.com/counosh-core/gitian.sigs.git'])
+    if not os.path.isdir('counosh-detached-sigs'):
+        subprocess.check_call(['git', 'clone', 'https://github.com/counosh-core/counosh-detached-sigs.git'])
     if not os.path.isdir('gitian-builder'):
         subprocess.check_call(['git', 'clone', 'https://github.com/devrandom/gitian-builder.git'])
-    if not os.path.isdir('omnicore'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/OmniLayer/omnicore.git'])
+    if not os.path.isdir('counosh'):
+        subprocess.check_call(['git', 'clone', 'https://github.com/counosh/counosh.git'])
     os.chdir('gitian-builder')
     make_image_prog = ['bin/make-base-vm', '--suite', 'bionic', '--arch', 'amd64']
     if args.docker:
@@ -49,34 +49,34 @@ def setup():
 def build():
     global args, workdir
 
-    os.makedirs('omnicore-binaries/' + args.version, exist_ok=True)
+    os.makedirs('counosh-binaries/' + args.version, exist_ok=True)
     print('\nBuilding Dependencies\n')
     os.chdir('gitian-builder')
     os.makedirs('inputs', exist_ok=True)
 
     subprocess.check_call(['wget', '-O', 'inputs/osslsigncode-2.0.tar.gz', 'https://github.com/mtrojnar/osslsigncode/archive/2.0.tar.gz'])
     subprocess.check_call(["echo '5a60e0a4b3e0b4d655317b2f12a810211c50242138322b16e7e01c6fbb89d92f inputs/osslsigncode-2.0.tar.gz' | sha256sum -c"], shell=True)
-    subprocess.check_call(['make', '-C', '../omnicore/depends', 'download', 'SOURCES_PATH=' + os.getcwd() + '/cache/common'])
+    subprocess.check_call(['make', '-C', '../counosh/depends', 'download', 'SOURCES_PATH=' + os.getcwd() + '/cache/common'])
 
     if args.linux:
         print('\nCompiling ' + args.version + ' Linux')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'omnicore='+args.commit, '--url', 'omnicore='+args.url, '../omnicore/contrib/gitian-descriptors/gitian-linux.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-linux', '--destination', '../gitian.sigs/', '../omnicore/contrib/gitian-descriptors/gitian-linux.yml'])
-        subprocess.check_call('mv build/out/omnicore-*.tar.gz build/out/src/omnicore-*.tar.gz ../omnicore-binaries/'+args.version, shell=True)
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'counosh='+args.commit, '--url', 'counosh='+args.url, '../counosh/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-linux', '--destination', '../gitian.sigs/', '../counosh/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call('mv build/out/counosh-*.tar.gz build/out/src/counosh-*.tar.gz ../counosh-binaries/'+args.version, shell=True)
 
     if args.windows:
         print('\nCompiling ' + args.version + ' Windows')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'omnicore='+args.commit, '--url', 'omnicore='+args.url, '../omnicore/contrib/gitian-descriptors/gitian-win.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-unsigned', '--destination', '../gitian.sigs/', '../omnicore/contrib/gitian-descriptors/gitian-win.yml'])
-        subprocess.check_call('mv build/out/omnicore-*-win-unsigned.tar.gz inputs/', shell=True)
-        subprocess.check_call('mv build/out/omnicore-*.zip build/out/omnicore-*.exe build/out/src/omnicore-*.tar.gz ../omnicore-binaries/'+args.version, shell=True)
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'counosh='+args.commit, '--url', 'counosh='+args.url, '../counosh/contrib/gitian-descriptors/gitian-win.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-unsigned', '--destination', '../gitian.sigs/', '../counosh/contrib/gitian-descriptors/gitian-win.yml'])
+        subprocess.check_call('mv build/out/counosh-*-win-unsigned.tar.gz inputs/', shell=True)
+        subprocess.check_call('mv build/out/counosh-*.zip build/out/counosh-*.exe build/out/src/counosh-*.tar.gz ../counosh-binaries/'+args.version, shell=True)
 
     if args.macos:
         print('\nCompiling ' + args.version + ' MacOS')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'omnicore='+args.commit, '--url', 'omnicore='+args.url, '../omnicore/contrib/gitian-descriptors/gitian-osx.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-unsigned', '--destination', '../gitian.sigs/', '../omnicore/contrib/gitian-descriptors/gitian-osx.yml'])
-        subprocess.check_call('mv build/out/omnicore-*-osx-unsigned.tar.gz inputs/', shell=True)
-        subprocess.check_call('mv build/out/omnicore-*.tar.gz build/out/omnicore-*.dmg build/out/src/omnicore-*.tar.gz ../omnicore-binaries/'+args.version, shell=True)
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'counosh='+args.commit, '--url', 'counosh='+args.url, '../counosh/contrib/gitian-descriptors/gitian-osx.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-unsigned', '--destination', '../gitian.sigs/', '../counosh/contrib/gitian-descriptors/gitian-osx.yml'])
+        subprocess.check_call('mv build/out/counosh-*-osx-unsigned.tar.gz inputs/', shell=True)
+        subprocess.check_call('mv build/out/counosh-*.tar.gz build/out/counosh-*.dmg build/out/src/counosh-*.tar.gz ../counosh-binaries/'+args.version, shell=True)
 
     os.chdir(workdir)
 
@@ -95,17 +95,17 @@ def sign():
 
     if args.windows:
         print('\nSigning ' + args.version + ' Windows')
-        subprocess.check_call('cp inputs/omnicore-' + args.version + '-win-unsigned.tar.gz inputs/omnicore-win-unsigned.tar.gz', shell=True)
-        subprocess.check_call(['bin/gbuild', '--skip-image', '--upgrade', '--commit', 'signature='+args.commit, '../omnicore/contrib/gitian-descriptors/gitian-win-signer.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-signed', '--destination', '../gitian.sigs/', '../omnicore/contrib/gitian-descriptors/gitian-win-signer.yml'])
-        subprocess.check_call('mv build/out/omnicore-*win64-setup.exe ../omnicore-binaries/'+args.version, shell=True)
+        subprocess.check_call('cp inputs/counosh-' + args.version + '-win-unsigned.tar.gz inputs/counosh-win-unsigned.tar.gz', shell=True)
+        subprocess.check_call(['bin/gbuild', '--skip-image', '--upgrade', '--commit', 'signature='+args.commit, '../counosh/contrib/gitian-descriptors/gitian-win-signer.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-signed', '--destination', '../gitian.sigs/', '../counosh/contrib/gitian-descriptors/gitian-win-signer.yml'])
+        subprocess.check_call('mv build/out/counosh-*win64-setup.exe ../counosh-binaries/'+args.version, shell=True)
 
     if args.macos:
         print('\nSigning ' + args.version + ' MacOS')
-        subprocess.check_call('cp inputs/omnicore-' + args.version + '-osx-unsigned.tar.gz inputs/omnicore-osx-unsigned.tar.gz', shell=True)
-        subprocess.check_call(['bin/gbuild', '--skip-image', '--upgrade', '--commit', 'signature='+args.commit, '../omnicore/contrib/gitian-descriptors/gitian-osx-signer.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-signed', '--destination', '../gitian.sigs/', '../omnicore/contrib/gitian-descriptors/gitian-osx-signer.yml'])
-        subprocess.check_call('mv build/out/omnicore-osx-signed.dmg ../omnicore-binaries/'+args.version+'/omnicore-'+args.version+'-osx.dmg', shell=True)
+        subprocess.check_call('cp inputs/counosh-' + args.version + '-osx-unsigned.tar.gz inputs/counosh-osx-unsigned.tar.gz', shell=True)
+        subprocess.check_call(['bin/gbuild', '--skip-image', '--upgrade', '--commit', 'signature='+args.commit, '../counosh/contrib/gitian-descriptors/gitian-osx-signer.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-signed', '--destination', '../gitian.sigs/', '../counosh/contrib/gitian-descriptors/gitian-osx-signer.yml'])
+        subprocess.check_call('mv build/out/counosh-osx-signed.dmg ../counosh-binaries/'+args.version+'/counosh-'+args.version+'-osx.dmg', shell=True)
 
     os.chdir(workdir)
 
@@ -123,27 +123,27 @@ def verify():
     os.chdir('gitian-builder')
 
     print('\nVerifying v'+args.version+' Linux\n')
-    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../omnicore/contrib/gitian-descriptors/gitian-linux.yml']):
+    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../counosh/contrib/gitian-descriptors/gitian-linux.yml']):
         print('Verifying v'+args.version+' Linux FAILED\n')
         rc = 1
 
     print('\nVerifying v'+args.version+' Windows\n')
-    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-unsigned', '../omnicore/contrib/gitian-descriptors/gitian-win.yml']):
+    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-unsigned', '../counosh/contrib/gitian-descriptors/gitian-win.yml']):
         print('Verifying v'+args.version+' Windows FAILED\n')
         rc = 1
 
     print('\nVerifying v'+args.version+' MacOS\n')
-    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-unsigned', '../omnicore/contrib/gitian-descriptors/gitian-osx.yml']):
+    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-unsigned', '../counosh/contrib/gitian-descriptors/gitian-osx.yml']):
         print('Verifying v'+args.version+' MacOS FAILED\n')
         rc = 1
 
     print('\nVerifying v'+args.version+' Signed Windows\n')
-    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-signed', '../omnicore/contrib/gitian-descriptors/gitian-win-signer.yml']):
+    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-signed', '../counosh/contrib/gitian-descriptors/gitian-win-signer.yml']):
         print('Verifying v'+args.version+' Signed Windows FAILED\n')
         rc = 1
 
     print('\nVerifying v'+args.version+' Signed MacOS\n')
-    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-signed', '../omnicore/contrib/gitian-descriptors/gitian-osx-signer.yml']):
+    if subprocess.call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-signed', '../counosh/contrib/gitian-descriptors/gitian-osx-signer.yml']):
         print('Verifying v'+args.version+' Signed MacOS FAILED\n')
         rc = 1
 
@@ -156,7 +156,7 @@ def main():
     parser = argparse.ArgumentParser(description='Script for running full Gitian builds.')
     parser.add_argument('-c', '--commit', action='store_true', dest='commit', help='Indicate that the version argument is for a commit or branch')
     parser.add_argument('-p', '--pull', action='store_true', dest='pull', help='Indicate that the version argument is the number of a github repository pull request')
-    parser.add_argument('-u', '--url', dest='url', default='https://github.com/OmniLayer/omnicore', help='Specify the URL of the repository. Default is %(default)s')
+    parser.add_argument('-u', '--url', dest='url', default='https://github.com/counosh/counosh', help='Specify the URL of the repository. Default is %(default)s')
     parser.add_argument('-v', '--verify', action='store_true', dest='verify', help='Verify the Gitian build')
     parser.add_argument('-b', '--build', action='store_true', dest='build', help='Do a Gitian build')
     parser.add_argument('-s', '--sign', action='store_true', dest='sign', help='Make signed binaries for Windows and MacOS')
@@ -230,10 +230,10 @@ def main():
         raise Exception('Cannot have both commit and pull')
     args.commit = ('' if args.commit else 'v') + args.version
 
-    os.chdir('omnicore')
+    os.chdir('counosh')
     if args.pull:
         subprocess.check_call(['git', 'fetch', args.url, 'refs/pull/'+args.version+'/merge'])
-        os.chdir('../gitian-builder/inputs/omnicore')
+        os.chdir('../gitian-builder/inputs/counosh')
         subprocess.check_call(['git', 'fetch', args.url, 'refs/pull/'+args.version+'/merge'])
         args.commit = subprocess.check_output(['git', 'show', '-s', '--format=%H', 'FETCH_HEAD'], universal_newlines=True, encoding='utf8').strip()
         args.version = 'pull-' + args.version

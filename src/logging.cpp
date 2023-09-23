@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,8 +34,8 @@ BCLog::Logger& LogInstance()
 
 bool fLogIPs = DEFAULT_LOGIPS;
 
-/** Flag to indicate, whether the Omni Core log file should be reopened. */
-std::atomic<bool> fReopenOmniCoreLog(false);
+/** Flag to indicate, whether the Counos Core log file should be reopened. */
+std::atomic<bool> fReopenCounosCoreLog(false);
 
 static int FileWriteStr(const std::string &str, FILE *fp)
 {

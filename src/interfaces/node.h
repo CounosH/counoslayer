@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2019 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_INTERFACES_NODE_H
-#define BITCOIN_INTERFACES_NODE_H
+#ifndef COUNOSH_INTERFACES_NODE_H
+#define COUNOSH_INTERFACES_NODE_H
 
 #include <amount.h>     // For CAmount
 #include <net.h>        // For CConnman::NumConnections
@@ -35,7 +35,7 @@ namespace interfaces {
 class Handler;
 class Wallet;
 
-//! Top-level interface for a bitcoin node (bitcoind process).
+//! Top-level interface for a counosh node (counoshd process).
 class Node
 {
 public:
@@ -259,17 +259,17 @@ public:
     //! Return pointer to internal chain interface, useful for testing.
     virtual NodeContext* context() { return nullptr; }
 
-    using OmniStateChangedFn = std::function<void()>;
-    virtual std::unique_ptr<Handler> handleOmniStateChanged(OmniStateChangedFn fn) = 0;
+    using CounosStateChangedFn = std::function<void()>;
+    virtual std::unique_ptr<Handler> handleCounosStateChanged(CounosStateChangedFn fn) = 0;
 
-    using OmniPendingChangedFn = std::function<void(bool pending)>;
-    virtual std::unique_ptr<Handler> handleOmniPendingChanged(OmniPendingChangedFn fn) = 0;
+    using CounosPendingChangedFn = std::function<void(bool pending)>;
+    virtual std::unique_ptr<Handler> handleCounosPendingChanged(CounosPendingChangedFn fn) = 0;
 
-    using OmniBalanceChangedFn = std::function<void()>;
-    virtual std::unique_ptr<Handler> handleOmniBalanceChanged(OmniBalanceChangedFn fn) = 0;
+    using CounosBalanceChangedFn = std::function<void()>;
+    virtual std::unique_ptr<Handler> handleCounosBalanceChanged(CounosBalanceChangedFn fn) = 0;
 
-    using OmniStateInvalidatedFn = std::function<void()>;
-    virtual std::unique_ptr<Handler> handleOmniStateInvalidated(OmniStateInvalidatedFn fn) = 0;
+    using CounosStateInvalidatedFn = std::function<void()>;
+    virtual std::unique_ptr<Handler> handleCounosStateInvalidated(CounosStateInvalidatedFn fn) = 0;
 };
 
 //! Return implementation of Node interface.
@@ -277,4 +277,4 @@ std::unique_ptr<Node> MakeNode();
 
 } // namespace interfaces
 
-#endif // BITCOIN_INTERFACES_NODE_H
+#endif // COUNOSH_INTERFACES_NODE_H

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,9 +8,9 @@
 #include <qt/walletmodel.h>
 #include <qt/guiutil.h>
 
-#include <omnicore/omnicore.h>
-#include <omnicore/sp.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/sp.h>
+#include <counoscore/walletutils.h>
 
 #include <base58.h>
 #include <key_io.h>
@@ -36,7 +36,7 @@
 #include <QWidget>
 
 #if defined(HAVE_CONFIG_H)
-#include <bitcoin-config.h> /* for USE_QRCODE */
+#include <counosh-config.h> /* for USE_QRCODE */
 #endif
 
 #ifdef USE_QRCODE
@@ -151,7 +151,7 @@ void LookupAddressDialog::searchAddress()
     // first let's check if we have a searchText, if not do nothing
     if (searchText.empty()) return;
 
-    // lets see if the string is a valid bitcoin address
+    // lets see if the string is a valid counosh address
     CTxDestination address = DecodeDestination(searchText); // no null check on searchText required we've already checked it's not empty above
     if (IsValidDestination(address)) //do what?
     {
@@ -160,7 +160,7 @@ void LookupAddressDialog::searchAddress()
         if ((searchText.substr(0,1) == "1") || (searchText.substr(0,1) == "m") || (searchText.substr(0,1) == "n")) ui->addressTypeLabel->setText("Public Key Hash");
         if ((searchText.substr(0,1) == "2") || (searchText.substr(0,1) == "3")) ui->addressTypeLabel->setText("Pay to Script Hash");
         if (IsMyAddress(searchText, &walletModel->wallet())) { ui->isMineLabel->setText("Yes"); } else { ui->isMineLabel->setText("No"); }
-        ui->balanceLabel->setText(QString::fromStdString(FormatDivisibleMP(GetAvailableTokenBalance(searchText, 1)) + " OMNI"));
+        ui->balanceLabel->setText(QString::fromStdString(FormatDivisibleMP(GetAvailableTokenBalance(searchText, 1)) + " COUNOS"));
         // QR
         #ifdef USE_QRCODE
         ui->QRCode->setText("");
@@ -251,7 +251,7 @@ void LookupAddressDialog::searchAddress()
                 balances[pItem-1]->setVisible(true);
                 labels[pItem-1]->setText(pName[pItem].c_str());
                 std::string tokenLabel = " SPT";
-                if (pName[pItem]=="Test Omni (#2)") { tokenLabel = " TOMN"; }
+                if (pName[pItem]=="Test Counos (#2)") { tokenLabel = " TOMN"; }
                 if (pDivisible[pItem])
                 {
                     balances[pItem-1]->setText(QString::fromStdString(FormatDivisibleMP(pBal[pItem]) + tokenLabel));

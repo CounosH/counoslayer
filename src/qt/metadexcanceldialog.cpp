@@ -1,25 +1,25 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/metadexcanceldialog.h>
 #include <qt/forms/ui_metadexcanceldialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <key_io.h>
 #include <ui_interface.h>
 #include <qt/walletmodel.h>
 
-#include <omnicore/createpayload.h>
-#include <omnicore/errors.h>
-#include <omnicore/mdex.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/sp.h>
-#include <omnicore/pending.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/createpayload.h>
+#include <counoscore/errors.h>
+#include <counoscore/mdex.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/sp.h>
+#include <counoscore/pending.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/walletutils.h>
 
 #include <stdint.h>
 #include <map>
@@ -67,8 +67,8 @@ void MetaDExCancelDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &MetaDExCancelDialog::RefreshUI);
-        connect(model, &ClientModel::reinitOmniState, this, &MetaDExCancelDialog::ReinitUI);
+        connect(model, &ClientModel::refreshCounosBalance, this, &MetaDExCancelDialog::RefreshUI);
+        connect(model, &ClientModel::reinitCounosState, this, &MetaDExCancelDialog::ReinitUI);
     }
 }
 
@@ -164,7 +164,7 @@ void MetaDExCancelDialog::UpdateCancelCombo()
                     if (isTestEcosystemProperty(obj.getProperty())) fTestEcosystem = true;
 
                     bool isBuy = false; // sell or buy? (from UI perspective)
-                    if ((obj.getProperty() == OMNI_PROPERTY_MSC) || (obj.getProperty() == OMNI_PROPERTY_TMSC)) isBuy = true;
+                    if ((obj.getProperty() == COUNOS_PROPERTY_MSC) || (obj.getProperty() == COUNOS_PROPERTY_TMSC)) isBuy = true;
                     std::string sellToken = getPropertyName(obj.getProperty()).c_str();
                     std::string desiredToken = getPropertyName(obj.getDesProperty()).c_str();
                     std::string sellId = strprintf("%d", obj.getProperty());
@@ -178,7 +178,7 @@ void MetaDExCancelDialog::UpdateCancelCombo()
                     std::string dataStr = sellId + "/" + desiredId;
                     if (ui->radioCancelPrice->isChecked()) { // append price if needed
                         comboStr += " priced at " + StripTrailingZeros(obj.displayUnitPrice());
-                        if ((obj.getProperty() == OMNI_PROPERTY_MSC) || (obj.getDesProperty() == OMNI_PROPERTY_MSC)) { comboStr += " OMN/SPT"; } else { comboStr += " TOMN/SPT"; }
+                        if ((obj.getProperty() == COUNOS_PROPERTY_MSC) || (obj.getDesProperty() == COUNOS_PROPERTY_MSC)) { comboStr += " OMN/SPT"; } else { comboStr += " TOMN/SPT"; }
                         dataStr += ":" + obj.displayUnitPrice();
                     }
                     int index = ui->cancelCombo->findText(QString::fromStdString(comboStr));
@@ -200,7 +200,7 @@ void MetaDExCancelDialog::UpdateCancelCombo()
 
 /**
  * Refreshes the UI fields with the most current data - called when the
- * refreshOmniState() signal is received.
+ * refreshCounosState() signal is received.
  */
 void MetaDExCancelDialog::RefreshUI()
 {
@@ -341,7 +341,7 @@ void MetaDExCancelDialog::SendCancelTransaction()
         sellToken += " (#" + sellId + ")";
         if(desiredToken.size()>30) desiredToken=desiredToken.substr(0,30)+"...";
         desiredToken += " (#" + desiredId + ")";
-        if ((propertyIdForSale == OMNI_PROPERTY_MSC) || (propertyIdForSale == OMNI_PROPERTY_TMSC)) { // "buy" order
+        if ((propertyIdForSale == COUNOS_PROPERTY_MSC) || (propertyIdForSale == COUNOS_PROPERTY_TMSC)) { // "buy" order
             messageStr += "buying " + desiredToken;
         } else {
             messageStr += "selling " + sellToken;
@@ -350,7 +350,7 @@ void MetaDExCancelDialog::SendCancelTransaction()
              std::string displayPrice = StripTrailingZeros(priceStr);
              if (displayPrice.size()>24) displayPrice = displayPrice.substr(0,24)+"...";
              messageStr += " priced at " + displayPrice;
-             if ((propertyIdForSale == OMNI_PROPERTY_MSC) || (propertyIdDesired == OMNI_PROPERTY_MSC)) { messageStr += " MSC/SPT"; } else { messageStr += " TMSC/SPT"; }
+             if ((propertyIdForSale == COUNOS_PROPERTY_MSC) || (propertyIdDesired == COUNOS_PROPERTY_MSC)) { messageStr += " MSC/SPT"; } else { messageStr += " TMSC/SPT"; }
         }
     } else {
         if (isMainEcosystemProperty(ecosystem)) messageStr += "in the main ecosystem";

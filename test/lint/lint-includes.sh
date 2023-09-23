@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
@@ -56,17 +56,13 @@ EXPECTED_BOOST_INCLUDES=(
     boost/date_time/posix_time/posix_time.hpp
     boost/filesystem.hpp
     boost/filesystem/fstream.hpp
-    boost/lexical_cast.hpp
     boost/multi_index/hashed_index.hpp
     boost/multi_index/ordered_index.hpp
     boost/multi_index/sequenced_index.hpp
     boost/multi_index_container.hpp
-    boost/multiprecision/cpp_dec_float.hpp
-    boost/multiprecision/cpp_int.hpp
     boost/optional.hpp
     boost/preprocessor/cat.hpp
     boost/preprocessor/stringize.hpp
-    boost/rational.hpp
     boost/signals2/connection.hpp
     boost/signals2/last_value.hpp
     boost/signals2/signal.hpp

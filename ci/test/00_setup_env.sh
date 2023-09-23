@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2019 The Bitcoin Core developers
+# Copyright (c) 2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -32,8 +32,7 @@ export HOST=${HOST:-$("$BASE_ROOT_DIR/depends/config.guess")}
 # Whether to prefer BusyBox over GNU utilities
 export USE_BUSY_BOX=${USE_BUSY_BOX:-false}
 export RUN_UNIT_TESTS=${RUN_UNIT_TESTS:-true}
-export RUN_FUNCTIONAL_TESTS=${RUN_FUNCTIONAL_TESTS:-false}
-export RUN_OMNIJ_TESTS=${RUN_OMNIJ_TESTS:-false}
+export RUN_FUNCTIONAL_TESTS=${RUN_FUNCTIONAL_TESTS:-true}
 export TEST_PREVIOUS_RELEASES=${TEST_PREVIOUS_RELEASES:-false}
 export RUN_FUZZ_TESTS=${RUN_FUZZ_TESTS:-false}
 export CONTAINER_NAME=${CONTAINER_NAME:-ci_unnamed}
@@ -53,7 +52,7 @@ export DEPENDS_DIR=${DEPENDS_DIR:-$BASE_ROOT_DIR/depends}
 # Folder where the build is done (bin and lib).
 export BASE_OUTDIR=${BASE_OUTDIR:-$BASE_SCRATCH_DIR/out/$HOST}
 export PREVIOUS_RELEASES_DIR=${PREVIOUS_RELEASES_DIR:-$BASE_ROOT_DIR/releases/$HOST}
-export SDK_URL=${SDK_URL:-https://bitcoincore.org/depends-sources/sdks}
+export SDK_URL=${SDK_URL:-https://counoshcore.org/depends-sources/sdks}
 export WINEDEBUG=${WINEDEBUG:-fixme-all}
 export DOCKER_PACKAGES=${DOCKER_PACKAGES:-build-essential libtool autotools-dev automake pkg-config bsdmainutils curl ca-certificates ccache python3 rsync git procps}
 export GOAL=${GOAL:-install}

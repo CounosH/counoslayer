@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -31,8 +31,6 @@
 #include <validationinterface.h>
 
 #include <functional>
-
-extern int mastercore_shutdown();
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 
@@ -150,7 +148,6 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
 
 TestingSetup::~TestingSetup()
 {
-    mastercore_shutdown();
     if (m_node.scheduler) m_node.scheduler->stop();
     threadGroup.interrupt_all();
     threadGroup.join_all();

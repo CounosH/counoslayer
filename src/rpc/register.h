@@ -1,13 +1,9 @@
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_RPC_REGISTER_H
-#define BITCOIN_RPC_REGISTER_H
-
-#if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
-#endif
+#ifndef COUNOSH_RPC_REGISTER_H
+#define COUNOSH_RPC_REGISTER_H
 
 /** These are in one header file to avoid creating tons of single-function
  * headers for everything under src/rpc/ */
@@ -24,16 +20,16 @@ void RegisterMiningRPCCommands(CRPCTable &tableRPC);
 /** Register raw transaction RPC commands */
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
 
-/** Register Omni data retrieval RPC commands */
-void RegisterOmniDataRetrievalRPCCommands(CRPCTable &tableRPC);
+/** Register Counos data retrieval RPC commands */
+void RegisterCounosDataRetrievalRPCCommands(CRPCTable &tableRPC);
 #ifdef ENABLE_WALLET
-/** Register Omni transaction creation RPC commands */
-void RegisterOmniTransactionCreationRPCCommands(CRPCTable &tableRPC);
+/** Register Counos transaction creation RPC commands */
+void RegisterCounosTransactionCreationRPCCommands(CRPCTable &tableRPC);
 #endif
-/** Register Omni payload creation RPC commands */
-void RegisterOmniPayloadCreationRPCCommands(CRPCTable &tableRPC);
-/** Register Omni raw transaction RPC commands */
-void RegisterOmniRawTransactionRPCCommands(CRPCTable &tableRPC);
+/** Register Counos payload creation RPC commands */
+void RegisterCounosPayloadCreationRPCCommands(CRPCTable &tableRPC);
+/** Register Counos raw transaction RPC commands */
+void RegisterCounosRawTransactionRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
@@ -43,13 +39,13 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
 
-    /* Omni Core RPCs: */
-    RegisterOmniDataRetrievalRPCCommands(t);
+    /* Counos Core RPCs: */
+    RegisterCounosDataRetrievalRPCCommands(t);
 #ifdef ENABLE_WALLET
-    RegisterOmniTransactionCreationRPCCommands(t);
+    RegisterCounosTransactionCreationRPCCommands(t);
 #endif
-    RegisterOmniPayloadCreationRPCCommands(t);
-    RegisterOmniRawTransactionRPCCommands(t);
+    RegisterCounosPayloadCreationRPCCommands(t);
+    RegisterCounosRawTransactionRPCCommands(t);
 }
 
-#endif // BITCOIN_RPC_REGISTER_H
+#endif // COUNOSH_RPC_REGISTER_H

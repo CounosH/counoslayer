@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPCs related to blockchainstate.
@@ -22,10 +22,11 @@ from decimal import Decimal
 import http.client
 import subprocess
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import CounosHTestFramework
 from test_framework.util import (
     assert_equal,
     assert_greater_than,
+    assert_greater_than_or_equal,
     assert_raises,
     assert_raises_rpc_error,
     assert_is_hex_string,
@@ -44,7 +45,7 @@ from test_framework.mininode import (
 )
 
 
-class BlockchainTest(BitcoinTestFramework):
+class BlockchainTest(CounosHTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -52,7 +53,7 @@ class BlockchainTest(BitcoinTestFramework):
 
     def run_test(self):
         self.mine_chain()
-        self.restart_node(0, extra_args=['-stopatheight=207'])  # Set extra args
+        self.restart_node(0, extra_args=['-stopatheight=207', '-prune=1'])  # Set extra args with pruning after rescan is complete
 
         self._test_getblockchaininfo()
         self._test_getchaintxstats()
@@ -93,18 +94,34 @@ class BlockchainTest(BitcoinTestFramework):
         ]
         res = self.nodes[0].getblockchaininfo()
 
+        # result should have these additional pruning keys if manual pruning is enabled
+        assert_equal(sorted(res.keys()), sorted(['pruneheight', 'automatic_pruning'] + keys))
+
         # size_on_disk should be > 0
         assert_greater_than(res['size_on_disk'], 0)
+
+        # pruneheight should be greater or equal to 0
+        assert_greater_than_or_equal(res['pruneheight'], 0)
+
+        # check other pruning fields given that prune=1
+        assert res['pruned']
+        assert not res['automatic_pruning']
 
         self.restart_node(0, ['-stopatheight=207'])
         res = self.nodes[0].getblockchaininfo()
         # should have exact keys
         assert_equal(sorted(res.keys()), keys)
 
-        self.restart_node(0, ['-stopatheight=207'])
+        self.restart_node(0, ['-stopatheight=207', '-prune=550'])
         res = self.nodes[0].getblockchaininfo()
+        # result should have these additional pruning keys if prune=550
+        assert_equal(sorted(res.keys()), sorted(['pruneheight', 'automatic_pruning', 'prune_target_size'] + keys))
 
         # check related fields
+        assert res['pruned']
+        assert_equal(res['pruneheight'], 0)
+        assert res['automatic_pruning']
+        assert_equal(res['prune_target_size'], 576716800)
         assert_greater_than(res['size_on_disk'], 0)
 
         assert_equal(res['softforks'], {

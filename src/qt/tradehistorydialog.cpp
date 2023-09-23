@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/tradehistorydialog.h>
 #include <qt/forms/ui_tradehistorydialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <qt/guiutil.h>
 #include <ui_interface.h>
@@ -13,20 +13,20 @@
 #include <qt/clientmodel.h>
 #include <qt/platformstyle.h>
 
-#include <omnicore/dbtradelist.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/mdex.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletcache.h>
-#include <omnicore/walletfetchtxs.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/dbtradelist.h>
+#include <counoscore/dbtxlist.h>
+#include <counoscore/mdex.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/parsing.h>
+#include <counoscore/pending.h>
+#include <counoscore/rpc.h>
+#include <counoscore/rpctxobject.h>
+#include <counoscore/sp.h>
+#include <counoscore/tx.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/walletcache.h>
+#include <counoscore/walletfetchtxs.h>
+#include <counoscore/walletutils.h>
 
 #include <amount.h>
 #include <chainparams.h>
@@ -211,12 +211,12 @@ void TradeHistoryDialog::UpdateTradeHistoryTable(bool forceUpdate)
             QTableWidgetItem *amountInCell = new QTableWidgetItem(QString::fromStdString(objTH.amountIn));
             QTableWidgetItem *txidCell = new QTableWidgetItem(QString::fromStdString(txid.GetHex()));
             QTableWidgetItem *iconCell = new QTableWidgetItem;
-            QIcon ic = QIcon(":/icons/omni_meta_pending");
-            if (objTH.status == "Cancelled") ic =QIcon(":/icons/omni_meta_cancelled");
-            if (objTH.status == "Part Cancel") ic = QIcon(":/icons/omni_meta_partcancelled");
-            if (objTH.status == "Filled") ic = QIcon(":/icons/omni_meta_filled");
-            if (objTH.status == "Open") ic = QIcon(":/icons/omni_meta_open");
-            if (objTH.status == "Part Filled") ic = QIcon(":/icons/omni_meta_partfilled");
+            QIcon ic = QIcon(":/icons/counos_meta_pending");
+            if (objTH.status == "Cancelled") ic =QIcon(":/icons/counos_meta_cancelled");
+            if (objTH.status == "Part Cancel") ic = QIcon(":/icons/counos_meta_partcancelled");
+            if (objTH.status == "Filled") ic = QIcon(":/icons/counos_meta_filled");
+            if (objTH.status == "Open") ic = QIcon(":/icons/counos_meta_open");
+            if (objTH.status == "Part Filled") ic = QIcon(":/icons/counos_meta_partfilled");
             if (!objTH.valid) {
                 ic = QIcon(":/icons/transaction_conflicted");
                 objTH.status = "Invalid";
@@ -309,16 +309,16 @@ int TradeHistoryDialog::PopulateTradeHistoryMap()
     // ### END PENDING TRANSACTIONS PROCESSING ###
 
     // ### START WALLET TRANSACTIONS PROCESSING ###
-    // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending) - default last 65535
+    // obtain a sorted list of Counos layer wallet transactions (including STO receipts and pending) - default last 65535
     std::map<std::string,uint256> walletTransactions;
     if (walletModel)
-        walletTransactions = FetchWalletOmniTransactions(walletModel->wallet(), gArgs.GetArg("-omniuiwalletscope", 65535L));
+        walletTransactions = FetchWalletCounosTransactions(walletModel->wallet(), gArgs.GetArg("-counosuiwalletscope", 65535L));
 
     // reverse iterate over (now ordered) transactions and populate history map for each one
     for (std::map<std::string,uint256>::reverse_iterator it = walletTransactions.rbegin(); it != walletTransactions.rend(); it++) {
         uint256 hash = it->second;
 
-        // use levelDB to perform a fast check on whether it's a bitcoin or Omni tx and whether it's a trade
+        // use levelDB to perform a fast check on whether it's a counosh or Counos tx and whether it's a trade
         std::string tempStrValue;
         {
             LOCK(cs_tally);
@@ -550,8 +550,8 @@ void TradeHistoryDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &TradeHistoryDialog::UpdateTradeHistoryTableSignal);
-        connect(model, &ClientModel::reinitOmniState, this, &TradeHistoryDialog::ReinitTradeHistoryTable);
+        connect(model, &ClientModel::refreshCounosBalance, this, &TradeHistoryDialog::UpdateTradeHistoryTableSignal);
+        connect(model, &ClientModel::reinitCounosState, this, &TradeHistoryDialog::ReinitTradeHistoryTable);
     }
 }
 

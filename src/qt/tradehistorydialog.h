@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2011-2013 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TRADEHISTORYDIALOG_H
-#define BITCOIN_QT_TRADEHISTORYDIALOG_H
+#ifndef COUNOSH_QT_TRADEHISTORYDIALOG_H
+#define COUNOSH_QT_TRADEHISTORYDIALOG_H
 
 #include <qt/guiutil.h>
 #include <uint256.h>
@@ -31,7 +31,7 @@ public:
     TradeHistoryObject()
       : blockHeight(-1), valid(false) {};
     int blockHeight; // block transaction was mined in
-    bool valid; // whether the transaction is valid from an Omni perspective
+    bool valid; // whether the transaction is valid from an Counos perspective
     uint32_t propertyIdForSale; // the property being sold
     uint32_t propertyIdDesired; // the property being requested
     int64_t amountForSale; // the amount being sold
@@ -81,4 +81,4 @@ Q_SIGNALS:
     void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // BITCOIN_QT_TRADEHISTORYDIALOG_H
+#endif // COUNOSH_QT_TRADEHISTORYDIALOG_H

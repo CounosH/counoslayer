@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -51,9 +51,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     // Create tabs
     overviewPage = new OverviewPage(platformStyle);
 
-    // Transactions page, Omni transactions in first tab, BTC only transactions in second tab
+    // Transactions page, Counos transactions in first tab, CCH only transactions in second tab
     transactionsPage = new QWidget(this);
-    bitcoinTXTab = new QWidget(this);
+    counoshTXTab = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
     transactionView = new TransactionView(platformStyle, this);
@@ -66,13 +66,13 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     hbox_buttons->addStretch();
     hbox_buttons->addWidget(exportButton);
     vbox->addLayout(hbox_buttons);
-    bitcoinTXTab->setLayout(vbox);
+    counoshTXTab->setLayout(vbox);
     mpTXTab = new TXHistoryDialog;
     transactionsPage = new QWidget(this);
     QVBoxLayout *txvbox = new QVBoxLayout();
     txTabHolder = new QTabWidget();
-    txTabHolder->addTab(mpTXTab,tr("Omni Layer"));
-    txTabHolder->addTab(bitcoinTXTab,tr("Bitcoin"));
+    txTabHolder->addTab(mpTXTab,tr("Counos Layer"));
+    txTabHolder->addTab(counoshTXTab,tr("Counosh"));
     txvbox->addWidget(txTabHolder);
     transactionsPage->setLayout(txvbox);
 
@@ -88,8 +88,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     sendCoinsTab = new SendCoinsDialog(platformStyle);
     sendMPTab = new SendMPDialog(platformStyle);
     sendTabHolder = new QTabWidget();
-    sendTabHolder->addTab(sendMPTab,tr("Omni Layer"));
-    sendTabHolder->addTab(sendCoinsTab,tr("Bitcoin"));
+    sendTabHolder->addTab(sendMPTab,tr("Counos Layer"));
+    sendTabHolder->addTab(sendCoinsTab,tr("Counosh"));
     svbox->addWidget(sendTabHolder);
     sendCoinsPage->setLayout(svbox);
 
@@ -102,8 +102,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     cancelTab = new MetaDExCancelDialog();
     QTabWidget *exTabHolder = new QTabWidget();
     tradeHistoryTab = new TradeHistoryDialog;
-    // exTabHolder->addTab(new QWidget(),tr("Trade Bitcoin/Mastercoin")); not yet implemented
-    exTabHolder->addTab(metaDExTab,tr("Trade Omni Layer Properties"));
+    // exTabHolder->addTab(new QWidget(),tr("Trade Counosh/Mastercoin")); not yet implemented
+    exTabHolder->addTab(metaDExTab,tr("Trade Counos Layer Properties"));
     exTabHolder->addTab(tradeHistoryTab,tr("Trade History"));
     exTabHolder->addTab(cancelTab,tr("Cancel Orders"));
     exvbox->addWidget(exTabHolder);
@@ -134,7 +134,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     connect(overviewPage, &OverviewPage::transactionClicked, this, &WalletView::transactionClicked);
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, &OverviewPage::transactionClicked, transactionView, static_cast<void (TransactionView::*)(const QModelIndex&)>(&TransactionView::focusTransaction));
-    // connect(overviewPage, &OverviewPage::omniTransactionClicked, mpTXTab, &TransactionView::focusTransaction);
+    // connect(overviewPage, &OverviewPage::counosTransactionClicked, mpTXTab, &TransactionView::focusTransaction);
 
     connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::requestedSyncWarningInfo);
 
@@ -171,6 +171,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     transactionView->setModel(_walletModel);
     overviewPage->setWalletModel(_walletModel);
     receiveCoinsPage->setModel(_walletModel);
+//    sendCoinsPage->setModel(_walletModel);
     usedReceivingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
     usedSendingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
     sendCoinsTab->setModel(walletModel);
@@ -241,13 +242,13 @@ void WalletView::gotoHistoryPage()
     setCurrentWidget(transactionsPage);
 }
 
-void WalletView::gotoBitcoinHistoryTab()
+void WalletView::gotoCounoshHistoryTab()
 {
     setCurrentWidget(transactionsPage);
     txTabHolder->setCurrentIndex(1);
 }
 
-void WalletView::gotoOmniHistoryTab()
+void WalletView::gotoCounosHistoryTab()
 {
     setCurrentWidget(transactionsPage);
     txTabHolder->setCurrentIndex(0);

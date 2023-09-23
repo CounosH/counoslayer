@@ -1,0 +1,107 @@
+COUNOSCORE_H = \
+  counoscore/activation.h \
+  counoscore/consensushash.h \
+  counoscore/convert.h \
+  counoscore/createpayload.h \
+  counoscore/createtx.h \
+  counoscore/dbbase.h \
+  counoscore/dbfees.h \
+  counoscore/dbspinfo.h \
+  counoscore/dbstolist.h \
+  counoscore/dbtradelist.h \
+  counoscore/dbtransaction.h \
+  counoscore/dbtxlist.h \
+  counoscore/dex.h \
+  counoscore/encoding.h \
+  counoscore/errors.h \
+  counoscore/log.h \
+  counoscore/mdex.h \
+  counoscore/notifications.h \
+  counoscore/counoscore.h \
+  counoscore/parse_string.h \
+  counoscore/parsing.h \
+  counoscore/pending.h \
+  counoscore/persistence.h \
+  counoscore/rpc.h \
+  counoscore/rpcmbstring.h \
+  counoscore/rpcrequirements.h \
+  counoscore/rpctxobject.h \
+  counoscore/rpcvalues.h \
+  counoscore/rules.h \
+  counoscore/script.h \
+  counoscore/seedblocks.h \
+  counoscore/sp.h \
+  counoscore/sto.h \
+  counoscore/tally.h \
+  counoscore/tx.h \
+  counoscore/uint256_extensions.h \
+  counoscore/utilscounosh.h \
+  counoscore/utilsui.h \
+  counoscore/version.h \
+  counoscore/walletcache.h \
+  counoscore/walletfetchtxs.h \
+  counoscore/wallettxbuilder.h \
+  counoscore/walletutils.h
+
+COUNOSCORE_CPP = \
+  counoscore/activation.cpp \
+  counoscore/consensushash.cpp \
+  counoscore/convert.cpp \
+  counoscore/createpayload.cpp \
+  counoscore/createtx.cpp \
+  counoscore/dbbase.cpp \
+  counoscore/dbfees.cpp \
+  counoscore/dbspinfo.cpp \
+  counoscore/dbstolist.cpp \
+  counoscore/dbtradelist.cpp \
+  counoscore/dbtransaction.cpp \
+  counoscore/dbtxlist.cpp \
+  counoscore/dex.cpp \
+  counoscore/encoding.cpp \
+  counoscore/log.cpp \
+  counoscore/mdex.cpp \
+  counoscore/notifications.cpp \
+  counoscore/counoscore.cpp \
+  counoscore/parse_string.cpp \
+  counoscore/parsing.cpp \
+  counoscore/pending.cpp \
+  counoscore/persistence.cpp \
+  counoscore/rpc.cpp \
+  counoscore/rpcmbstring.cpp \
+  counoscore/rpcpayload.cpp \
+  counoscore/rpcrawtx.cpp \
+  counoscore/rpcrequirements.cpp \
+  counoscore/rpctxobject.cpp \
+  counoscore/rpcvalues.cpp \
+  counoscore/rules.cpp \
+  counoscore/script.cpp \
+  counoscore/seedblocks.cpp \
+  counoscore/sp.cpp \
+  counoscore/sto.cpp \
+  counoscore/tally.cpp \
+  counoscore/tx.cpp \
+  counoscore/utilscounosh.cpp \
+  counoscore/utilsui.cpp \
+  counoscore/version.cpp \
+  counoscore/walletcache.cpp \
+  counoscore/walletfetchtxs.cpp \
+  counoscore/wallettxbuilder.cpp \
+  counoscore/walletutils.cpp
+
+if ENABLE_WALLET
+COUNOSCORE_CPP += counoscore/rpctx.cpp
+endif
+
+libcounosh_server_a_SOURCES += \
+  $(COUNOSCORE_CPP) \
+  $(COUNOSCORE_H)
+
+counoscore/libcounosh_server_a-version.$(OBJEXT): obj/build.h # build info
+
+CLEAN_COUNOSCORE = counoscore/*.gcda counoscore/*.gcno
+
+CLEANFILES += $(CLEAN_COUNOSCORE)
+
+if ENABLE_TESTS
+include Makefile.counostest.include
+endif

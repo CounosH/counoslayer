@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_WALLETVIEW_H
-#define BITCOIN_QT_WALLETVIEW_H
+#ifndef COUNOSH_QT_WALLETVIEW_H
+#define COUNOSH_QT_WALLETVIEW_H
 
 #include <amount.h>
 
@@ -54,7 +54,7 @@ public:
     void setClientModel(ClientModel *clientModel);
     WalletModel *getWalletModel() { return walletModel; }
     /** Set the wallet model.
-        The wallet model represents a bitcoin wallet, and offers access to the list of transactions, address book and sending
+        The wallet model represents a counosh wallet, and offers access to the list of transactions, address book and sending
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
@@ -87,7 +87,7 @@ private:
     MetaDExCancelDialog *cancelTab;
     TransactionView *transactionView;
     TXHistoryDialog *mpTXTab;
-    QWidget *bitcoinTXTab;
+    QWidget *counoshTXTab;
 
     QProgressDialog* progressDialog{nullptr};
     const PlatformStyle *platformStyle;
@@ -108,10 +108,10 @@ public Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
-    /** Switch specifically to omni tx history tab */
-    void gotoOmniHistoryTab();
-    /** Switch specifically to bitcoin tx history tab */
-    void gotoBitcoinHistoryTab();
+    /** Switch specifically to counos tx history tab */
+    void gotoCounosHistoryTab();
+    /** Switch specifically to counosh tx history tab */
+    void gotoCounoshHistoryTab();
     /** Switch to utility page */
     void gotoToolboxPage();
 
@@ -163,4 +163,4 @@ Q_SIGNALS:
     void outOfSyncWarningClicked();
 };
 
-#endif // BITCOIN_QT_WALLETVIEW_H
+#endif // COUNOSH_QT_WALLETVIEW_H

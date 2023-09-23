@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2011-2013 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_BALANCESDIALOG_H
-#define BITCOIN_QT_BALANCESDIALOG_H
+#ifndef COUNOSH_QT_BALANCESDIALOG_H
+#define COUNOSH_QT_BALANCESDIALOG_H
 
 #include <qt/guiutil.h>
 
@@ -51,7 +51,7 @@ private:
 public Q_SLOTS:
     void propSelectorChanged();
     void balancesUpdated();
-    void reinitOmni();
+    void reinitCounos();
 
 private Q_SLOTS:
     void contextualMenu(const QPoint &point);
@@ -65,4 +65,4 @@ Q_SIGNALS:
     void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // BITCOIN_QT_BALANCESDIALOG_H
+#endif // COUNOSH_QT_BALANCESDIALOG_H

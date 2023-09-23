@@ -1,30 +1,30 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/metadexdialog.h>
 #include <qt/forms/ui_metadexdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>
 
-#include <omnicore/createpayload.h>
-#include <omnicore/dbtradelist.h>
-#include <omnicore/errors.h>
-#include <omnicore/mdex.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parse_string.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/rules.h>
-#include <omnicore/sp.h>
-#include <omnicore/tally.h>
-#include <omnicore/uint256_extensions.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/wallettxbuilder.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/createpayload.h>
+#include <counoscore/dbtradelist.h>
+#include <counoscore/errors.h>
+#include <counoscore/mdex.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/parse_string.h>
+#include <counoscore/pending.h>
+#include <counoscore/rpctxobject.h>
+#include <counoscore/rules.h>
+#include <counoscore/sp.h>
+#include <counoscore/tally.h>
+#include <counoscore/uint256_extensions.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/wallettxbuilder.h>
+#include <counoscore/walletutils.h>
 
 #include <amount.h>
 #include <key_io.h>
@@ -117,15 +117,15 @@ void MetaDExDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (nullptr != model) {
-        connect(model, &ClientModel::refreshOmniState, this, &MetaDExDialog::UpdateOffers);
-        connect(model, &ClientModel::refreshOmniBalance, this, &MetaDExDialog::BalanceOrderRefresh);
-        connect(model, &ClientModel::reinitOmniState, this, &MetaDExDialog::FullRefresh);
+        connect(model, &ClientModel::refreshCounosState, this, &MetaDExDialog::UpdateOffers);
+        connect(model, &ClientModel::refreshCounosBalance, this, &MetaDExDialog::BalanceOrderRefresh);
+        connect(model, &ClientModel::reinitCounosState, this, &MetaDExDialog::FullRefresh);
     }
 }
 
 void MetaDExDialog::setWalletModel(WalletModel *model)
 {
-    // use wallet model to get visibility into BTC balance changes for fees
+    // use wallet model to get visibility into CCH balance changes for fees
     this->walletModel = model;
 }
 
@@ -219,7 +219,7 @@ void MetaDExDialog::UpdateBalance()
         if (CheckFee(walletModel->wallet(), currentSetAddress.toStdString(), 28)) {
             ui->lblFeeWarning->setVisible(false);
         } else {
-            ui->lblFeeWarning->setText("WARNING: The address is low on BTC for transaction fees.");
+            ui->lblFeeWarning->setText("WARNING: The address is low on CCH for transaction fees.");
             ui->lblFeeWarning->setVisible(true);
         }
     }
@@ -501,7 +501,7 @@ void MetaDExDialog::sendTrade()
     }
 
     // check if wallet is still syncing, as this will currently cause a lockup if we try to send - compare our chain to peers to see if we're up to date
-    // Bitcoin Core devs have removed GetNumBlocksOfPeers, switching to a time based best guess scenario
+    // Counosh Core devs have removed GetNumBlocksOfPeers, switching to a time based best guess scenario
     uint32_t intBlockDate = GetLatestBlockTime();  // uint32, not using time_t for portability
     QDateTime currentDate = QDateTime::currentDateTime();
     int secs = QDateTime::fromTime_t(intBlockDate).secsTo(currentDate);

@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: CounosH Core consensus library
+Description: Library for the CounosH consensus protocol.
+Version: 0.20.2rc1
+Libs: -L${libdir} -lcounoshconsensus
+Cflags: -I${includedir}

@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_LOGGING_H
-#define BITCOIN_LOGGING_H
+#ifndef COUNOSH_LOGGING_H
+#define COUNOSH_LOGGING_H
 
 #include <fs.h>
 #include <tinyformat.h>
@@ -24,8 +24,8 @@ extern const char * const DEFAULT_DEBUGLOGFILE;
 
 extern bool fLogIPs;
 
-/** Flag to indicate, whether the Omni Core log file should be reopened. */
-extern std::atomic<bool> fReopenOmniCoreLog;
+/** Flag to indicate, whether the Counos Core log file should be reopened. */
+extern std::atomic<bool> fReopenCounosCoreLog;
 
 struct CLogCategoryActive
 {
@@ -187,4 +187,4 @@ static inline void LogPrintf(const char* fmt, const Args&... args)
         }                                    \
     } while (0)
 
-#endif // BITCOIN_LOGGING_H
+#endif // COUNOSH_LOGGING_H

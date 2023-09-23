@@ -1,10 +1,10 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2012-2020 The Bitcoin Core developers
+// Copyright (c) 2012-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_UI_INTERFACE_H
-#define BITCOIN_UI_INTERFACE_H
+#ifndef COUNOSH_UI_INTERFACE_H
+#define COUNOSH_UI_INTERFACE_H
 
 #include <functional>
 #include <memory>
@@ -116,10 +116,10 @@ public:
     /** Banlist did change. */
     ADD_SIGNALS_DECL_WRAPPER(BannedListChanged, void, void);
 
-    ADD_SIGNALS_DECL_WRAPPER(OmniStateChanged, void);
-    ADD_SIGNALS_DECL_WRAPPER(OmniPendingChanged, void, bool);
-    ADD_SIGNALS_DECL_WRAPPER(OmniBalanceChanged, void);
-    ADD_SIGNALS_DECL_WRAPPER(OmniStateInvalidated, void);
+    ADD_SIGNALS_DECL_WRAPPER(CounosStateChanged, void);
+    ADD_SIGNALS_DECL_WRAPPER(CounosPendingChanged, void, bool);
+    ADD_SIGNALS_DECL_WRAPPER(CounosBalanceChanged, void);
+    ADD_SIGNALS_DECL_WRAPPER(CounosStateInvalidated, void);
 };
 
 /** Show warning message **/
@@ -130,4 +130,4 @@ bool InitError(const std::string& str);
 
 extern CClientUIInterface uiInterface;
 
-#endif // BITCOIN_UI_INTERFACE_H
+#endif // COUNOSH_UI_INTERFACE_H

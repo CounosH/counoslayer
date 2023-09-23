@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2009-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_ADDRDB_H
-#define BITCOIN_ADDRDB_H
+#ifndef COUNOSH_ADDRDB_H
+#define COUNOSH_ADDRDB_H
 
 #include <fs.h>
 #include <net_types.h> // For banmap_t
@@ -73,4 +73,4 @@ public:
     bool Read(banmap_t& banSet);
 };
 
-#endif // BITCOIN_ADDRDB_H
+#endif // COUNOSH_ADDRDB_H
