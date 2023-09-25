@@ -78,7 +78,7 @@
 #define HAVE_BOOST_SYSTEM /**/
 
 /* define if the Boost::Thread library is available */
-#define HAVE_BOOST_THREAD /**/
+/* #undef HAVE_BOOST_THREAD */
 
 /* define if the Boost::Unit_Test_Framework library is available */
 #define HAVE_BOOST_UNIT_TEST_FRAMEWORK /**/
@@ -273,20 +273,17 @@
 /* Define this symbol if you have mallopt with M_ARENA_MAX */
 #define HAVE_MALLOPT_ARENA_MAX 1
 
-/* Define to 1 if you have the <memory.h> header file. */
-#define HAVE_MEMORY_H 1
-
 /* Define to 1 if you have the <miniupnpc/miniupnpc.h> header file. */
-#define HAVE_MINIUPNPC_MINIUPNPC_H 1
+/* #undef HAVE_MINIUPNPC_MINIUPNPC_H */
 
 /* Define to 1 if you have the <miniupnpc/miniwget.h> header file. */
-#define HAVE_MINIUPNPC_MINIWGET_H 1
+/* #undef HAVE_MINIUPNPC_MINIWGET_H */
 
 /* Define to 1 if you have the <miniupnpc/upnpcommands.h> header file. */
-#define HAVE_MINIUPNPC_UPNPCOMMANDS_H 1
+/* #undef HAVE_MINIUPNPC_UPNPCOMMANDS_H */
 
 /* Define to 1 if you have the <miniupnpc/upnperrors.h> header file. */
-#define HAVE_MINIUPNPC_UPNPERRORS_H 1
+/* #undef HAVE_MINIUPNPC_UPNPERRORS_H */
 
 /* Define if you have POSIX threads libraries and header files. */
 #define HAVE_PTHREAD 1
@@ -306,7 +303,7 @@
 /* Define to 1 if std::system is available. */
 #define HAVE_STD__SYSTEM 1
 
-/* Define to 1 if you have the `strerror_r' function. */
+/* Define if you have `strerror_r'. */
 #define HAVE_STRERROR_R 1
 
 /* Define to 1 if you have the <strings.h> header file. */
@@ -343,7 +340,7 @@
 #define HAVE_SYS_STAT_H 1
 
 /* Define to 1 if you have the <sys/sysctl.h> header file. */
-#define HAVE_SYS_SYSCTL_H 1
+/* #undef HAVE_SYS_SYSCTL_H */
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
@@ -409,7 +406,9 @@
 /* Define this symbol if qt plugins are static */
 /* #undef QT_STATICPLUGIN */
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
 
 /* Define to 1 if strerror_r returns char *. */
@@ -426,7 +425,7 @@
 
 /* UPnP support not compiled if undefined, otherwise value (0 or 1) determines
    default state */
-#define USE_UPNP 0
+/* #undef USE_UPNP */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
@@ -438,11 +437,6 @@
 # ifndef WORDS_BIGENDIAN
 /* #  undef WORDS_BIGENDIAN */
 # endif
-#endif
-
-/* Enable large inode numbers on Mac OS X 10.5.  */
-#ifndef _DARWIN_USE_64_BIT_INODE
-# define _DARWIN_USE_64_BIT_INODE 1
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
