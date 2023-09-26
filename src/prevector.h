@@ -1,9 +1,9 @@
-// Copyright (c) 2015-2019 The Bitcoin Core developers
+// Copyright (c) 2015-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_PREVECTOR_H
-#define BITCOIN_PREVECTOR_H
+#ifndef COUNOSH_PREVECTOR_H
+#define COUNOSH_PREVECTOR_H
 
 #include <assert.h>
 #include <stdlib.h>
@@ -534,4 +534,4 @@ public:
     }
 };
 
-#endif // BITCOIN_PREVECTOR_H
+#endif // COUNOSH_PREVECTOR_H

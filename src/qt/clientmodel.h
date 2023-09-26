@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_CLIENTMODEL_H
-#define BITCOIN_QT_CLIENTMODEL_H
+#ifndef COUNOSH_QT_CLIENTMODEL_H
+#define COUNOSH_QT_CLIENTMODEL_H
 
 #include <QObject>
 #include <QDateTime>
@@ -40,7 +40,7 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
-/** Model for Bitcoin network client. */
+/** Model for Counosh network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT
@@ -73,9 +73,9 @@ public:
 
     bool getProxyInfo(std::string& ip_port) const;
 
-    // Try to avoid Omni queuing too many messages
-    bool tryLockOmniStateChanged();
-    bool tryLockOmniBalanceChanged();
+    // Try to avoid Counos queuing too many messages
+    bool tryLockCounosStateChanged();
+    bool tryLockCounosBalanceChanged();
 
     // caches for the best header
     mutable std::atomic<int> cachedBestHeaderHeight;
@@ -90,10 +90,10 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_banned_list_changed;
     std::unique_ptr<interfaces::Handler> m_handler_notify_block_tip;
     std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
-    std::unique_ptr<interfaces::Handler> m_handler_omni_state_changed;
-    std::unique_ptr<interfaces::Handler> m_handler_omni_pending_changed;
-    std::unique_ptr<interfaces::Handler> m_handler_omni_balance_changed;
-    std::unique_ptr<interfaces::Handler> m_handler_omni_state_invalidated;
+    std::unique_ptr<interfaces::Handler> m_handler_counos_state_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_counos_pending_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_counos_balance_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_counos_state_invalidated;
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
     BanTableModel *banTableModel;
@@ -104,9 +104,9 @@ private:
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
 
-    // Locks for Omni state changes
-    bool lockedOmniStateChanged;
-    bool lockedOmniBalanceChanged;
+    // Locks for Counos state changes
+    bool lockedCounosStateChanged;
+    bool lockedCounosBalanceChanged;
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);
@@ -116,11 +116,11 @@ Q_SIGNALS:
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);
 
-    // Additional Omni signals
-    void refreshOmniState();
-    void refreshOmniPending(bool pending);
-    void refreshOmniBalance();
-    void reinitOmniState();
+    // Additional Counos signals
+    void refreshCounosState();
+    void refreshCounosPending(bool pending);
+    void refreshCounosBalance();
+    void reinitCounosState();
 
     //! Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);
@@ -134,11 +134,11 @@ public Q_SLOTS:
     void updateAlert();
     void updateBanlist();
 
-    // Additional Omni slots
-    void updateOmniState();
-    void updateOmniPending(bool pending);
-    void updateOmniBalance();
-    void invalidateOmniState();
+    // Additional Counos slots
+    void updateCounosState();
+    void updateCounosPending(bool pending);
+    void updateCounosBalance();
+    void invalidateCounosState();
 };
 
-#endif // BITCOIN_QT_CLIENTMODEL_H
+#endif // COUNOSH_QT_CLIENTMODEL_H

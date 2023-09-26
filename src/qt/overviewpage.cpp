@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/overviewpage.h>
 #include <qt/forms/ui_overviewpage.h>
 
-#include <qt/bitcoinunits.h>
+#include <qt/counoshunits.h>
 #include <qt/clientmodel.h>
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
@@ -16,17 +16,17 @@
 #include <uint256.h>
 #include <qt/walletmodel.h>
 
-#include <omnicore/activation.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/notifications.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/rules.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/activation.h>
+#include <counoscore/dbtxlist.h>
+#include <counoscore/notifications.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/rules.h>
+#include <counoscore/sp.h>
+#include <counoscore/tx.h>
+#include <counoscore/parsing.h>
+#include <counoscore/pending.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/walletutils.h>
 
 #include <chainparams.h>
 #include <validation.h>
@@ -84,7 +84,7 @@ public:
     explicit TxViewDelegate(const PlatformStyle *_platformStyle, QObject *parent=nullptr):
         QAbstractItemDelegate(parent),
         walletModel(nullptr),
-        unit(BitcoinUnits::BTC),
+        unit(CounoshUnits::CCH),
         platformStyle(_platformStyle)
     {
 
@@ -116,12 +116,12 @@ public:
         QRect addressRect(mainRect.left() + xspace, mainRect.top()+ypad+halfheight, mainRect.width() - xspace, halfheight);
 
         // Rather ugly way to provide recent transaction display support - each time we paint a transaction we will check if
-        // it's Omni and override the values if so.  This will not scale at all, but since we're only ever doing 6 txns via the occasional
+        // it's Counos and override the values if so.  This will not scale at all, but since we're only ever doing 6 txns via the occasional
         // repaint performance should be a non-issue and it'll provide the functionality short term while a better approach is devised.
         uint256 hash;
         hash.SetHex(index.data(TransactionTableModel::TxHashRole).toString().toStdString());
-        bool omniOverride = false, omniSendToSelf = false, valid = false, omniOutbound = true;
-        QString omniAmountStr;
+        bool counosOverride = false, counosSendToSelf = false, valid = false, counosOutbound = true;
+        QString counosAmountStr;
 
         // check pending
         {
@@ -129,19 +129,19 @@ public:
 
             PendingMap::iterator it = my_pending.find(hash);
             if (it != my_pending.end()) {
-                omniOverride = true;
+                counosOverride = true;
                 valid = true; // assume all outbound pending are valid prior to confirmation
                 CMPPending *p_pending = &(it->second);
                 address = QString::fromStdString(p_pending->src);
                 if (isPropertyDivisible(p_pending->prop)) {
-                    omniAmountStr = QString::fromStdString(FormatDivisibleShortMP(p_pending->amount) + getTokenLabel(p_pending->prop));
+                    counosAmountStr = QString::fromStdString(FormatDivisibleShortMP(p_pending->amount) + getTokenLabel(p_pending->prop));
                 } else {
-                    omniAmountStr = QString::fromStdString(FormatIndivisibleMP(p_pending->amount) + getTokenLabel(p_pending->prop));
+                    counosAmountStr = QString::fromStdString(FormatIndivisibleMP(p_pending->amount) + getTokenLabel(p_pending->prop));
                 }
                 // override amount for cancels
                 if (p_pending->type == MSC_TYPE_METADEX_CANCEL_PRICE || p_pending->type == MSC_TYPE_METADEX_CANCEL_PAIR ||
                     p_pending->type == MSC_TYPE_METADEX_CANCEL_ECOSYSTEM || p_pending->type == MSC_TYPE_SEND_ALL) {
-                    omniAmountStr = QString::fromStdString("N/A");
+                    counosAmountStr = QString::fromStdString("N/A");
                 }
             }
         }
@@ -152,14 +152,14 @@ public:
             OverviewCacheEntry txEntry = cacheIt->second;
             address = txEntry.address;
             valid = txEntry.valid;
-            omniSendToSelf = txEntry.sendToSelf;
-            omniOutbound = txEntry.outbound;
-            omniAmountStr = txEntry.amount;
-            omniOverride = true;
+            counosSendToSelf = txEntry.sendToSelf;
+            counosOutbound = txEntry.outbound;
+            counosAmountStr = txEntry.amount;
+            counosOverride = true;
             amount = 0;
         } else { // cache miss, check database
             if (pDbTransactionList->exists(hash)) {
-                omniOverride = true;
+                counosOverride = true;
                 amount = 0;
                 CTransactionRef wtx;
                 uint256 blockHash;
@@ -190,24 +190,24 @@ public:
                                           address = QString::fromStdString(tmpSeller);
                                     } else {
                                           address = QString::fromStdString(tmpBuyer);
-                                          omniOutbound = false;
+                                          counosOutbound = false;
                                     }
-                                    omniAmountStr = QString::fromStdString(FormatDivisibleMP(total));
+                                    counosAmountStr = QString::fromStdString(FormatDivisibleMP(total));
                                 }
                             } else if (0 == parseRC) {
                                 if (mp_obj.interpret_Transaction()) {
                                     valid = pDbTransactionList->getValidMPTX(hash);
-                                    uint32_t omniPropertyId = mp_obj.getProperty();
-                                    int64_t omniAmount = mp_obj.getAmount();
-                                    if (isPropertyDivisible(omniPropertyId)) {
-                                        omniAmountStr = QString::fromStdString(FormatDivisibleShortMP(omniAmount) + getTokenLabel(omniPropertyId));
+                                    uint32_t counosPropertyId = mp_obj.getProperty();
+                                    int64_t counosAmount = mp_obj.getAmount();
+                                    if (isPropertyDivisible(counosPropertyId)) {
+                                        counosAmountStr = QString::fromStdString(FormatDivisibleShortMP(counosAmount) + getTokenLabel(counosPropertyId));
                                     } else {
-                                        omniAmountStr = QString::fromStdString(FormatIndivisibleMP(omniAmount) + getTokenLabel(omniPropertyId));
+                                        counosAmountStr = QString::fromStdString(FormatIndivisibleMP(counosAmount) + getTokenLabel(counosPropertyId));
                                     }
                                     if (!mp_obj.getReceiver().empty()) {
                                         if (IsMyAddress(mp_obj.getReceiver(), &walletModel->wallet())) {
-                                            omniOutbound = false;
-                                            if (IsMyAddress(mp_obj.getSender(), &walletModel->wallet())) omniSendToSelf = true;
+                                            counosOutbound = false;
+                                            if (IsMyAddress(mp_obj.getSender(), &walletModel->wallet())) counosSendToSelf = true;
                                         }
                                         address = QString::fromStdString(mp_obj.getReceiver());
                                     } else {
@@ -219,16 +219,16 @@ public:
                             // override amount for cancels
                             if (mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_PRICE || mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_PAIR ||
                                 mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_ECOSYSTEM || mp_obj.getType() == MSC_TYPE_SEND_ALL) {
-                                omniAmountStr = QString::fromStdString("N/A");
+                                counosAmountStr = QString::fromStdString("N/A");
                             }
 
                             // insert into cache
                             OverviewCacheEntry newEntry;
                             newEntry.valid = valid;
-                            newEntry.sendToSelf = omniSendToSelf;
-                            newEntry.outbound = omniOutbound;
+                            newEntry.sendToSelf = counosSendToSelf;
+                            newEntry.outbound = counosOutbound;
                             newEntry.address = address;
-                            newEntry.amount = omniAmountStr;
+                            newEntry.amount = counosAmountStr;
                             recentCache.insert(std::make_pair(hash, newEntry));
                         }
                     }
@@ -236,13 +236,13 @@ public:
             }
         }
 
-        if (omniOverride) {
+        if (counosOverride) {
             if (!valid) {
-                icon = QIcon(":/icons/omni_invalid");
+                icon = QIcon(":/icons/counos_invalid");
             } else {
-                icon = QIcon(":/icons/omni_out");
-                if (!omniOutbound) icon = QIcon(":/icons/omni_in");
-                if (omniSendToSelf) icon = QIcon(":/icons/omni_inout");
+                icon = QIcon(":/icons/counos_out");
+                if (!counosOutbound) icon = QIcon(":/icons/counos_in");
+                if (counosSendToSelf) icon = QIcon(":/icons/counos_inout");
             }
         }
 
@@ -281,10 +281,10 @@ public:
         }
         painter->setPen(foreground);
         QString amountText;
-        if (!omniOverride) {
-            amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
+        if (!counosOverride) {
+            amountText = CounoshUnits::formatWithUnit(unit, amount, true, CounoshUnits::separatorAlways);
         } else {
-            amountText = omniAmountStr;
+            amountText = counosAmountStr;
         }
         if(!confirmed)
         {
@@ -338,10 +338,10 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->labelWalletStatus->setText("(" + tr("out of sync") + ")");
     ui->labelTransactionsStatus->setText("(" + tr("out of sync") + ")");
 
-    // make sure BTC is always first in the list by adding it first
+    // make sure CCH is always first in the list by adding it first
     UpdatePropertyBalance(0,0,0);
 
-    updateOmni();
+    updateCounos();
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
@@ -351,22 +351,22 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
 {
-    // is this an Omni transaction that has been clicked?  Use pending & cache to find out quickly
+    // is this an Counos transaction that has been clicked?  Use pending & cache to find out quickly
     uint256 hash;
     hash.SetHex(index.data(TransactionTableModel::TxHashRole).toString().toStdString());
-    bool omniTx = false;
+    bool counosTx = false;
     {
         LOCK(cs_pending);
 
         PendingMap::iterator it = my_pending.find(hash);
-        if (it != my_pending.end()) omniTx = true;
+        if (it != my_pending.end()) counosTx = true;
     }
     std::map<uint256, OverviewCacheEntry>::iterator cacheIt = recentCache.find(hash);
-    if (cacheIt != recentCache.end()) omniTx = true;
+    if (cacheIt != recentCache.end()) counosTx = true;
 
-    // override if it's an Omni transaction
-    if (omniTx) {
-        // TODO emit omniTransactionClicked(hash);
+    // override if it's an Counos transaction
+    if (counosTx) {
+        // TODO emit counosTransactionClicked(hash);
     } else {
         // TODO if (filter) emit transactionClicked(filter->mapToSource(index));
     }
@@ -409,7 +409,7 @@ void OverviewPage::UpdatePropertyBalance(unsigned int propertyId, uint64_t avail
     // property label
     std::string spName;
     if (propertyId == 0) {// Override for Overpageview init during GUI tests
-        spName = "Bitcoin";
+        spName = "Counosh";
     } else {
         spName = getPropertyName(propertyId).c_str();
     }
@@ -419,9 +419,9 @@ void OverviewPage::UpdatePropertyBalance(unsigned int propertyId, uint64_t avail
     propLabel->setStyleSheet("QLabel { font-weight:bold; }");
     vlayout->addWidget(propLabel);
 
-    if (propertyId == 0) { // override for bitcoin
+    if (propertyId == 0) { // override for counosh
         divisible = true;
-        tokenStr = " BTC";
+        tokenStr = " CCH";
     } else {
         divisible = isPropertyDivisible(propertyId);
         tokenStr = getTokenLabel(propertyId);
@@ -430,7 +430,7 @@ void OverviewPage::UpdatePropertyBalance(unsigned int propertyId, uint64_t avail
     // Left Panel
     QVBoxLayout *vlayoutleft = new QVBoxLayout();
     QLabel *balReservedLabel = new QLabel;
-    if(propertyId != 0) { balReservedLabel->setText("Reserved:"); } else { balReservedLabel->setText("Pending:"); propLabel->setText("Bitcoin"); } // override for bitcoin
+    if(propertyId != 0) { balReservedLabel->setText("Reserved:"); } else { balReservedLabel->setText("Pending:"); propLabel->setText("Counosh"); } // override for counosh
     QLabel *balAvailableLabel = new QLabel("Available:");
     QLabel *balTotalLabel = new QLabel("Total:");
     vlayoutleft->addWidget(balReservedLabel);
@@ -498,7 +498,7 @@ void OverviewPage::UpdatePropertyBalance(unsigned int propertyId, uint64_t avail
     }
 }
 
-void OverviewPage::reinitOmni()
+void OverviewPage::reinitCounos()
 {
     recentCache.clear();
     ui->overviewLW->clear();
@@ -506,11 +506,11 @@ void OverviewPage::reinitOmni()
         UpdatePropertyBalance(0, walletModel->wallet().getBalance(), walletModel->wallet().getBalances().unconfirmed_balance);
     }
     UpdatePropertyBalance(1, 0, 0);
-    updateOmni();
+    updateCounos();
 }
 
 /** Loop through properties and update the overview - only properties with token balances will be displayed **/
-void OverviewPage::updateOmni()
+void OverviewPage::updateCounos()
 {
     LOCK(cs_tally);
 
@@ -540,7 +540,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 // show/hide watch-only labels
 void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
-    // Omni Core does not currently fully support watch only
+    // Counos Core does not currently fully support watch only
 }
 
 void OverviewPage::setClientModel(ClientModel *model)
@@ -551,14 +551,14 @@ void OverviewPage::setClientModel(ClientModel *model)
         connect(model, &ClientModel::alertsChanged, this, &OverviewPage::updateAlerts);
         updateAlerts(model->getStatusBarWarnings());
 
-        // Refresh Omni info if there have been Omni layer transactions with balances affecting wallet
-        connect(model, &ClientModel::refreshOmniBalance, this, &OverviewPage::updateOmni);
+        // Refresh Counos info if there have been Counos layer transactions with balances affecting wallet
+        connect(model, &ClientModel::refreshCounosBalance, this, &OverviewPage::updateCounos);
 
-        // Reinit Omni info if there has been a chain reorg
-        connect(model, &ClientModel::reinitOmniState, this, &OverviewPage::reinitOmni);
+        // Reinit Counos info if there has been a chain reorg
+        connect(model, &ClientModel::reinitCounosState, this, &OverviewPage::reinitCounos);
 
-        // Refresh alerts when there has been a change to the Omni State
-        connect(model, &ClientModel::refreshOmniState, this, &OverviewPage::updateOmniAlerts);
+        // Refresh alerts when there has been a change to the Counos State
+        connect(model, &ClientModel::refreshCounosState, this, &OverviewPage::updateCounosAlerts);
     }
 }
 
@@ -594,7 +594,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         });
     }
 
-    // update the display unit, to not use the default ("BTC")
+    // update the display unit, to not use the default ("CCH")
     updateDisplayUnit();
 }
 
@@ -613,18 +613,18 @@ void OverviewPage::updateDisplayUnit()
     }
 }
 
-void OverviewPage::updateOmniAlerts()
+void OverviewPage::updateCounosAlerts()
 {
     updateAlerts(clientModel->getStatusBarWarnings());
 }
 
 void OverviewPage::updateAlerts(const QString &warnings)
 {
-    QString alertString = warnings; // get current bitcoin alert/warning directly
+    QString alertString = warnings; // get current counosh alert/warning directly
 
     // get alert messages
-    std::vector<std::string> omniAlerts = GetOmniCoreAlertMessages();
-    for (std::vector<std::string>::iterator it = omniAlerts.begin(); it != omniAlerts.end(); it++) {
+    std::vector<std::string> counosAlerts = GetCounosCoreAlertMessages();
+    for (std::vector<std::string>::iterator it = counosAlerts.begin(); it != counosAlerts.end(); it++) {
         if (!alertString.isEmpty()) alertString += "\n";
         alertString += QString::fromStdString(*it);
     }

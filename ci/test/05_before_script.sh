@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,9 +8,9 @@ export LC_ALL=C.UTF-8
 
 # Make sure default datadir does not exist and is never read by creating a dummy file
 if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-  echo > $HOME/Library/Application\ Support/Bitcoin
+  echo > $HOME/Library/Application\ Support/CounosH
 else
-  DOCKER_EXEC echo \> \$HOME/.bitcoin
+  DOCKER_EXEC echo \> \$HOME/.counosh
 fi
 
 DOCKER_EXEC mkdir -p ${DEPENDS_DIR}/SDKs ${DEPENDS_DIR}/sdk-sources
@@ -36,5 +36,7 @@ if [ -z "$NO_DEPENDS" ]; then
   DOCKER_EXEC $SHELL_OPTS make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
 fi
 if [ "$TEST_PREVIOUS_RELEASES" = "true" ]; then
+  BEGIN_FOLD previous-versions
   DOCKER_EXEC contrib/devtools/previous_release.sh -b -t "$PREVIOUS_RELEASES_DIR" v0.17.1 v0.18.1 v0.19.0.1
+  END_FOLD
 fi

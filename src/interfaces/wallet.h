@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2019 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_INTERFACES_WALLET_H
-#define BITCOIN_INTERFACES_WALLET_H
+#ifndef COUNOSH_INTERFACES_WALLET_H
+#define COUNOSH_INTERFACES_WALLET_H
 
 #include <amount.h>                    // For CAmount
 #include <pubkey.h>                    // For CKeyID and CScriptID (definitions needed in CTxDestination instantiation)
@@ -146,7 +146,7 @@ public:
         int& change_pos,
         CAmount& fee,
         std::string& fail_reason,
-        bool omni = false,
+        bool counos = false,
         CAmount min_fee = 0) = 0;
 
     //! Commit transaction.
@@ -405,4 +405,4 @@ std::unique_ptr<Wallet> MakeWallet(const std::shared_ptr<CWallet>& wallet);
 
 } // namespace interfaces
 
-#endif // BITCOIN_INTERFACES_WALLET_H
+#endif // COUNOSH_INTERFACES_WALLET_H

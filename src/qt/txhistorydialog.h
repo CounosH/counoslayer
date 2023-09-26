@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2011-2013 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_TXHISTORYDIALOG_H
-#define BITCOIN_QT_TXHISTORYDIALOG_H
+#ifndef COUNOSH_QT_TXHISTORYDIALOG_H
+#define COUNOSH_QT_TXHISTORYDIALOG_H
 
 #include <qt/guiutil.h>
 #include <uint256.h>
@@ -35,7 +35,7 @@ public:
       : blockHeight(-1), blockByteOffset(0), valid(false), fundsMoved(true) {};
     int blockHeight; // block transaction was mined in
     int blockByteOffset; // byte offset the tx is stored in the block (used for ordering multiple txs same block)
-    bool valid; // whether the transaction is valid from an Omni perspective
+    bool valid; // whether the transaction is valid from an Counos perspective
     bool fundsMoved; // whether tokens actually moved in this transaction
     std::string txType; // human readable string containing type
     std::string address; // the address to be displayed (usually sender or recipient)
@@ -88,4 +88,4 @@ Q_SIGNALS:
     void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // BITCOIN_QT_TXHISTORYDIALOG_H
+#endif // COUNOSH_QT_TXHISTORYDIALOG_H

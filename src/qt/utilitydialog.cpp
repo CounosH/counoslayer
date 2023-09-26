@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/counosh-config.h>
 #endif
 
 #include <qt/utilitydialog.h>
@@ -15,7 +15,7 @@
 #include <util/system.h>
 #include <util/strencodings.h>
 
-#include <omnicore/version.h>
+#include <counoscore/version.h>
 
 #include <stdio.h>
 
@@ -34,7 +34,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bo
 {
     ui->setupUi(this);
 
-    QString version = QString{PACKAGE_NAME} + " " + tr("version") + " " + QString::fromStdString(OmniCoreVersion());
+    QString version = QString{PACKAGE_NAME} + " " + tr("version") + " " + QString::fromStdString(CounosCoreVersion());
 
     if (about)
     {
@@ -58,7 +58,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bo
         ui->helpMessage->setVisible(false);
     } else {
         setWindowTitle(tr("Command-line options"));
-        QString header = "Usage:  omnicore-qt [command-line options]                     \n";
+        QString header = "Usage:  counoscore-qt [command-line options]                     \n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();

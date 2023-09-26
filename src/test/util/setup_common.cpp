@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -31,8 +31,6 @@
 #include <validationinterface.h>
 
 #include <functional>
-
-extern int mastercore_shutdown();
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 
@@ -75,7 +73,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
     SeedInsecureRand();
     gArgs.ForceSetArg("-printtoconsole", "0");
 #ifdef WIN32
-    fOmniCoreConsoleLog = true;
+    fCounosCoreConsoleLog = true;
 #endif
     if (G_TEST_LOG_FUN) LogInstance().PushBackCallback(G_TEST_LOG_FUN);
     InitLogging();
@@ -157,7 +155,6 @@ TestingSetup::~TestingSetup()
     threadGroup.interrupt_all();
     threadGroup.join_all();
     GetMainSignals().FlushBackgroundCallbacks();
-    mastercore_shutdown();
     GetMainSignals().UnregisterBackgroundSignalScheduler();
     g_rpc_node = nullptr;
     m_node.connman.reset();

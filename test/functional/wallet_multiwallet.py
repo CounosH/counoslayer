@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017-2019 The Bitcoin Core developers
+# Copyright (c) 2017-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test multiwallet.
 
-Verify that a bitcoind node can load multiple wallet files
+Verify that a counoshd node can load multiple wallet files
 """
 from threading import Thread
 import os
@@ -12,13 +12,15 @@ import shutil
 import time
 
 from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import CounosHTestFramework
 from test_framework.test_node import ErrorMatch
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
     get_rpc_proxy,
 )
+
+FEATURE_LATEST = 169900
 
 got_loading_error = False
 def test_load_unload(node, name):
@@ -35,7 +37,7 @@ def test_load_unload(node, name):
                 return
 
 
-class MultiWalletTest(BitcoinTestFramework):
+class MultiWalletTest(CounosHTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -358,6 +360,19 @@ class MultiWalletTest(BitcoinTestFramework):
         assert_raises_rpc_error(-4, "Error initializing wallet database environment", self.nodes[1].loadwallet, wallet)
         self.nodes[0].unloadwallet(wallet)
         self.nodes[1].loadwallet(wallet)
+
+        # Fail to load if wallet is downgraded
+        shutil.copytree(os.path.join(self.options.data_wallets_dir, 'high_minversion'), wallet_dir('high_minversion'))
+        self.restart_node(0, extra_args=['-upgradewallet={}'.format(FEATURE_LATEST)])
+        assert {'name': 'high_minversion'} in self.nodes[0].listwalletdir()['wallets']
+        self.log.info("Fail -upgradewallet that results in downgrade")
+        assert_raises_rpc_error(
+            -4,
+            'Wallet loading failed: Error loading {}: Wallet requires newer version of {}'.format(
+                wallet_dir('high_minversion', 'wallet.dat'), self.config['environment']['PACKAGE_NAME']),
+            lambda: self.nodes[0].loadwallet(filename='high_minversion'),
+        )
+
 
 if __name__ == '__main__':
     MultiWalletTest().main()

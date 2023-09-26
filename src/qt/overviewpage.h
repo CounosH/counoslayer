@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_OVERVIEWPAGE_H
-#define BITCOIN_QT_OVERVIEWPAGE_H
+#ifndef COUNOSH_QT_OVERVIEWPAGE_H
+#define COUNOSH_QT_OVERVIEWPAGE_H
 
 #include <interfaces/wallet.h>
 
@@ -41,12 +41,12 @@ public:
 
 public Q_SLOTS:
     void setBalance(const interfaces::WalletBalances& balances);
-    void updateOmni();
-    void reinitOmni();
+    void updateCounos();
+    void reinitCounos();
 
 Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);
-    // void omniTransactionClicked(const uint256& txid);
+    // void counosTransactionClicked(const uint256& txid);
     void outOfSyncWarningClicked();
 
 private:
@@ -61,10 +61,10 @@ private:
 private Q_SLOTS:
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
-    void updateOmniAlerts();
+    void updateCounosAlerts();
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
 };
 
-#endif // BITCOIN_QT_OVERVIEWPAGE_H
+#endif // COUNOSH_QT_OVERVIEWPAGE_H

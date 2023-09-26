@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2019 The Bitcoin Core developers
+// Copyright (c) 2015-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,7 +15,7 @@
 #include <util/translation.h>
 #include <walletinitinterface.h>
 
-#include <omnicore/rpcmbstring.h> // SanitizeInvalidUTF8
+#include <counoscore/rpcmbstring.h> // SanitizeInvalidUTF8
 
 #include <algorithm>
 #include <iterator>

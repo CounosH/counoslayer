@@ -1,4 +1,4 @@
-// Copyright (c) 2010-2020 The Bitcoin Core developers
+// Copyright (c) 2010-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,10 +20,10 @@ struct UISignals {
     boost::signals2::signal<CClientUIInterface::NotifyBlockTipSig> NotifyBlockTip;
     boost::signals2::signal<CClientUIInterface::NotifyHeaderTipSig> NotifyHeaderTip;
     boost::signals2::signal<CClientUIInterface::BannedListChangedSig> BannedListChanged;
-    boost::signals2::signal<CClientUIInterface::OmniStateChangedSig> OmniStateChanged;
-    boost::signals2::signal<CClientUIInterface::OmniPendingChangedSig> OmniPendingChanged;
-    boost::signals2::signal<CClientUIInterface::OmniBalanceChangedSig> OmniBalanceChanged;
-    boost::signals2::signal<CClientUIInterface::OmniStateInvalidatedSig> OmniStateInvalidated;
+    boost::signals2::signal<CClientUIInterface::CounosStateChangedSig> CounosStateChanged;
+    boost::signals2::signal<CClientUIInterface::CounosPendingChangedSig> CounosPendingChanged;
+    boost::signals2::signal<CClientUIInterface::CounosBalanceChangedSig> CounosBalanceChanged;
+    boost::signals2::signal<CClientUIInterface::CounosStateInvalidatedSig> CounosStateInvalidated;
 };
 static UISignals g_ui_signals;
 
@@ -43,10 +43,10 @@ ADD_SIGNALS_IMPL_WRAPPER(ShowProgress);
 ADD_SIGNALS_IMPL_WRAPPER(NotifyBlockTip);
 ADD_SIGNALS_IMPL_WRAPPER(NotifyHeaderTip);
 ADD_SIGNALS_IMPL_WRAPPER(BannedListChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniStateChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniPendingChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniBalanceChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniStateInvalidated);
+ADD_SIGNALS_IMPL_WRAPPER(CounosStateChanged);
+ADD_SIGNALS_IMPL_WRAPPER(CounosPendingChanged);
+ADD_SIGNALS_IMPL_WRAPPER(CounosBalanceChanged);
+ADD_SIGNALS_IMPL_WRAPPER(CounosStateInvalidated);
 
 bool CClientUIInterface::ThreadSafeMessageBox(const std::string& message, const std::string& caption, unsigned int style) { return g_ui_signals.ThreadSafeMessageBox(message, caption, style); }
 bool CClientUIInterface::ThreadSafeQuestion(const std::string& message, const std::string& non_interactive_message, const std::string& caption, unsigned int style) { return g_ui_signals.ThreadSafeQuestion(message, non_interactive_message, caption, style); }
@@ -58,10 +58,10 @@ void CClientUIInterface::ShowProgress(const std::string& title, int nProgress, b
 void CClientUIInterface::NotifyBlockTip(bool b, const CBlockIndex* i) { return g_ui_signals.NotifyBlockTip(b, i); }
 void CClientUIInterface::NotifyHeaderTip(bool b, const CBlockIndex* i) { return g_ui_signals.NotifyHeaderTip(b, i); }
 void CClientUIInterface::BannedListChanged() { return g_ui_signals.BannedListChanged(); }
-void CClientUIInterface::OmniStateChanged() { return g_ui_signals.OmniStateChanged(); }
-void CClientUIInterface::OmniPendingChanged(bool b) { return g_ui_signals.OmniPendingChanged(b); }
-void CClientUIInterface::OmniBalanceChanged() { return g_ui_signals.OmniBalanceChanged(); }
-void CClientUIInterface::OmniStateInvalidated() { return g_ui_signals.OmniStateInvalidated(); }
+void CClientUIInterface::CounosStateChanged() { return g_ui_signals.CounosStateChanged(); }
+void CClientUIInterface::CounosPendingChanged(bool b) { return g_ui_signals.CounosPendingChanged(b); }
+void CClientUIInterface::CounosBalanceChanged() { return g_ui_signals.CounosBalanceChanged(); }
+void CClientUIInterface::CounosStateInvalidated() { return g_ui_signals.CounosStateInvalidated(); }
 
 bool InitError(const std::string& str)
 {

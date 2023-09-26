@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2020 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/walletframe.h>
 #include <qt/walletmodel.h>
 
-#include <qt/bitcoingui.h>
+#include <qt/counoshgui.h>
 #include <qt/walletview.h>
 
 #include <cassert>
@@ -13,7 +13,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, BitcoinGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, CounoshGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(_platformStyle)
@@ -65,14 +65,14 @@ bool WalletFrame::addWallet(WalletModel *walletModel)
     mapWalletViews[walletModel] = walletView;
 
     connect(walletView, &WalletView::outOfSyncWarningClicked, this, &WalletFrame::outOfSyncWarningClicked);
-    connect(walletView, &WalletView::transactionClicked, gui, &BitcoinGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::coinsSent, gui, &BitcoinGUI::gotoHistoryPage);
+    connect(walletView, &WalletView::transactionClicked, gui, &CounoshGUI::gotoHistoryPage);
+    connect(walletView, &WalletView::coinsSent, gui, &CounoshGUI::gotoHistoryPage);
     connect(walletView, &WalletView::message, [this](const QString& title, const QString& message, unsigned int style) {
         gui->message(title, message, style);
     });
-    connect(walletView, &WalletView::encryptionStatusChanged, gui, &BitcoinGUI::updateWalletStatus);
-    connect(walletView, &WalletView::incomingTransaction, gui, &BitcoinGUI::incomingTransaction);
-    connect(walletView, &WalletView::hdEnabledStatusChanged, gui, &BitcoinGUI::updateWalletStatus);
+    connect(walletView, &WalletView::encryptionStatusChanged, gui, &CounoshGUI::updateWalletStatus);
+    connect(walletView, &WalletView::incomingTransaction, gui, &CounoshGUI::incomingTransaction);
+    connect(walletView, &WalletView::hdEnabledStatusChanged, gui, &CounoshGUI::updateWalletStatus);
 
     return true;
 }
@@ -149,18 +149,18 @@ void WalletFrame::gotoHistoryPage()
         i.value()->gotoHistoryPage();
 }
 
-void WalletFrame::gotoOmniHistoryTab()
+void WalletFrame::gotoCounosHistoryTab()
 {
     QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoOmniHistoryTab();
+        i.value()->gotoCounosHistoryTab();
 }
 
-void WalletFrame::gotoBitcoinHistoryTab()
+void WalletFrame::gotoCounoshHistoryTab()
 {
     QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoBitcoinHistoryTab();
+        i.value()->gotoCounoshHistoryTab();
 }
 
 void WalletFrame::gotoToolboxPage()

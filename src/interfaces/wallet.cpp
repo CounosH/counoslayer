@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2019 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -240,14 +240,14 @@ public:
         int& change_pos,
         CAmount& fee,
         std::string& fail_reason,
-        bool omni,
+        bool counos,
         CAmount min_fee) override
     {
         auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         CTransactionRef tx;
         if (!m_wallet->CreateTransaction(*locked_chain, recipients, tx, fee, change_pos,
-                fail_reason, coin_control, sign, omni, min_fee)) {
+                fail_reason, coin_control, sign, counos, min_fee)) {
             return {};
         }
         return tx;

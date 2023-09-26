@@ -2,14 +2,14 @@
 
 ## Supported Versions
 
-The Omni Layer protocol evolves over time. To avoid any consensus divergences, for example when a user with an old version considers a transaction as valid, while it is actually invalid under new rules, it is recommended to always run the latest version of Omni Core:
+The Counos Layer protocol evolves over time. To avoid any consensus divergences, for example when a user with an old version considers a transaction as valid, while it is actually invalid under new rules, it is recommended to always run the latest version of Counos Core:
 
-https://github.com/OmniLayer/omnicore/releases
+https://github.com/CounosLayer/counoscore/releases
 
 
 ## Reporting a Vulnerability
 
-To report security issues please send an email to security-reports [at] omni.foundation.
+To report security issues please send an email to security-reports [at] counos.foundation.
 
 The following GPG key may be used to communicate sensitive information to developers:
 

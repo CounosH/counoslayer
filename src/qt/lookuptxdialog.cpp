@@ -1,16 +1,16 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/lookuptxdialog.h>
 #include <qt/forms/ui_lookuptxdialog.h>
 
-#include <omnicore/errors.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
+#include <counoscore/errors.h>
+#include <counoscore/rpc.h>
+#include <counoscore/rpctxobject.h>
 
 #include <qt/walletmodel.h>
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <uint256.h>
 
@@ -72,7 +72,7 @@ void LookupTXDialog::searchTX()
         std::string strText = "The transaction hash entered is ";
         switch(populateResult) {
             case MP_TX_NOT_FOUND:
-                strText += "not a valid Bitcoin or Omni transaction.  Please check the transaction hash "
+                strText += "not a valid Counosh or Counos transaction.  Please check the transaction hash "
                            "entered and try again.";
             break;
             case MP_TX_UNCONFIRMED:
@@ -80,14 +80,14 @@ void LookupTXDialog::searchTX()
                            "confirmed transactions.\n\nTip: You can view your own outgoing unconfirmed "
                            "transactions in the transactions tab.";
             break;
-            case MP_TX_IS_NOT_OMNI_PROTOCOL:
-                strText += "a Bitcoin transaction only.\n\nTip: You can use the debug console "
-                           "'gettransaction' command to lookup specific Bitcoin transactions.";
+            case MP_TX_IS_NOT_COUNOS_PROTOCOL:
+                strText += "a Counosh transaction only.\n\nTip: You can use the debug console "
+                           "'gettransaction' command to lookup specific Counosh transactions.";
             break;
 
             default:
                 strText += "of an unknown type.  If you are seeing this message please raise a bug report "
-                           "with the transaction hash at github.com/OmniLayer/omnicore/issues.";
+                           "with the transaction hash at github.com/CounosLayer/counoscore/issues.";
             break;
         }
         QString strQText = QString::fromStdString(strText);

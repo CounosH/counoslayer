@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC help output."""
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import CounosHTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
 import os
 
 
-class HelpRpcTest(BitcoinTestFramework):
+class HelpRpcTest(CounosHTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.supports_cli = False
@@ -34,7 +34,7 @@ class HelpRpcTest(BitcoinTestFramework):
         # command titles
         titles = [line[3:-3] for line in node.help().splitlines() if line.startswith('==')]
 
-        components = ['Blockchain', 'Control', 'Generating', 'Mining', 'Network', 'Omni layer (configuration)', 'Omni layer (data retrieval)', 'Omni layer (payload creation)', 'Omni layer (raw transactions)', 'Omni layer (transaction creation)', 'Rawtransactions', 'Util']
+        components = ['Blockchain', 'Control', 'Generating', 'Mining', 'Network', 'Rawtransactions', 'Util']
 
         if self.is_wallet_compiled():
             components.append('Wallet')

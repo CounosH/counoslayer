@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2018-2019 The Bitcoin Core developers
+# Copyright (c) 2018-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
@@ -25,6 +25,7 @@ disabled=(
 disabled_gitian=(
     SC2094 # Make sure not to read and write the same file in the same pipeline.
     SC2129 # Consider using { cmd1; cmd2; } >> file instead of individual redirects.
+    SC2230 # which is non-standard. Use builtin 'command -v' instead.
 )
 
 EXIT_CODE=0

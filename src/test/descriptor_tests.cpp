@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2019 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -133,7 +133,7 @@ void DoCheck(const std::string& prv, const std::string& pub, int flags, const st
             // When the descriptor is hardened, evaluate with access to the private keys inside.
             const FlatSigningProvider& key_provider = (flags & HARDENED) ? keys_priv : keys_pub;
 
-            // Evaluate the descriptor selected by `t` in position `i`.
+            // Evaluate the descriptor selected by `t` in poisition `i`.
             FlatSigningProvider script_provider, script_provider_cached;
             std::vector<CScript> spks, spks_cached;
             DescriptorCache desc_cache;

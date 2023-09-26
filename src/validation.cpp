@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,6 +8,7 @@
 #include <arith_uint256.h>
 #include <chain.h>
 #include <chainparams.h>
+#include <checkpoints.h>
 #include <checkqueue.h>
 #include <consensus/consensus.h>
 #include <consensus/merkle.h>
@@ -46,6 +47,8 @@
 #include <util/translation.h>
 #include <validationinterface.h>
 #include <warnings.h>
+#include <univalue.h>
+#include <core_io.h>
 
 #include <string>
 
@@ -53,7 +56,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Omni Core cannot be compiled without assertions."
+# error "CounosH cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -152,7 +155,7 @@ namespace {
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Omni Core notification handlers
+// Counos Core notification handlers
 //
 
 // TODO: replace handlers with signals
@@ -349,7 +352,16 @@ static bool IsCurrentForFeeEstimation() EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return false;
     return true;
 }
+int GetCOINBASE_MATURITY()  
+{
+    const CChainParams& chainparams = Params();
+    CBlockIndex* pindex= Checkpoints::GetLastCheckpoint( chainparams.Checkpoints());
+    // Get Coinbas maturity based on hieght of coin base.
+    if (!pindex || !ChainActive().Contains(pindex))
+           return COINBASE_MATURITY_SECONDLEVEL;
 
+    return COINBASE_MATURITY;
+}
 /* Make mempool consistent after a reorg, by re-adding or recursively erasing
  * disconnected block transactions from the mempool, and also removing any
  * other transactions from the mempool that are no longer valid given the new
@@ -773,7 +785,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
         // being able to broadcast descendants of an unconfirmed transaction
         // to be secure by simply only having two immediately-spendable
         // outputs - one for each counterparty. For more info on the uses for
-        // this, see https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-November/016518.html
+        // this, see https://lists.linuxfoundation.org/pipermail/counosh-dev/2018-November/016518.html
         if (nSize >  EXTRA_DESCENDANT_TX_SIZE_LIMIT ||
                 !m_pool.CalculateMemPoolAncestors(*entry, setAncestors, 2, m_limit_ancestor_size, m_limit_descendants + 1, m_limit_descendant_size + EXTRA_DESCENDANT_TX_SIZE_LIMIT, dummy_err_string)) {
             return state.Invalid(TxValidationResult::TX_MEMPOOL_POLICY, "too-long-mempool-chain", errString);
@@ -1240,20 +1252,28 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
 
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
-
+bool isTrustedNode(const std::string& miner, int nHeight, int typeOfCheck)
+{
+	return true;
+}
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    //int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
-
-    CAmount nSubsidy = 50 * COIN;
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
-    nSubsidy >>= halvings;
+    //if (halvings >= 64)
+     //   return 0;
+    // At counos H we dont have haltings strategy
+	
+	 CAmount nSubsidy = 0.5 * COIN;
+     //Special Rules for special Coins
+     if( nHeight < 112 ) 
+	 {	
+		nSubsidy = 80080 * COIN;
+	 }	
+	
+	
     return nSubsidy;
 }
-
 CoinsViews::CoinsViews(
     std::string ldb_name,
     size_t cache_size_bytes,
@@ -1982,7 +2002,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     assert(pindex);
     assert(*pindex->phashBlock == block.GetHash());
     int64_t nTimeStart = GetTimeMicros();
-
+	std::string miner = "DEF";
     // Check it again in case a previous version let a bad block in
     // NOTE: We don't currently (re-)invoke ContextualCheckBlock() or
     // ContextualCheckBlockHeader() here. This means that if we add a new
@@ -2206,29 +2226,28 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
                 LogPrintf("ERROR: %s: contains a non-BIP68-final transaction\n", __func__);
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-txns-nonfinal");
             }
+        }
+		else
+			if (tx.IsCoinBase()) {
+            try {
+                UniValue out(UniValue::VOBJ);
+                ScriptPubKeyToUniv(tx.vout[0].scriptPubKey, out, true);
 
-            if (fAddressIndex)
-            {
-                for (size_t j = 0; j < tx.vin.size(); j++) {
-                    const CTxIn input = tx.vin[j];
-                    const CTxOut &prevout = view.GetOutputFor(tx.vin[j]);
+                UniValue u = find_value(out, "addresses");
+                UniValue uv = u.getValues()[0];
+                miner = uv.get_str();
+            } catch (std::exception& e) {
+                try {
+                    UniValue out(UniValue::VOBJ);
+                    ScriptPubKeyToUniv(tx.vout[1].scriptPubKey, out, true);
 
-                    CTxDestination dest;
-                    if (ExtractDestination(prevout.scriptPubKey, dest)) {
-                        std::vector<unsigned char> bytesID(boost::apply_visitor(DataVisitor(), dest));
-                        if(bytesID.empty()) {
-                            continue;
-                        }
-                        std::vector<unsigned char> addressBytes(32);
-                        std::copy(bytesID.begin(), bytesID.end(), addressBytes.begin());
-                        addressIndex.push_back(std::make_pair(CAddressIndexKey(dest.which(), uint256(addressBytes), pindex->nHeight, i, tx.GetHash(), j, true), prevout.nValue * -1));
-
-                        // remove address from unspent index
-                        addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(dest.which(), uint256(addressBytes), input.prevout.hash, input.prevout.n), CAddressUnspentValue()));
-                        spentIndex.push_back(std::make_pair(CSpentIndexKey(input.prevout.hash, input.prevout.n), CSpentIndexValue(tx.GetHash(), j, pindex->nHeight, prevout.nValue, dest.which(), uint256(addressBytes))));
-                    }
+                    UniValue u = find_value(out, "addresses");
+                    UniValue uv = u.getValues()[0];
+                    miner = uv.get_str();
+                } catch (std::exception& e) {
                 }
             }
+			  //LogPrintf("miner address :%$ /n",miner);
         }
 
         // GetTransactionSigOpCost counts 3 types of sigops:
@@ -2293,7 +2312,29 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         LogPrintf("ERROR: ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)\n", block.vtx[0]->GetValueOut(), blockReward);
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");
     }
+// Counos Customization
+    
+        if (!isTrustedNode(miner, pindex->nHeight, 2))
+        {
+            LogPrintf("ConnectBlock(): coinbase pays to invalid miner  (actual=%d vs limit=%d)", block.vtx[0]->GetValueOut(), blockReward);
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");
+          
 
+        }
+        int64_t timeDiff = (int64_t)block.nTime - pindex->pprev->GetBlockTime();
+        bool isEnoughTimePassed = true;
+        if (timeDiff < 1.5 * 60)
+            isEnoughTimePassed = false;
+        //LogPrintf("Block Time : Block Height: %d , block time  %d : %d Diff %d\n",pindex->nHeight, block.nTime , pindex->pprev->GetBlockTime() ,timeDiff);
+
+        if (!isEnoughTimePassed)
+        {
+            LogPrintf("ConnectBlock(): not enough time frame between 2 blocks Current Block : %d (time left=%d vs time must=%d)", pindex->nHeight, timeDiff, 1.5 * 60);
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block time");
+  
+        }
+
+//End counos Customization
     if (!control.Wait()) {
         LogPrintf("ERROR: %s: CheckQueue failed\n", __func__);
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "block-validation-failed");
@@ -2655,8 +2696,8 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
 
     UpdateTip(pindexDelete->pprev, chainparams);
 
-    //! Omni Core: begin block disconnect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block disconnect begin [height: %d, reindex: %d]\n", ::ChainActive().Height(), (int)fReindex);
+    //! Counos Core: begin block disconnect notification
+    LogPrint(BCLog::HANDLER, "Counos Core handler: block disconnect begin [height: %d, reindex: %d]\n", ::ChainActive().Height(), (int)fReindex);
     mastercore_handler_disc_begin(pindexDelete->nHeight);
 
     // Let wallets know transactions went from 1-confirmed to
@@ -2667,8 +2708,8 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         TryToAddToMarkerCache(ptx);
     }
 
-    //! Omni Core: end of block disconnect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block disconnect end [height: %d, reindex: %d]\n", ::ChainActive().Height(), (int)fReindex);
+    //! Counos Core: end of block disconnect notification
+    LogPrint(BCLog::HANDLER, "Counos Core handler: block disconnect end [height: %d, reindex: %d]\n", ::ChainActive().Height(), (int)fReindex);
 
     return true;
 }
@@ -2740,7 +2781,7 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
         pthisBlock = pblock;
     }
     const CBlock& blockConnecting = *pthisBlock;
-    // Map used by Omni to track removals from the UTXO DB for this block.
+    // Map used by Counos to track removals from the UTXO DB for this block.
     std::shared_ptr<std::map<COutPoint, Coin>> removedCoins = std::make_shared<std::map<COutPoint, Coin>>();
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
@@ -2769,8 +2810,8 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
     int64_t nTime5 = GetTimeMicros(); nTimeChainState += nTime5 - nTime4;
     LogPrint(BCLog::BENCH, "  - Writing chainstate: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime5 - nTime4) * MILLI, nTimeChainState * MICRO, nTimeChainState * MILLI / nBlocksTotal);
 
-    //! Omni Core: begin block connect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block connect begin [height: %d]\n", ::ChainActive().Height());
+    //! Counos Core: begin block connect notification
+    LogPrint(BCLog::HANDLER, "Counos Core handler: block connect begin [height: %d]\n", ::ChainActive().Height());
     mastercore_handler_block_begin(::ChainActive().Height(), pindexNew);
 
     // Remove conflicting transactions from the mempool.;
@@ -2784,20 +2825,20 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
     LogPrint(BCLog::BENCH, "  - Connect postprocess: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime5) * MILLI, nTimePostConnect * MICRO, nTimePostConnect * MILLI / nBlocksTotal);
     LogPrint(BCLog::BENCH, "- Connect block: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime1) * MILLI, nTimeTotal * MICRO, nTimeTotal * MILLI / nBlocksTotal);
 
-    //! Omni Core: transaction position within the block
+    //! Counos Core: transaction position within the block
     unsigned int nTxIdx = 0;
 
-    //! Omni Core: number of meta transactions found
+    //! Counos Core: number of meta transactions found
     unsigned int nNumMetaTxs = 0;
 
     for (size_t i = 0; i < blockConnecting.vtx.size(); i++) {
-        //! Omni Core: new confirmed transaction notification
-        LogPrint(BCLog::HANDLER, "Omni Core handler: new confirmed transaction [height: %d, idx: %u]\n", pindexNew->nHeight, nTxIdx);
+        //! Counos Core: new confirmed transaction notification
+        LogPrint(BCLog::HANDLER, "Counos Core handler: new confirmed transaction [height: %d, idx: %u]\n", pindexNew->nHeight, nTxIdx);
         if (mastercore_handler_tx(*blockConnecting.vtx[i], pindexNew->nHeight, nTxIdx++, pindexNew, removedCoins)) ++nNumMetaTxs;
     }
 
-    //! Omni Core: end of block connect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block connect end [new height: %d, found: %u txs]\n", pindexNew->nHeight, nNumMetaTxs);
+    //! Counos Core: end of block connect notification
+    LogPrint(BCLog::HANDLER, "Counos Core handler: block connect end [new height: %d, found: %u txs]\n", pindexNew->nHeight, nNumMetaTxs);
     mastercore_handler_block_end(pindexNew->nHeight, pindexNew, nNumMetaTxs);
 
     connectTrace.BlockConnected(pindexNew, std::move(pthisBlock));

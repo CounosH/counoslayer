@@ -11,7 +11,7 @@
   </array>
 
   <key>CFBundleIconFile</key>
-  <string>bitcoin.icns</string>
+  <string>counosh.icns</string>
 
   <key>CFBundlePackageType</key>
   <string>APPL</string>
@@ -20,25 +20,25 @@
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@.@CLIENT_VERSION_BUILD@, Copyright © 2009-@COPYRIGHT_YEAR@ @COPYRIGHT_HOLDERS_FINAL@</string>
 
   <key>CFBundleShortVersionString</key>
-  <string>@OMNICORE_VERSION_MAJOR@.@OMNICORE_VERSION_MINOR@.@OMNICORE_VERSION_PATCH@</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
 
   <key>CFBundleVersion</key>
-  <string>@OMNICORE_VERSION_MAJOR@.@OMNICORE_VERSION_MINOR@.@OMNICORE_VERSION_PATCH@</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
 
   <key>CFBundleSignature</key>
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>OmniCore-Qt</string>
-  
+  <string>CounosH-Qt</string>
+
   <key>CFBundleName</key>
-  <string>OmniCore-Qt</string>
+  <string>CounosH-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.omnilayer.OmniCore-Qt</string>
+  <string>org.counoshfoundation.CounosH-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.bitcoin.BitcoinPayment</string>
+      <string>org.counosh.CounosHPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>bitcoin</string>
+        <string>counosh</string>
       </array>
     </dict>
   </array>

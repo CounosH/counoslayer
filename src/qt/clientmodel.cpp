@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Counosh Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -32,8 +32,8 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     peerTableModel(nullptr),
     banTableModel(nullptr),
     m_thread(new QThread(this)),
-    lockedOmniStateChanged(false),
-    lockedOmniBalanceChanged(false)
+    lockedCounosStateChanged(false),
+    lockedCounosBalanceChanged(false)
 {
     cachedBestHeaderHeight = -1;
     cachedBestHeaderTime = -1;
@@ -117,48 +117,48 @@ void ClientModel::updateNetworkActive(bool networkActive)
     Q_EMIT networkActiveChanged(networkActive);
 }
 
-bool ClientModel::tryLockOmniStateChanged()
+bool ClientModel::tryLockCounosStateChanged()
 {
-    // Try to avoid Omni queuing too many messages for the UI
-    if (lockedOmniStateChanged) {
+    // Try to avoid Counos queuing too many messages for the UI
+    if (lockedCounosStateChanged) {
         return false;
     }
 
-    lockedOmniStateChanged = true;
+    lockedCounosStateChanged = true;
     return true;
 }
 
-bool ClientModel::tryLockOmniBalanceChanged()
+bool ClientModel::tryLockCounosBalanceChanged()
 {
-    // Try to avoid Omni queuing too many messages for the UI
-    if (lockedOmniBalanceChanged) {
+    // Try to avoid Counos queuing too many messages for the UI
+    if (lockedCounosBalanceChanged) {
         return false;
     }
 
-    lockedOmniBalanceChanged = true;
+    lockedCounosBalanceChanged = true;
     return true;
 }
 
-void ClientModel::updateOmniState()
+void ClientModel::updateCounosState()
 {
-    lockedOmniStateChanged = false;
-    Q_EMIT refreshOmniState();
+    lockedCounosStateChanged = false;
+    Q_EMIT refreshCounosState();
 }
 
-void ClientModel::updateOmniPending(bool pending)
+void ClientModel::updateCounosPending(bool pending)
 {
-    Q_EMIT refreshOmniPending(pending);
+    Q_EMIT refreshCounosPending(pending);
 }
 
-void ClientModel::updateOmniBalance()
+void ClientModel::updateCounosBalance()
 {
-    lockedOmniBalanceChanged = false;
-    Q_EMIT refreshOmniBalance();
+    lockedCounosBalanceChanged = false;
+    Q_EMIT refreshCounosBalance();
 }
 
-void ClientModel::invalidateOmniState()
+void ClientModel::invalidateCounosState()
 {
-    Q_EMIT reinitOmniState();
+    Q_EMIT reinitCounosState();
 }
 
 void ClientModel::updateAlert()
@@ -302,33 +302,33 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int heig
     }
 }
 
-static void OmniStateChanged(ClientModel *clientmodel)
+static void CounosStateChanged(ClientModel *clientmodel)
 {
-    // This will be triggered for each block that contains Omni layer transactions
-    if (clientmodel->tryLockOmniStateChanged()) {
-        QMetaObject::invokeMethod(clientmodel, "updateOmniState", Qt::QueuedConnection);
+    // This will be triggered for each block that contains Counos layer transactions
+    if (clientmodel->tryLockCounosStateChanged()) {
+        QMetaObject::invokeMethod(clientmodel, "updateCounosState", Qt::QueuedConnection);
     }
 }
 
-static void OmniPendingChanged(ClientModel *clientmodel, bool pending)
+static void CounosPendingChanged(ClientModel *clientmodel, bool pending)
 {
-    // Triggered when Omni pending map adds/removes transactions
-    QMetaObject::invokeMethod(clientmodel, "updateOmniPending", Qt::QueuedConnection,
+    // Triggered when Counos pending map adds/removes transactions
+    QMetaObject::invokeMethod(clientmodel, "updateCounosPending", Qt::QueuedConnection,
                               Q_ARG(bool, pending));
 }
 
-static void OmniBalanceChanged(ClientModel *clientmodel)
+static void CounosBalanceChanged(ClientModel *clientmodel)
 {
     // Triggered when a balance for a wallet address changes
-    if (clientmodel->tryLockOmniBalanceChanged()) {
-        QMetaObject::invokeMethod(clientmodel, "updateOmniBalance", Qt::QueuedConnection);
+    if (clientmodel->tryLockCounosBalanceChanged()) {
+        QMetaObject::invokeMethod(clientmodel, "updateCounosBalance", Qt::QueuedConnection);
     }
 }
 
-static void OmniStateInvalidated(ClientModel *clientmodel)
+static void CounosStateInvalidated(ClientModel *clientmodel)
 {
     // This will be triggered if a reorg invalidates the state
-    QMetaObject::invokeMethod(clientmodel, "invalidateOmniState", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(clientmodel, "invalidateCounosState", Qt::QueuedConnection);
 }
 
 void ClientModel::subscribeToCoreSignals()
@@ -342,11 +342,11 @@ void ClientModel::subscribeToCoreSignals()
     m_handler_notify_block_tip = m_node.handleNotifyBlockTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, false));
     m_handler_notify_header_tip = m_node.handleNotifyHeaderTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, true));
 
-    // Connect Omni signals
-    m_handler_omni_state_changed = m_node.handleOmniStateChanged(std::bind(OmniStateChanged, this));
-    m_handler_omni_pending_changed = m_node.handleOmniPendingChanged(std::bind(OmniPendingChanged, this, std::placeholders::_1));
-    m_handler_omni_balance_changed = m_node.handleOmniBalanceChanged(std::bind(OmniBalanceChanged, this));
-    m_handler_omni_state_invalidated = m_node.handleOmniStateInvalidated(std::bind(OmniStateInvalidated, this));
+    // Connect Counos signals
+    m_handler_counos_state_changed = m_node.handleCounosStateChanged(std::bind(CounosStateChanged, this));
+    m_handler_counos_pending_changed = m_node.handleCounosPendingChanged(std::bind(CounosPendingChanged, this, std::placeholders::_1));
+    m_handler_counos_balance_changed = m_node.handleCounosBalanceChanged(std::bind(CounosBalanceChanged, this));
+    m_handler_counos_state_invalidated = m_node.handleCounosStateInvalidated(std::bind(CounosStateInvalidated, this));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -360,11 +360,11 @@ void ClientModel::unsubscribeFromCoreSignals()
     m_handler_notify_block_tip->disconnect();
     m_handler_notify_header_tip->disconnect();
 
-    // Disconnect Omni signals
-    m_handler_omni_state_changed->disconnect();
-    m_handler_omni_pending_changed->disconnect();
-    m_handler_omni_balance_changed->disconnect();
-    m_handler_omni_state_invalidated->disconnect();
+    // Disconnect Counos signals
+    m_handler_counos_state_changed->disconnect();
+    m_handler_counos_pending_changed->disconnect();
+    m_handler_counos_balance_changed->disconnect();
+    m_handler_counos_state_invalidated->disconnect();
 }
 
 bool ClientModel::getProxyInfo(std::string& ip_port) const

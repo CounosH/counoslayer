@@ -1,27 +1,27 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/sendmpdialog.h>
 #include <qt/forms/ui_sendmpdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>
 
 #include <qt/platformstyle.h>
 
-#include <omnicore/createpayload.h>
-#include <omnicore/errors.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parse_string.h>
-#include <omnicore/pending.h>
-#include <omnicore/sp.h>
-#include <omnicore/tally.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/wallettxbuilder.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/createpayload.h>
+#include <counoscore/errors.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/parse_string.h>
+#include <counoscore/pending.h>
+#include <counoscore/sp.h>
+#include <counoscore/tally.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/wallettxbuilder.h>
+#include <counoscore/walletutils.h>
 
 #include <amount.h>
 #include <base58.h>
@@ -68,7 +68,7 @@ SendMPDialog::SendMPDialog(const PlatformStyle *platformStyle, QWidget *parent) 
     }
 
 #if QT_VERSION >= 0x040700 // populate placeholder text
-    ui->sendToLineEdit->setPlaceholderText("Enter an Omni Layer address (e.g. 1oMn1LaYeRADDreSShef77z6A5S4P)");
+    ui->sendToLineEdit->setPlaceholderText("Enter an Counos Layer address (e.g. 1oMn1LaYeRADDreSShef77z6A5S4P)");
     ui->amountLineEdit->setPlaceholderText("Enter Amount");
 #endif
 
@@ -94,14 +94,14 @@ void SendMPDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &SendMPDialog::balancesUpdated);
-        connect(model, &ClientModel::reinitOmniState, this, &SendMPDialog::balancesUpdated);
+        connect(model, &ClientModel::refreshCounosBalance, this, &SendMPDialog::balancesUpdated);
+        connect(model, &ClientModel::reinitCounosState, this, &SendMPDialog::balancesUpdated);
     }
 }
 
 void SendMPDialog::setWalletModel(WalletModel *model)
 {
-    // use wallet model to get visibility into BTC balance changes for fees
+    // use wallet model to get visibility into CCH balance changes for fees
     this->walletModel = model;
     if (model != nullptr) {
        connect(model, &WalletModel::balanceChanged, this, &SendMPDialog::updateFrom);
@@ -177,7 +177,7 @@ void SendMPDialog::updateFrom()
         if (CheckFee(walletModel->wallet(), currentSetFromAddress, 16)) {
             ui->feeWarningLabel->setVisible(false);
         } else {
-            ui->feeWarningLabel->setText("WARNING: The sending address is low on BTC for transaction fees. Please topup the BTC balance for the sending address to send Omni Layer transactions.");
+            ui->feeWarningLabel->setText("WARNING: The sending address is low on CCH for transaction fees. Please topup the CCH balance for the sending address to send Counos Layer transactions.");
             ui->feeWarningLabel->setVisible(true);
         }
     }
@@ -294,7 +294,7 @@ void SendMPDialog::sendMPTransaction()
     }
 
     // check if wallet is still syncing, as this will currently cause a lockup if we try to send - compare our chain to peers to see if we're up to date
-    // Bitcoin Core devs have removed GetNumBlocksOfPeers, switching to a time based best guess scenario
+    // Counosh Core devs have removed GetNumBlocksOfPeers, switching to a time based best guess scenario
     uint32_t intBlockDate = GetLatestBlockTime();  // uint32, not using time_t for portability
     QDateTime currentDate = QDateTime::currentDateTime();
     int secs = QDateTime::fromTime_t(intBlockDate).secsTo(currentDate);

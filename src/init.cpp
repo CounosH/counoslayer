@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The CounosH Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/counosh-config.h>
 #endif
 
 #include <init.h>
@@ -63,7 +63,7 @@
 #include <stdio.h>
 #include <set>
 
-#include <omnicore/version.h>
+#include <counoscore/version.h>
 
 #ifndef WIN32
 #include <attributes.h>
@@ -102,7 +102,7 @@ static const char* FEE_ESTIMATES_FILENAME="fee_estimates.dat";
 
 static const char* DEFAULT_ASMAP_FILENAME="ip_asn.map";
 
-// Omni Core initialization and shutdown handlers
+// Counos Core initialization and shutdown handlers
 extern int mastercore_init();
 extern int mastercore_shutdown();
 extern int CheckWalletUpdate(bool forceUpdate = false);
@@ -110,11 +110,11 @@ extern int CheckWalletUpdate(bool forceUpdate = false);
 /**
  * The PID file facilities.
  */
-static const char* BITCOIN_PID_FILENAME = "bitcoind.pid";
+static const char* COUNOSH_PID_FILENAME = "counoshd.pid";
 
 static fs::path GetPidFile()
 {
-    return AbsPathForConfigVal(fs::path(gArgs.GetArg("-pid", BITCOIN_PID_FILENAME)));
+    return AbsPathForConfigVal(fs::path(gArgs.GetArg("-pid", COUNOSH_PID_FILENAME)));
 }
 
 NODISCARD static bool CreatePidFile()
@@ -290,7 +290,7 @@ void Shutdown(NodeContext& node)
         client->stop();
     }
 
-    //! Omni Core shutdown
+    //! Counos Core shutdown
     mastercore_shutdown();
 
 #if ENABLE_ZMQ
@@ -334,7 +334,7 @@ static void HandleSIGTERM(int)
 static void HandleSIGHUP(int)
 {
     LogInstance().m_reopen_file = true;
-    fReopenOmniCoreLog = true;
+    fReopenCounosCoreLog = true;
 }
 #else
 static BOOL WINAPI consoleCtrlHandler(DWORD dwCtrlType)
@@ -399,7 +399,7 @@ void SetupServerArgs()
 #endif
     gArgs.AddArg("-blockreconstructionextratxn=<n>", strprintf("Extra transactions to keep in memory for compact block reconstructions (default: %u)", DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-blocksonly", strprintf("Whether to reject transactions from network peers. Automatic broadcast and rebroadcast of any transactions from inbound peers is disabled, unless '-whitelistforcerelay' is '1', in which case whitelisted peers' transactions will be relayed. RPC transactions are not affected. (default: %u)", DEFAULT_BLOCKSONLY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", BITCOIN_CONF_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", COUNOSH_CONF_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-datadir=<dir>", "Specify data directory", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-dbbatchsize", strprintf("Maximum database write batch size in bytes (default: %u)", nDefaultDbBatchSize), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-dbcache=<n>", strprintf("Maximum database cache size <n> MiB (%d to %d, default: %d). In addition, unused mempool memory is shared for this cache (see -maxmempool).", nMinDbCache, nMaxDbCache, nDefaultDbCache), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -414,7 +414,7 @@ void SetupServerArgs()
     gArgs.AddArg("-par=<n>", strprintf("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)",
         -GetNumCores(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-persistmempool", strprintf("Whether to save the mempool on shutdown and load on restart (default: %u)", DEFAULT_PERSIST_MEMPOOL), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-pid=<file>", strprintf("Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)", BITCOIN_PID_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-pid=<file>", strprintf("Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)", COUNOSH_PID_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-prune=<n>", strprintf("Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. "
             "Warning: Reverting this setting requires re-downloading the entire blockchain. "
             "(default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, >=%u = automatically prune block files to stay under the specified target size in MiB)", MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -582,22 +582,22 @@ void SetupServerArgs()
 
     // TODO: append help messages somewhere else
     // TODO: translation
-    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Omni transactions (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnitxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniseedblockfilter", "Set skipping of blocks without Omni transactions during initial scan (default: 1)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnilogfile", "The path of the log file (default: omnicore.log)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnidebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-autocommit", "Enable or disable broadcasting of transactions, when creating transactions (default: 1)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-overrideforcedshutdown", "Overwrite shutdown, triggered by an alert (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnialertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnialertignoresender", "Ignore senders of alerts", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniactivationignoresender", "Ignore senders of activations", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-disclaimer", "Explicitly show QT disclaimer on startup (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniuiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnishowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniuseragent", "Show Omni and Omni version in user agent string (default: 1)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Counos transactions (default: 0)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counostxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosseedblockfilter", "Set skipping of blocks without Counos transactions during initial scan (default: 1)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counoslogfile", "The path of the log file (default: counoscore.log)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosdebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-autocommit", "Enable or disable broadcasting of transactions, when creating transactions (default: 1)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-overrideforcedshutdown", "Overwrite shutdown, triggered by an alert (default: 0)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosalertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosalertignoresender", "Ignore senders of alerts", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosactivationignoresender", "Ignore senders of activations", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-disclaimer", "Explicitly show QT disclaimer on startup (default: 0)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosuiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosshowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::COUNOS);
+    gArgs.AddArg("-counosuseragent", "Show Counos and Counos version in user agent string (default: 1)", false, OptionsCategory::COUNOS);
 
 
 #if HAVE_DECL_DAEMON
@@ -612,7 +612,7 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/OmniLayer/omnicore>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/counosh/counosh>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -776,7 +776,7 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that Bitcoin is running in a usable environment with all
+ *  Ensure that CounosH is running in a usable environment with all
  *  necessary library support.
  */
 static bool InitSanityCheck()
@@ -1199,7 +1199,7 @@ bool AppInitParameterInteraction()
 
 static bool LockDataDirectory(bool probeOnly)
 {
-    // Make sure only a single Bitcoin process is using the data directory.
+    // Make sure only a single CounosH process is using the data directory.
     fs::path datadir = GetDataDir();
     if (!DirIsWritable(datadir)) {
         return InitError(strprintf(_("Cannot write to data directory '%s'; check permissions.").translated, datadir.string()));
@@ -1269,7 +1269,7 @@ bool AppInitMain(NodeContext& node)
     LogPrintf("Using data directory %s\n", GetDataDir().string());
 
     // Only log conf file usage message if conf file actually exists.
-    fs::path config_file_path = GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
+    fs::path config_file_path = GetConfigFile(gArgs.GetArg("-conf", COUNOSH_CONF_FILENAME));
     if (fs::exists(config_file_path)) {
         LogPrintf("Config file: %s\n", config_file_path.string());
     } else if (gArgs.IsArgSet("-conf")) {
@@ -1288,9 +1288,9 @@ bool AppInitMain(NodeContext& node)
     // Warn about relative -datadir path.
     if (gArgs.IsArgSet("-datadir") && !fs::path(gArgs.GetArg("-datadir", "")).is_absolute()) {
         LogPrintf("Warning: relative datadir option '%s' specified, which will be interpreted relative to the " /* Continued */
-                  "current working directory '%s'. This is fragile, because if bitcoin is started in the future "
+                  "current working directory '%s'. This is fragile, because if counosh is started in the future "
                   "from a different location, it will be unable to locate the current data files. There could "
-                  "also be data loss if bitcoin is started while in a temporary directory.\n",
+                  "also be data loss if counosh is started while in a temporary directory.\n",
             gArgs.GetArg("-datadir", ""), fs::current_path().string());
     }
 
@@ -1395,8 +1395,8 @@ bool AppInitMain(NodeContext& node)
         uacomments.push_back(cmt);
     }
 
-    if (gArgs.GetArg("-omniuseragent", true)) {
-        uacomments.emplace(uacomments.begin(), OMNI_CLIENT_NAME + ":" + FormatVersion(OMNI_USERAGENT_VERSION));
+    if (gArgs.GetArg("-counosuseragent", true)) {
+        uacomments.emplace(uacomments.begin(), COUNOS_CLIENT_NAME + ":" + FormatVersion(COUNOS_USERAGENT_VERSION));
         if (gArgs.GetBoolArg("-experimental-btc-balances", DEFAULT_ADDRINDEX)) {
             uacomments.push_back("bitcore");
         }
@@ -1769,28 +1769,28 @@ bool AppInitMain(NodeContext& node)
         GetBlockFilterIndex(filter_type)->Start();
     }
 
-    // ********************************************************* Step 8.5: load omni core
+    // ********************************************************* Step 8.5: load counos core
 
     if (!gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
         // ask the user if they would like us to modify their config file for them
         std::string msg = _("Disabled transaction index detected.\n\n"
-                            "Omni Core requires an enabled transaction index. To enable "
+                            "Counos Core requires an enabled transaction index. To enable "
                             "transaction indexing, please use the \"-txindex\" option as "
                             "command line argument or add \"txindex=1\" to your client "
                             "configuration file within your data directory.\n\n"
                             "Configuration file").translated; // allow translation of main text body while still allowing differing config file string
-        msg += ": " + GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME)).string() + "\n\n";
-        msg += _("Would you like Omni Core to attempt to update your configuration file accordingly?").translated;
+        msg += ": " + GetConfigFile(gArgs.GetArg("-conf", COUNOSH_CONF_FILENAME)).string() + "\n\n";
+        msg += _("Would you like Counos Core to attempt to update your configuration file accordingly?").translated;
         bool fRet = uiInterface.ThreadSafeMessageBox(msg, "", CClientUIInterface::MSG_INFORMATION | CClientUIInterface::BTN_OK | CClientUIInterface::MODAL | CClientUIInterface::BTN_ABORT);
         if (fRet) {
             // add txindex=1 to config file in GetConfigFile()
-            fs::path configPathInfo = GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
+            fs::path configPathInfo = GetConfigFile(gArgs.GetArg("-conf", COUNOSH_CONF_FILENAME));
             FILE *fp = fopen(configPathInfo.string().c_str(), "at");
             if (!fp) {
                 std::string failMsg = _("Unable to update configuration file at").translated;
-                failMsg += ":\n" + GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME)).string() + "\n\n";
+                failMsg += ":\n" + GetConfigFile(gArgs.GetArg("-conf", COUNOSH_CONF_FILENAME)).string() + "\n\n";
                 failMsg += _("The file may be write protected or you may not have the required permissions to edit it.\n").translated;
-                failMsg += _("Please add txindex=1 to your configuration file manually.\n\nOmni Core will now shutdown.").translated;
+                failMsg += _("Please add txindex=1 to your configuration file manually.\n\nCounos Core will now shutdown.").translated;
                 return InitError(failMsg);
             }
             fprintf(fp, "\ntxindex=1\n");
@@ -1798,15 +1798,15 @@ bool AppInitMain(NodeContext& node)
             fclose(fp);
             std::string strUpdated = _(
                     "Your configuration file has been updated.\n\n"
-                    "Omni Core will now shutdown - please restart the client for your new configuration to take effect.").translated;
+                    "Counos Core will now shutdown - please restart the client for your new configuration to take effect.").translated;
             uiInterface.ThreadSafeMessageBox(strUpdated, "", CClientUIInterface::MSG_INFORMATION | CClientUIInterface::BTN_OK | CClientUIInterface::MODAL);
             return false;
         } else {
-            return InitError(_("Please add txindex=1 to your configuration file manually.\n\nOmni Core will now shutdown.").translated);
+            return InitError(_("Please add txindex=1 to your configuration file manually.\n\nCounos Core will now shutdown.").translated);
         }
     }
 
-    uiInterface.InitMessage(_("Parsing Omni Layer transactions...").translated);
+    uiInterface.InitMessage(_("Parsing Counos Layer transactions...").translated);
 
     mastercore_init();
 
@@ -1817,7 +1817,7 @@ bool AppInitMain(NodeContext& node)
         }
     }
 
-    // Omni Core code should be initialized and wallet should now be loaded, perform an initial populat$
+    // Counos Core code should be initialized and wallet should now be loaded, perform an initial populat$
     CheckWalletUpdate();
 
     // ********************************************************* Step 10: data directory maintenance

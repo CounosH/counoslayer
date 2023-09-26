@@ -1,31 +1,31 @@
-// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2011-2014 The Counosh developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/txhistorydialog.h>
 #include <qt/forms/ui_txhistorydialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/counoscore_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/guiutil.h>
 #include <qt/walletmodel.h>
 #include <qt/platformstyle.h>
 
-#include <omnicore/dbspinfo.h>
-#include <omnicore/dbstolist.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletcache.h>
-#include <omnicore/walletfetchtxs.h>
-#include <omnicore/walletutils.h>
+#include <counoscore/dbspinfo.h>
+#include <counoscore/dbstolist.h>
+#include <counoscore/dbtxlist.h>
+#include <counoscore/counoscore.h>
+#include <counoscore/parsing.h>
+#include <counoscore/pending.h>
+#include <counoscore/rpc.h>
+#include <counoscore/rpctxobject.h>
+#include <counoscore/sp.h>
+#include <counoscore/tx.h>
+#include <counoscore/utilscounosh.h>
+#include <counoscore/walletcache.h>
+#include <counoscore/walletfetchtxs.h>
+#include <counoscore/walletutils.h>
 
 #include <init.h>
 #include <key_io.h>
@@ -169,9 +169,9 @@ void TXHistoryDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &TXHistoryDialog::UpdateHistory);
+        connect(model, &ClientModel::refreshCounosBalance, this, &TXHistoryDialog::UpdateHistory);
         connect(model, &ClientModel::numBlocksChanged, this, &TXHistoryDialog::UpdateConfirmations);
-        connect(model, &ClientModel::reinitOmniState, this, &TXHistoryDialog::ReinitTXHistoryTable);
+        connect(model, &ClientModel::reinitCounosState, this, &TXHistoryDialog::ReinitTXHistoryTable);
     }
 }
 
@@ -196,10 +196,10 @@ int TXHistoryDialog::PopulateHistoryMap()
 
     int64_t nProcessed = 0; // counter for how many transactions we've added to history this time
 
-    // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending) - default last 65535
+    // obtain a sorted list of Counos layer wallet transactions (including STO receipts and pending) - default last 65535
     std::map<std::string,uint256> walletTransactions;
     if (walletModel)
-        walletTransactions = FetchWalletOmniTransactions(walletModel->wallet(), gArgs.GetArg("-omniuiwalletscope", 65535L));
+        walletTransactions = FetchWalletCounosTransactions(walletModel->wallet(), gArgs.GetArg("-counosuiwalletscope", 65535L));
 
     // reverse iterate over (now ordered) transactions and populate history map for each one
     for (std::map<std::string,uint256>::reverse_iterator it = walletTransactions.rbegin(); it != walletTransactions.rend(); it++) {
@@ -215,7 +215,7 @@ int TXHistoryDialog::PopulateHistoryMap()
                 if (pending_it != my_pending.end()) continue; // transaction is still pending, do nothing
             }
 
-            // pending transaction has confirmed, remove temp pending object from map and allow it to be added again as an Omni transaction
+            // pending transaction has confirmed, remove temp pending object from map and allow it to be added again as an Counos transaction
             txHistoryMap.erase(hIter);
             ui->txHistoryTable->setSortingEnabled(false); // disable sorting temporarily while we update the table (leaving enabled gives unexpected results)
             QAbstractItemModel* historyAbstractModel = ui->txHistoryTable->model(); // get a model to work with
@@ -303,7 +303,7 @@ int TXHistoryDialog::PopulateHistoryMap()
             continue;
         }
 
-        // handle Omni transaction
+        // handle Counos transaction
         if (0 != parseRC) continue;
         if (!mp_obj.interpret_Transaction()) continue;
         int64_t amount = mp_obj.getAmount();
@@ -521,7 +521,7 @@ std::string TXHistoryDialog::shrinkTxType(int txType, bool *fundsMoved)
         case MSC_TYPE_RATELIMITED_MARK: displayType = "Rate Limit"; break;
         case MSC_TYPE_AUTOMATIC_DISPENSARY: displayType = "Auto Dispense"; break;
         case MSC_TYPE_TRADE_OFFER: displayType = "DEx Trade"; *fundsMoved = false; break;
-        case MSC_TYPE_ACCEPT_OFFER_BTC: displayType = "DEx Accept"; *fundsMoved = false; break;
+        case MSC_TYPE_ACCEPT_OFFER_CCH: displayType = "DEx Accept"; *fundsMoved = false; break;
         case MSC_TYPE_METADEX_TRADE: displayType = "MetaDEx Trade"; *fundsMoved = false; break;
         case MSC_TYPE_METADEX_CANCEL_PRICE:
         case MSC_TYPE_METADEX_CANCEL_PAIR:

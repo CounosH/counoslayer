@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2019 The Bitcoin Core developers
+# Copyright (c) 2014-2019 The CounosH Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test gettxoutproof and verifytxoutproof RPCs."""
 
 from test_framework.messages import CMerkleBlock, FromHex, ToHex
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import CounosHTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error, connect_nodes
 
-class MerkleBlockTest(BitcoinTestFramework):
+class MerkleBlockTest(CounosHTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -73,7 +73,7 @@ class MerkleBlockTest(BitcoinTestFramework):
         assert_raises_rpc_error(-8, "blockhash must be of length 64 (not 32, for '00000000000000000000000000000000')", self.nodes[2].gettxoutproof, [txid_spent], "00000000000000000000000000000000")
         assert_raises_rpc_error(-8, "blockhash must be hexadecimal string (not 'ZZZ0000000000000000000000000000000000000000000000000000000000000')", self.nodes[2].gettxoutproof, [txid_spent], "ZZZ0000000000000000000000000000000000000000000000000000000000000")
         # We can't find the block from a fully-spent tx
-        # assert_raises_rpc_error(-5, "Transaction not yet in block", self.nodes[2].gettxoutproof, [txid_spent]) # gettxoutproof does not fail with txindex enabled
+        assert_raises_rpc_error(-5, "Transaction not yet in block", self.nodes[2].gettxoutproof, [txid_spent])
         # We can get the proof if we specify the block
         assert_equal(self.nodes[2].verifytxoutproof(self.nodes[2].gettxoutproof([txid_spent], blockhash)), [txid_spent])
         # We can't get the proof if we specify a non-existent block
