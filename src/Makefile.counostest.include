@@ -1,0 +1,49 @@
+COUNOSCORE_TEST_H = \
+  counoscore/test/utils_tx.h
+
+COUNOSCORE_TEST_CPP = \
+  counoscore/test/alert_tests.cpp \
+  counoscore/test/change_issuer_tests.cpp \
+  counoscore/test/checkpoint_tests.cpp \
+  counoscore/test/create_payload_tests.cpp \
+  counoscore/test/create_tx_tests.cpp \
+  counoscore/test/crowdsale_participation_tests.cpp \
+  counoscore/test/dex_purchase_tests.cpp \
+  counoscore/test/encoding_b_tests.cpp \
+  counoscore/test/encoding_c_tests.cpp \
+  counoscore/test/exodus_tests.cpp \
+  counoscore/test/lock_tests.cpp \
+  counoscore/test/marker_tests.cpp \
+  counoscore/test/mbstring_tests.cpp \
+  counoscore/test/nftdb_tests.cpp \
+  counoscore/test/params_tests.cpp \
+  counoscore/test/obfuscation_tests.cpp \
+  counoscore/test/output_restriction_tests.cpp \
+  counoscore/test/parsing_a_tests.cpp \
+  counoscore/test/parsing_b_tests.cpp \
+  counoscore/test/parsing_c_tests.cpp \
+  counoscore/test/rounduint64_tests.cpp \
+  counoscore/test/rules_txs_tests.cpp \
+  counoscore/test/script_dust_tests.cpp \
+  counoscore/test/script_extraction_tests.cpp \
+  counoscore/test/script_solver_tests.cpp \
+  counoscore/test/sender_bycontribution_tests.cpp \
+  counoscore/test/sender_firstin_tests.cpp \
+  counoscore/test/strtoint64_tests.cpp \
+  counoscore/test/swapbyteorder_tests.cpp \
+  counoscore/test/tally_tests.cpp \
+  counoscore/test/uint256_extensions_tests.cpp \
+  counoscore/test/utils_tx.cpp \
+  counoscore/test/version_tests.cpp
+
+if ENABLE_WALLET
+COUNOSCORE_TEST_CPP += counoscore/test/funded_send_tests.cpp
+endif
+
+COUNOSH_TESTS += \
+  $(COUNOSCORE_TEST_CPP) \
+  $(COUNOSCORE_TEST_H)
+
+CLEAN_COUNOSCORE_TEST = counoscore/test/*.gcda counoscore/test/*.gcno
+
+CLEANFILES += $(CLEAN_COUNOSCORE_TEST)

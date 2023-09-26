@@ -11,11 +11,11 @@ SetCompressor /SOLID lzma
 !define URL http://www.counoslayer.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/counoscore/share/pixmaps/counosh.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/counoscore/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/counoslayer/share/pixmaps/counosh.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/counoslayer/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/counoscore/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/counoslayer/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -23,7 +23,7 @@ SetCompressor /SOLID lzma
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "CounosH Core"
 !define MUI_FINISHPAGE_RUN $INSTDIR\counoscore-qt.exe
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/counoscore/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/counoslayer/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -47,7 +47,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/counoscore/counoscore-${VERSION}-win64-setup-unsigned.exe
+OutFile /home/counoslayer/counoscore-${VERSION}-win64-setup-unsigned.exe
 InstallDir "$PROGRAMFILES64\Counos Core"
 CRCCheck on
 XPStyle on
@@ -68,15 +68,15 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/counoscore/release/counoscore-qt.exe
-    File /oname=copying.txt /home/counoscore/src/counoscore/COPYING.md
-    File /oname=readme.txt /home/counoscore/src/counoscore/README.md
-    File /oname=release-notes.txt /home/counoscore/src/counoscore/doc/release-notes.md
+    File /home/counoslayer/release/counoscore-qt.exe
+    File /oname=copying.txt /home/counoslayer/src/counoscore/COPYING.md
+    File /oname=readme.txt /home/counoslayer/src/counoscore/README.md
+    File /oname=release-notes.txt /home/counoslayer/src/counoscore/doc/release-notes.md
     SetOutPath $INSTDIR\daemon
-    File /home/counoscore/release/counoscored.exe
-    File /home/counoscore/release/counoscore-cli.exe
+    File /home/counoslayer/release/counoscored.exe
+    File /home/counoslayer/release/counoscore-cli.exe
     SetOutPath $INSTDIR\doc
-    File /r /home/counoscore/src/counoscore/doc\*.*
+    File /r /home/counoslayer/src/counoscore/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 
