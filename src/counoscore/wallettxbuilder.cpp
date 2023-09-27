@@ -210,29 +210,29 @@ int GetDryPayloadOutputCount(
     }
 
     // Determine the class to send the transaction via - default is Class C
-    int omniTxClass = OMNI_CLASS_C;
+    int counosTxClass = COUNOS_CLASS_C;
     if (!UseEncodingClassC(payload.size() + 1 /* OP_RETURN */ + 2 /* pushdata opcodes */)) {
-        omniTxClass = OMNI_CLASS_B;
+        counosTxClass = COUNOS_CLASS_B;
     }
 
     std::vector<std::pair<CScript, int64_t> > vecSend;
     CAmount outputAmount{0};
 
     // Encode the data outputs
-    switch (omniTxClass) {
-        case OMNI_CLASS_B: {
+    switch (counosTxClass) {
+        case COUNOS_CLASS_B: {
             CPubKey redeemingPubKey;
             const std::string& sAddress = redemptionAddress.empty() ? senderAddress : redemptionAddress;
             if (!AddressToPubKey(iWallet, sAddress, redeemingPubKey)) {
                 return MP_REDEMP_BAD_VALIDATION;
             }
-            if (!OmniCore_Encode_ClassB(senderAddress, redeemingPubKey, payload, vecSend, &outputAmount)) {
+            if (!CounosCore_Encode_ClassB(senderAddress, redeemingPubKey, payload, vecSend, &outputAmount)) {
                 return MP_ENCODING_ERROR;
             }
             break;
         }
-        case OMNI_CLASS_C: {
-            if(!OmniCore_Encode_ClassC(payload, vecSend)) {
+        case COUNOS_CLASS_C: {
+            if(!CounosCore_Encode_ClassC(payload, vecSend)) {
                 return MP_ENCODING_ERROR;
             }
             break;

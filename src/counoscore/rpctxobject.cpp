@@ -335,19 +335,19 @@ void populateRPCTypeSimpleSend(CMPTransaction& counosObj, UniValue& txobj)
 }
 
 
-void populateRPCTypeSendToMany(CMPTransaction& omniObj, UniValue& txobj)
+void populateRPCTypeSendToMany(CMPTransaction& counosObj, UniValue& txobj)
 {
-    uint32_t propertyId = omniObj.getProperty();
+    uint32_t propertyId = counosObj.getProperty();
     txobj.pushKV("propertyid", (uint64_t) propertyId);
     txobj.pushKV("divisible", isPropertyDivisible(propertyId));
 
     UniValue outputValues(UniValue::VARR);
 
-    for (const std::tuple<uint8_t, uint64_t>& entry : omniObj.getStmOutputValues()) {
+    for (const std::tuple<uint8_t, uint64_t>& entry : counosObj.getStmOutputValues()) {
         uint8_t output = std::get<0>(entry);
         std::string amount = FormatMP(propertyId, std::get<1>(entry));
         std::string destination;
-        bool valid = omniObj.getValidStmAddressAt(output, destination);
+        bool valid = counosObj.getValidStmAddressAt(output, destination);
 
         if (valid) {
             UniValue outputEntry(UniValue::VOBJ);
@@ -359,10 +359,10 @@ void populateRPCTypeSendToMany(CMPTransaction& omniObj, UniValue& txobj)
     }
 
     txobj.pushKV("receivers", outputValues);
-    txobj.pushKV("totalamount", FormatMP(propertyId, omniObj.getAmount()));
+    txobj.pushKV("totalamount", FormatMP(propertyId, counosObj.getAmount()));
 }
 
-void populateRPCTypeSendToOwners(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet *iWallet)
+void populateRPCTypeSendToOwners(CMPTransaction& counosObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet *iWallet)
 {
     uint32_t propertyId = counosObj.getProperty();
     txobj.pushKV("propertyid", (uint64_t)propertyId);
