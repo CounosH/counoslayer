@@ -19,6 +19,7 @@ int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHas
 void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter, int confirmations, interfaces::Wallet* iWallet = nullptr);
 
 void populateRPCTypeSimpleSend(CMPTransaction& counosObj, UniValue& txobj);
+void populateRPCTypeSendToMany(CMPTransaction& counosObj, UniValue& txobj);
 void populateRPCTypeSendToOwners(CMPTransaction& counosObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet* iWallet = nullptr);
 void populateRPCTypeSendAll(CMPTransaction& counosObj, UniValue& txobj, int confirmations);
 void populateRPCTypeTradeOffer(CMPTransaction& counosObj, UniValue& txobj);

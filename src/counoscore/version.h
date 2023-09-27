@@ -15,7 +15,7 @@
 #define COUNOSCORE_VERSION_MAJOR       0
 
 // Increase with every non-consensus affecting feature
-#define COUNOSCORE_VERSION_MINOR       11
+#define COUNOSCORE_VERSION_MINOR       12
 
 // Increase with every patch, which is not a feature or consensus affecting
 #define COUNOSCORE_VERSION_PATCH       0
