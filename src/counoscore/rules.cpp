@@ -198,7 +198,7 @@ CMainConsensusParams::CMainConsensusParams()
     exodusBonusPerWeek = 0.10;
     exodusDeadline = 1377993600;
     exodusReward = 100;
-    GENESIS_BLOCK = 64673;
+    GENESIS_BLOCK = 106170;
     LAST_EXODUS_BLOCK = std::numeric_limits<int>::max();
     // Notice range for feature activations:
     MIN_ACTIVATION_BLOCKS = 0;
@@ -212,12 +212,12 @@ CMainConsensusParams::CMainConsensusParams()
     NULLDATA_BLOCK = 0;
     // Transaction restrictions:
     MSC_ALERT_BLOCK = 0;
-    MSC_SEND_BLOCK = 64673;
-    MSC_DEX_BLOCK = 64673;
-    MSC_SP_BLOCK = 64673;
-    MSC_MANUALSP_BLOCK = 64673;
-    MSC_STO_BLOCK = 64673;
-    MSC_METADEX_BLOCK = 64673;
+    MSC_SEND_BLOCK = 106170;
+    MSC_DEX_BLOCK = 106170;
+    MSC_SP_BLOCK = 106170;
+    MSC_MANUALSP_BLOCK = 106170;
+    MSC_STO_BLOCK = 106170;
+    MSC_METADEX_BLOCK = 106170;
     MSC_SEND_ALL_BLOCK = 0;
     MSC_BET_BLOCK = 999999;
     MSC_STOV1_BLOCK = 999999;
